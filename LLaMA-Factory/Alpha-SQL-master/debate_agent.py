@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 import copy
 
-from augment_decomposition import LLMClient, safe_json_loads
+from augment_decomposition import LLMClient, SQLExecutionTool, safe_json_loads
 
 BASE_DIR = Path(__file__).resolve().parent
 PROCESSED_DATASET = BASE_DIR / "competion_dataset" / "final_dataset_processed.json"
@@ -126,6 +126,41 @@ def parse_json_response(text: str) -> Dict[str, Any]:
     return data
 
 
+def record_sql_execution(
+    sql_tool: Optional[SQLExecutionTool],
+    sql_text: str,
+    timeout: int,
+    dialogues: List[Dict[str, Any]],
+    history: List[Dict[str, Any]],
+    round_idx: int,
+) -> Optional[Dict[str, Any]]:
+    """Run SQL via the shared tool and log into both dialogues and history."""
+    if not sql_tool or not sql_text.strip():
+        return None
+
+    exec_result = sql_tool.run(sql_text, timeout=timeout)
+    history.append(
+        {
+            "model": "TOOL",
+            "verdict": "execute",
+            "status": exec_result.get("status"),
+            "error": exec_result.get("error"),
+            "rows_sample": exec_result.get("rows_sample"),
+            "round": round_idx,
+        }
+    )
+    dialogues.append(
+        {
+            "model": "TOOL",
+            "verdict": "execute",
+            "prompt": sql_text,
+            "response_raw": json.dumps(exec_result, ensure_ascii=False, default=str),
+            "parsed": exec_result,
+        }
+    )
+    return exec_result
+
+
 def apply_endpoint_overrides(base_url: str, api_key: str) -> None:
     """Propagate endpoint overrides to environment for LLMClient reuse."""
     if base_url:
@@ -193,6 +228,9 @@ def run_debate(
     model_b: LLMClient,
     model_c: LLMClient,
     sql_dir: Path,
+    sql_tool: Optional[SQLExecutionTool],
+    execute_sql: bool,
+    sql_timeout: int,
     max_rounds: int,
     temperature: float,
 ) -> Dict[str, Any]:
@@ -319,12 +357,30 @@ def run_debate(
             },
         })
 
-        if not decision["regenerate"]:
-            break
-
+        # Apply decider's SQL before potential execution
         if decision["fixed_sql"]:
             current_sql = decision["fixed_sql"].strip()
             prompt_text = build_prompt(record, current_sql)
+
+        exec_result: Optional[Dict[str, Any]] = None
+        exec_success = True
+        if execute_sql and sql_tool and current_sql:
+            exec_result = record_sql_execution(sql_tool, current_sql, sql_timeout, dialogues, history, round_idx)
+            exec_success = (exec_result or {}).get("status") == "success"
+
+        # Force another regeneration attempt if execution fails
+        decision_regen = decision["regenerate"] or (execute_sql and not exec_success)
+
+        if not exec_success:
+            # let the next round see the tool error in history/dialogues
+            continue
+
+        if not decision_regen:
+            break
+
+        if decision["fixed_sql"]:
+            # already updated above; continue to next round for further vetting/repairs
+            continue
         else:
             # If no SQL provided, stop to avoid infinite loop.
             break
@@ -361,6 +417,8 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=-1, help="Optional cap on records processed")
     parser.add_argument("--start", type=int, default=0, help="Zero-based start index")
     parser.add_argument("--offline", action="store_true", help="Use offline heuristic mode for all models")
+    parser.add_argument("--execute-sql", action="store_true", help="Execute candidate SQL via SQLExecutionTool and feed errors back for repair")
+    parser.add_argument("--sql-timeout", type=int, default=60, help="SQL execution timeout in seconds")
     parser.add_argument("--openai_base_url", default="https://api.gptbest.vip/v1")
     parser.add_argument("--openai_api_key", default="sk-GMYNUCidV96DStXskUpPqgemoaDur0alDXZkeyiq5E3mXGZn")
     args = parser.parse_args()
@@ -380,6 +438,7 @@ def main() -> None:
     model_a = build_llm_client(args.model_a, args.temperature, args.offline)
     model_b = build_llm_client(args.model_b, args.temperature, args.offline)
     model_c = build_llm_client(args.model_c, args.temperature, args.offline)
+    sql_tool = SQLExecutionTool() if args.execute_sql and not args.offline else None
 
     processed = 0
     with output_path.open("w", encoding="utf-8") as writer:
@@ -390,6 +449,9 @@ def main() -> None:
                 model_b=model_b,
                 model_c=model_c,
                 sql_dir=sql_dir,
+                sql_tool=sql_tool,
+                execute_sql=args.execute_sql,
+                sql_timeout=args.sql_timeout,
                 max_rounds=args.max_rounds,
                 temperature=args.temperature,
             )
