@@ -1,0 +1,22 @@
+[
+    {
+        "sql_id": "sql_45",
+        "sql": "select count(distinct a.vplayerid) as player_num\nfrom (\n    select distinct vplayerid\n    from dws_jordass_matchlog_stat_di\n    where dtstatdate between '20240101' and '20240107'\n    and imode = 1287652322611036928\n) a\nleft join (\n    select distinct vplayerid\n    from dws_jordass_matchlog_stat_di\n    where dtstatdate between '20240108' and '20240114'\n    and imode = 1287652322611036928\n) b on a.vplayerid = b.vplayerid\njoin (\n    select distinct vplayerid\n    from dws_jordass_matchlog_stat_di\n    where dtstatdate between '20240115' and '20240121'\n    and imode = 1287652322611036928\n) c on a.vplayerid = c.vplayerid\nwhere b.vplayerid is null;",
+        "status": "success",
+        "result": [
+            {
+                "player_num": 114
+            }
+        ]
+    },
+    {
+        "sql_id": "sql_45_",
+        "sql": "SELECT COUNT(DISTINCT p1.vplayerid) AS player_count FROM dws_jordass_playermatchrecord_stat_df AS p1 WHERE p1.imode = '1287652322611036928' AND p1.dtstatdate BETWEEN '2024.01.01' AND '2024.01.07' AND NOT p1.vplayerid IN (SELECT DISTINCT vplayerid FROM dws_jordass_playermatchrecord_stat_df WHERE imode = '1287652322611036928' AND dtstatdate BETWEEN '2024.01.08' AND '2024.01.14') AND p1.vplayerid IN (SELECT DISTINCT vplayerid FROM dws_jordass_playermatchrecord_stat_df WHERE imode = '1287652322611036928' AND dtstatdate BETWEEN '2024.01.15' AND '2024.01.21')",
+        "status": "success",
+        "result": [
+            {
+                "player_count": 0
+            }
+        ]
+    }
+]

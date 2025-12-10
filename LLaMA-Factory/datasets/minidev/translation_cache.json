@@ -1,0 +1,1998 @@
+{
+  "1471": {
+    "question_cn": "支付货币为欧元(EUR)的客户数与支付货币为捷克克朗(CZK)的客户数的比率是多少?",
+    "evidence_cn": "支付货币为欧元的客户数与支付货币为捷克克朗的客户数的比率 = count(Currency = 'EUR') / count(Currency = 'CZK')。"
+  },
+  "1472": {
+    "question_cn": "在2012年，LAM地区谁的消费量最少？",
+    "evidence_cn": "年份2012可以表示为Between 201201 And 201212；yearmonth表中Date值的前4个字符可以代表年份。"
+  },
+  "1473": {
+    "question_cn": "2013年中小企业客户的平均月消费量是多少？",
+    "evidence_cn": "Average Monthly consumption = AVG(Consumption) / 12; Year 2013 可以表示为 Between 201301 And 201312; yearmonth 表中 Date 值的前4个字符可以代表年份。"
+  },
+  "1476": {
+    "question_cn": "2012年CZK支付客户和EUR支付客户的汽油消费量差异是多少？",
+    "evidence_cn": "2012年可以表示为Between 201201 And 201212；yearmonth表中Date值的前4个字符可以代表年份；消费量差异 = 2012年CZK客户消费量 - 2012年EUR客户消费量"
+  },
+  "1479": {
+    "question_cn": "哪一年记录了最多的以CZK支付的汽油消耗量？",
+    "evidence_cn": "yearmonth 表中 Date 值的前4个字符可以代表年份。"
+  },
+  "1480": {
+    "question_cn": "2013年中小企业客户的天然气消费峰值月份是什么？",
+    "evidence_cn": "2013年可以表示为Between 201301 And 201312；yearmonth表中Date值的前4个字符可以表示年份；Date的第5和第6个字符可以表示月份。"
+  },
+  "1481": {
+    "question_cn": "2013年，用CZK支付的消费金额最少的客户，其在SME和LAM、LAM和KAM、KAM和SME之间的年均消费量差异是多少？",
+    "evidence_cn": "每个Segment中消费金额最少的客户的年均消费量 = 每年总消费量 / 每个Segment中消费金额最少的客户数量；年均消费量差异 = SME的年均消费量 - LAM的年均消费量；年均消费量差异 = LAM的年均消费量 - KAM的年均消费量；2013年可以表示为Between 201301 And 201312；yearmonth表中Date值的前4个字符可以代表年份。"
+  },
+  "1482": {
+    "question_cn": "在2012年至2013年间，SME、LAM和KAM这三个Segment中，以EUR支付的消费量的百分比增长最大和最低的分别是哪个？",
+    "evidence_cn": "增长或下降 = 2013年消费量 - 2012年消费量；增长百分比 = (增长或下降 / 2013年消费量) * 100%；yearmonth表中Date值的前4个字符可以表示年份"
+  },
+  "1483": {
+    "question_cn": "2013年8月至11月间，客户6总共消费了多少？",
+    "evidence_cn": "2013年8月至11月之间指的是201308至201311之间；yearmonth表中Date值的前4个字符可以表示年份；第5和第6个字符可以表示月份。"
+  },
+  "1484": {
+    "question_cn": "捷克共和国拥有多少个\"折扣\"加油站比斯洛伐克多？",
+    "evidence_cn": "捷克共和国可以表示为 gasstations 表中 Country 值为 'CZE'；斯洛伐克可以表示为 gasstations 表中 Country 值为 'SVK'；计算更多的\"折扣\"加油站数量 = 捷克共和国的折扣加油站总数 - 斯洛伐克的折扣加油站总数"
+  },
+  "1486": {
+    "question_cn": "中小企业用捷克克朗支付的数量是否比用欧元支付的多？如果是这样，多出多少？",
+    "evidence_cn": "中小企业数量差异 = 使用 Currency CZK 支付的中小企业总数 - 使用 Currency EUR 支付的中小企业总数"
+  },
+  "1490": {
+    "question_cn": "LAM 客户中消费超过 46.73 的占多少百分比？",
+    "evidence_cn": "消费超过 46.73 的 LAM 客户百分比 = (消费超过 46.73 的 LAM 客户总数 / LAM 客户总数) * 100"
+  },
+  "1493": {
+    "question_cn": "在2012年2月，有多少百分比的客户消费量超过528.3?",
+    "evidence_cn": "2012年2月在yearmonth.date中对应'201202'；yearmonth表中Date值的前4个字符代表年份；Date的第5和第6个字符代表月份。"
+  },
+  "1498": {
+    "question_cn": "2012年的最高月消费是多少？",
+    "evidence_cn": "yearmonth表中Date值的前4个字符可以表示年份；日期的第5和第6个字符可以表示月份。"
+  },
+  "1500": {
+    "question_cn": "请列出2013年9月消费的产品的描述。",
+    "evidence_cn": "2013年9月指201309; yearmonth表中Date值的前4个字符可以表示年份; Date的第5和第6个字符可以表示月份。"
+  },
+  "1501": {
+    "question_cn": "请列出2013年6月发生交易的加油站所在的国家。",
+    "evidence_cn": "2013年6月指的是'201306'；yearmonth表中Date值的前4个字符可以表示年份；日期的第5和第6个字符可以表示月份；"
+  },
+  "1505": {
+    "question_cn": "在以欧元支付的客户中，有多少人的月消费量超过1000?",
+    "evidence_cn": "以欧元支付 = Currency = 'EUR'。"
+  },
+  "1506": {
+    "question_cn": "请列出在捷克共和国加油站进行的交易的产品描述。",
+    "evidence_cn": "捷克共和国可以表示为 gasstations 表中 Country 值为 'CZE'。"
+  },
+  "1507": {
+    "question_cn": "请列出由编号为 11 的连锁加油站中发生的交易所涉及的不同 Time。",
+    "evidence_cn": ""
+  },
+  "1509": {
+    "question_cn": "在捷克共和国的加油站进行的交易中，有多少笔发生在2012年1月1日之后？",
+    "evidence_cn": "捷克共和国可以通过 gasstations 表中 Country 值为 'CZE' 来表示"
+  },
+  "1514": {
+    "question_cn": "该客户在2012/8/24 16:25:00支付时使用了哪种货币?",
+    "evidence_cn": "'2012/8/24'可以用'2012-08-24'表示;"
+  },
+  "1515": {
+    "question_cn": "客户在2012/8/23 21:20:00时属于什么细分市场？",
+    "evidence_cn": "'2012/8/23' 可以表示为 '2012-08-23'"
+  },
+  "1521": {
+    "question_cn": "对于2012年8月26日期间8:00-9:00发生的所有交易，有多少笔发生在CZE?",
+    "evidence_cn": "捷克共和国可以表示为gasstations表中的Country值为'CZE'; '2012/8/26'可以表示为'2012-08-26'; 在8:00-9:00期间可以表示为Time BETWEEN '08:00:00' AND '09:00:00'"
+  },
+  "1524": {
+    "question_cn": "在2012/8/24花费548.4的客户的国籍是什么？",
+    "evidence_cn": "'2012/8/24' 可以表示为 '2012-08-24'"
+  },
+  "1525": {
+    "question_cn": "2012年8月25日使用欧元的客户占比是多少？",
+    "evidence_cn": "'2012/8/25' 可以用 '2012-08-25' 表示"
+  },
+  "1526": {
+    "question_cn": "对于在2012/8/25支付634.8的客户，从2012年到2013年的消费下降率是多少？",
+    "evidence_cn": "'2012/8/24'可以表示为'2012-08-24'；消费下降率 = (consumption_2012 - consumption_2013) / consumption_2012"
+  },
+  "1528": {
+    "question_cn": "在 Country = \"SVK\" 的情况下，\"premium\" 在整体 Segment 中所占的百分比是多少？",
+    "evidence_cn": ""
+  },
+  "1529": {
+    "question_cn": "客户 \"38508\" 在加油站花费的金额是多少？该客户在 2012 年 1 月 (Date = '201201') 花了多少？",
+    "evidence_cn": "2012年1月指 Date 值 = '201201'"
+  },
+  "1533": {
+    "question_cn": "对于所有支付ProductID为5的产品单价超过29.00的人，请给出他们在2012年8月的消费状态。",
+    "evidence_cn": "2012年8月指Date值 = '201208' ; 产品单价 = Price / Amount;"
+  },
+  "1312": {
+    "question_cn": "Angela Sanders的专业是什么?",
+    "evidence_cn": "Angela Sanders是全名;全名指的是first_name、last_name;专业指的是major_name。"
+  },
+  "1322": {
+    "question_cn": "在学生俱乐部中，出席成员超过10人的活动中，有多少个是会议？",
+    "evidence_cn": "会议活动指的是 type = 'Meeting'；出席成员超过10人指的是 COUNT(event_id) > 10"
+  },
+  "1323": {
+    "question_cn": "列出所有参加人数超过20名学生但不是筹款活动的事件的名称。",
+    "evidence_cn": "事件名称指的是 event_name；参加人数超过20名学生指 COUNT(event_id) > 20。"
+  },
+  "1331": {
+    "question_cn": "副主席收到的资金数额是多少？",
+    "evidence_cn": "'Vice President'是学生俱乐部的一个职位；收到的资金指的是amount。"
+  },
+  "1334": {
+    "question_cn": "列出在伊利诺伊州长大的学生俱乐部成员的全名。",
+    "evidence_cn": "成员的全名是指 first_name、last_name"
+  },
+  "1338": {
+    "question_cn": "2019年10月8日的十月会议活动中的每项支出是否都被批准了？",
+    "evidence_cn": "event_name = 'October Meeting' where event_date = '2019-10-08'; approved = True 表示支出已被批准；approved = False 表示支出未被批准"
+  },
+  "1339": {
+    "question_cn": "计算Elijah Allen在9月和10月事件中花费的总平均成本。",
+    "evidence_cn": "Elijah Allen是全名；全名指first_name、last_name；expense表中expense_date的第5和第6个字符可以表示月份；9月和10月的事件是指month(expense_date) = 9 OR month(expense_date) = 10"
+  },
+  "1340": {
+    "question_cn": "计算学生俱乐部在2019年和2020年所有事件中花费的总金额的差异。",
+    "evidence_cn": "event表中event_date值的前4个字符可以代表年份；花费总金额的差异 = SUBTRACT(spent where YEAR(event_date) = 2019, spent where YEAR(event_date) = 2020)"
+  },
+  "1344": {
+    "question_cn": "2019年9月14日筹款活动的备注是什么？",
+    "evidence_cn": "2019年9月14日的筹款活动是指 source = 'Fundraising' 且 date_received = '2019-09-14' 的记录"
+  },
+  "1346": {
+    "question_cn": "告诉我\"Carlo Jacobs\"的电话号码。",
+    "evidence_cn": "Carlo Jacobs是全名；全名是指first_name和last_name的组合；"
+  },
+  "1351": {
+    "question_cn": "Brent Thomason的专业是什么?",
+    "evidence_cn": "Brent Thomason是全名; 全名指的是first_name、last_name; 专业指的是major_name"
+  },
+  "1356": {
+    "question_cn": "俱乐部主席来自哪个部门？",
+    "evidence_cn": "'President' 是学生俱乐部的一个职位"
+  },
+  "1357": {
+    "question_cn": "说明Connor Hilton支付会费的日期。",
+    "evidence_cn": "Connor Hilton是全名；全名指first_name、last_name；支付会费的日期指source = 'Dues'时的date_received；"
+  },
+  "1359": {
+    "question_cn": "\"Yearly Kickoff\"会议的Advertisement预算比\"October Meeting\"多少倍？",
+    "evidence_cn": "Advertisement的预算是指预算表中category = 'Advertisement'的记录；DIVIDE(SUM(amount when event_name = 'Yearly Kickoff'), SUM(amount when event_name = 'October Meeting'))"
+  },
+  "1361": {
+    "question_cn": "所有活动的披萨总成本是多少？",
+    "evidence_cn": "披萨的总成本是指 SUM(cost)，其中 expense_description = 'Pizza'"
+  },
+  "1362": {
+    "question_cn": "弗吉尼亚州Orange County有多少个城市?",
+    "evidence_cn": "Orange County是县名，Virginia是州名"
+  },
+  "1368": {
+    "question_cn": "电话号码为\"809-555-3360\"的人主修什么专业？",
+    "evidence_cn": "major in 指的是 major_name"
+  },
+  "1371": {
+    "question_cn": "有多少名成员参加了\"Women's Soccer\"活动？",
+    "evidence_cn": "'Women's Soccer'是事件名称；"
+  },
+  "1375": {
+    "question_cn": "列出\"应用科学、技术和教育学院\"部门的所有成员。",
+    "evidence_cn": "列出所有成员意味着列出所有的全名；全名指的是 first_name, last_name；"
+  },
+  "1376": {
+    "question_cn": "在所有已关闭的事件中，哪个事件的支出与预算比率最高？",
+    "evidence_cn": "已关闭的事件指的是status = 'Closed'的event_name；最高支出与预算比率指的是MAX(DIVIDE(spent, amount))"
+  },
+  "1378": {
+    "question_cn": "某个事件的最高预算支出金额是多少？",
+    "evidence_cn": "最高预算支出金额指的是 MAX(spent)"
+  },
+  "1380": {
+    "question_cn": "食物支出的总金额是多少？",
+    "evidence_cn": "支出的总金额指的是 SUM(spent)；食物支出指的是 category = 'Food'"
+  },
+  "1381": {
+    "question_cn": "列出参加过超过7场活动的学生姓名。",
+    "evidence_cn": "学生的姓名是指全名；全名指 first_name、last_name；参加超过7场活动指 COUNT(link_to_event) > 7"
+  },
+  "1387": {
+    "question_cn": "哪位学生被委托管理「Yearly Kickoff」的预算？",
+    "evidence_cn": "学生的名字指的是全名；全名由 first_name 和 last_name 组成；「Yearly Kickoff」是事件名称。"
+  },
+  "1389": {
+    "question_cn": "哪个活动的成本最低？",
+    "evidence_cn": "event 指 event_name；最低成本表示 MIN(cost)"
+  },
+  "1390": {
+    "question_cn": "基于所有活动的总cost，Yearly Kickoff活动的cost占比是多少？",
+    "evidence_cn": "percentage = DIVIDE(SUM(cost where event_name = 'Yearly Kickoff'), SUM(cost)) * 100 表示：先求出event_name为'Yearly Kickoff'的所有cost之和，再除以所有活动的cost总和，然后乘以100得到百分比。"
+  },
+  "1392": {
+    "question_cn": "根据金额指出2019年9月收到的资金的最主要来源。",
+    "evidence_cn": "最主要资金来源指的是 MAX(source)；2019年9月意味着 date_received BETWEEN '2019-09-01' and '2019-09-30'"
+  },
+  "1394": {
+    "question_cn": "学生俱乐部中有多少名成员的专业是'物理教学'?",
+    "evidence_cn": "'物理教学'是 major_name;"
+  },
+  "1398": {
+    "question_cn": "列出在广告上花费最多的事件的名称。",
+    "evidence_cn": "事件名称指 event_name；在广告上花费最多指 MAX(spent) where category = 'Advertisement'"
+  },
+  "1401": {
+    "question_cn": "指出'September Speaker'活动中海报的成本。",
+    "evidence_cn": "'Posters'是费用描述；'September Speaker'是活动名称"
+  },
+  "1403": {
+    "question_cn": "指出成本超出预算最多的已关闭事件的名称。",
+    "evidence_cn": "已关闭事件是指 status = 'Closed' 的 event_name；超出预算最多是指 remaining < 0 时的 MIN(remaining)"
+  },
+  "1404": {
+    "question_cn": "识别'October Meeting'事件的支出类型及其已批准的总金额。",
+    "evidence_cn": "总金额是指SUM(cost);'October Meeting'是一个事件名称;"
+  },
+  "1405": {
+    "question_cn": "计算'April Speaker'事件的预算金额。按预算金额升序列出该事件的所有预算类别。",
+    "evidence_cn": "'April Speaker'是事件名称；预算金额指SUM(amount)；预算类别指category"
+  },
+  "1409": {
+    "question_cn": "说明在 8/20/2019 使用的总费用。",
+    "evidence_cn": "“total expense” 指的是 SUM(cost) where expense_date = '2019-08-20'"
+  },
+  "1410": {
+    "question_cn": "列出成员ID \"rec4BLdZHS2Blfp4v\" 的全名和产生的总成本？",
+    "evidence_cn": "全名是指 first_name、last_name"
+  },
+  "1411": {
+    "question_cn": "说明Sacha Harrison产生了什么类型的费用？",
+    "evidence_cn": "费用的类型指的是expense_description；Sacha Harrison是全名；全名指的是first_name, last_name；"
+  },
+  "1422": {
+    "question_cn": "说明在MU 215举办的事件的类别。",
+    "evidence_cn": "'MU 215' 是事件的location;"
+  },
+  "1426": {
+    "question_cn": "列出专业为环境工程的成员的姓氏，并包括其部门和学院名称。",
+    "evidence_cn": "'Environmental Engineering' 是 major_name；"
+  },
+  "1427": {
+    "question_cn": "位于 MU 215 且 type = 'Guest Speaker' 且 spent = 0 的事件对应的 Budget 的 category 是什么？",
+    "evidence_cn": "budget category 指的是 category；events located at 指的是 location；type = 'Guest Speaker'；0 budget spent 指的是 spent = 0；"
+  },
+  "1432": {
+    "question_cn": "在 t_shirt_size 为 Medium 的成员当中，Student_Club 收到金额为 50 的次数占这些成员总人数的百分比是多少？",
+    "evidence_cn": "在 position = 'Member' 且 t_shirt_size = 'Medium' 的成员中统计：percentage = DIVIDE(COUNT(amount = 50), COUNT(member_id)) * 100，用于计算金额为 50 的记录相对于这些成员总人数的百分比。"
+  },
+  "1531": {
+    "question_cn": "谁是消费最多的客户，这位客户购买单件商品的平均价格是多少？使用的货币是什么？",
+    "evidence_cn": "单件商品平均价格 = Total(Price) / Total(Amount)"
+  },
+  "1317": {
+    "question_cn": "在参加\"Women's Soccer\"活动的学生俱乐部学生中，有多少人想要中码的T恤？",
+    "evidence_cn": "Women's Soccer是活动名称；中码T恤指的是t_shirt_size = 'Medium'"
+  },
+  "1350": {
+    "question_cn": "购买了「Post Cards, Posters」的事件在2019/8/20的状态是什么？",
+    "evidence_cn": "「Post Cards, Posters」是expense_description；2019/8/20指的是expense_date = '2019-8-20'；事件的状态指的是event_status"
+  },
+  "1352": {
+    "question_cn": "对于所有主修“Business”的俱乐部成员，有多少人穿中号尺寸的T 恤？",
+    "evidence_cn": "“Business”是一个major_name；“穿中号尺寸的T 恤”指的是 t_shirt_size = 'Medium'。"
+  },
+  "1399": {
+    "question_cn": "Maya Mclean 是否参加了名为 'Women's Soccer' 的活动？",
+    "evidence_cn": "Maya Mclean 是成员的全名；全名是由 first_name 和 last_name 组成；'Women's Soccer' 是一个 event_name。"
+  },
+  "1435": {
+    "question_cn": "列出在 2019/3/15 到 2020/3/20 期间举行、类型为“game”且已关闭的活动名称。",
+    "evidence_cn": "活动名称对应字段为 event_name；“已关闭的 game 类型活动”指的是 type = 'Game' 且 status = 'Closed' 的记录；并且满足 event_date BETWEEN '2019-03-15' AND '2020-03-20'。"
+  },
+  "1457": {
+    "question_cn": "给出在每项支出上花费超过平均值的成员的全名和联系电话。",
+    "evidence_cn": "全名指 first_name、last_name；联系电话指 phone；在每项支出上花费超过平均值指 cost > AVG(cost)"
+  },
+  "1460": {
+    "question_cn": "写出为水、蔬菜盘和用品花费金钱的成员的全名，并包括其成本。",
+    "evidence_cn": "全名指的是 first_name、last_name；花费金钱指的是 expense_description；expense_description = 'Water, Veggie tray, supplies'"
+  },
+  "1149": {
+    "question_cn": "男性住院患者多还是男性门诊患者多?百分比偏差是多少?",
+    "evidence_cn": "男性指SEX = 'M';住院患者指Admission = '+';门诊患者指Admission = '-';百分比 = DIVIDE(COUNT(ID) where SEX = 'M' and Admission = '+', COUNT(ID) where SEX = 'M' and Admission = '-')"
+  },
+  "1150": {
+    "question_cn": "出生于1930年之后的女性患者所占百分比是多少？",
+    "evidence_cn": "女性指 Sex = 'F'; 出生于1930年之后的患者指 year(Birthday) > '1930'; 计算方式 = DIVIDE(COUNT(ID) where year(Birthday) > '1930' and SEX = 'F'), (COUNT(ID) where SEX = 'F')"
+  },
+  "1152": {
+    "question_cn": "在所有诊断为'SLE'的患者中，门诊与住院随访治疗的比例是多少？",
+    "evidence_cn": "'SLE'诊断患者是指Diagnosis = 'SLE'；住院是指Admission = '+'；门诊是指Admission = '-'；计算 = DIVIDE(COUNT(ID) where Diagnosis = 'SLE' and Admission = '+', COUNT(ID) where Diagnosis = 'SLE' and Admission = '-')"
+  },
+  "1153": {
+    "question_cn": "患者'30609'被诊断患有什么疾病。列出为该患者进行的所有实验室检测的日期。",
+    "evidence_cn": "'30609'是患者ID；疾病意味着Diagnosis"
+  },
+  "1155": {
+    "question_cn": "列出LDH超出正常范围的患者的患者ID、性别和出生日期。",
+    "evidence_cn": "LDH超出正常范围是指LDH > '500';"
+  },
+  "1156": {
+    "question_cn": "给出凝血程度为阳性的患者的ID和年龄。",
+    "evidence_cn": "年龄是指SUBTRACT(year(current_timestamp), year(Birthday))；凝血程度为阳性是指RVVT = '+'；"
+  },
+  "1157": {
+    "question_cn": "对于血栓形成程度严重的患者，列出他们的ID、性别和诊断的疾病。",
+    "evidence_cn": "血栓形成程度严重指 thrombosis = 2；疾病指 diagnosis"
+  },
+  "1162": {
+    "question_cn": "有多少名女性患者在1997年来医院就诊后立即在门诊诊所接受随访?",
+    "evidence_cn": "女性指 sex = 'F'; 1997年来医院就诊指 year(Description) = '1997'; 立即在门诊诊所接受随访指 Admission = '-'"
+  },
+  "1164": {
+    "question_cn": "1997年检查中血栓形成最严重病例中有多少名女性患者？",
+    "evidence_cn": "最严重的血栓形成是指 Thrombosis = '1'（最严重的）；女性是指 sex = 'F'"
+  },
+  "1166": {
+    "question_cn": "在所有曾进行过 Examination 的患者中，Birthday 值最大的（即最年轻的）患者观察到的 Symptoms 是什么？他们的 Diagnosis 是什么？",
+    "evidence_cn": "Birthday 值越大，患者越年轻，反之亦然；“symptoms observed” 指的是 Symptoms 不为 NULL。"
+  },
+  "1168": {
+    "question_cn": "最年长的SJS患者的医学实验室工作完成于哪个日期，患者初次来医院时年龄多大？",
+    "evidence_cn": "生日值越大，人越年轻，反之亦然；'SJS'指诊断；(SUBTRACT(year(`First Date`)), year(Birthday))；患者初次来医院时的年龄指year(Birthday)"
+  },
+  "1169": {
+    "question_cn": "在所有尿酸计数异常的患者中，男性与女性患者的比例是多少？",
+    "evidence_cn": "男性指 SEX = 'M'；女性指 SEX = 'F'；尿酸异常指当 SEX = 'M' 时 UA <= '8.0'，当 SEX = 'F' 时 UA <= '6.5'；计算 = DIVIDE(SUM(UA <= '8.0' and SEX = 'M'), SUM(UA <= '6.5' and SEX = 'F'))"
+  },
+  "1171": {
+    "question_cn": "在1990年至1993年的三年期间内，有多少未成年患者接受了检查？",
+    "evidence_cn": "未成年患者指year(Birthday) < 18；1990年至1993年的三年期间指year(`Examination Date`) between '1990' and '1993'"
+  },
+  "1179": {
+    "question_cn": "对于在1994/2/19被诊断为SLE的患者，他/她在1993/11/12的抗心磷脂抗体浓度状态如何？",
+    "evidence_cn": "被诊断为SLE指Diagnosis = 'SLE'；1994/2/19指Description = '1994-02-19'；抗心磷脂指aCL IgM；1993/11/12指Examination Date = '1993/11/12'"
+  },
+  "1185": {
+    "question_cn": "对于出生于1959年2月18日的患者，其总胆固醇从1981年11月到12月的下降率是多少？",
+    "evidence_cn": "出生于1959年2月18日指 Birthday = '1959-02-18'；计算 = DIVISION(SUBTRACT(SUM(Birthday = '1959-02-18' and Date like '1981-11-%' THEN `T-CHO`), SUM(Birthday = '1959-02-18' and Date like '1981-12-%' THEN `T-CHO`)), SUM(Birthday = '1959-02-18' and Date like '1981-12-%' THEN `T-CHO`))"
+  },
+  "1187": {
+    "question_cn": "有多少名患者在1987/7/6至1996/1/31期间接受检查，且GPT水平大于30，ALB水平小于4？按其ID列出。",
+    "evidence_cn": "在1987/7/6至1996/1/31期间接受检查是指Date BETWEEN '1987-07-06' AND '1996-01-31'；GPT水平大于30是指GPT > 30；ALB水平小于4是指ALB < 4"
+  },
+  "1189": {
+    "question_cn": "有多少名血栓形成程度为2级且ANA模式仅为S的患者，其抗心磷脂抗体(IgM)水平比平均值高20%?",
+    "evidence_cn": "血栓形成2级是指 Thrombosis = 2; ANA模式仅为S是指 ANA = 'S'; 抗心磷脂抗体(IgM)平均水平是指 AVG(`aCL IgM`); 计算 = MULTIPLY(AVG + AVG, 0.2)"
+  },
+  "1192": {
+    "question_cn": "列出所有在门诊随访且在1991年10月进行了实验室检查且总胆红素水平在正常范围内的患者。",
+    "evidence_cn": "门诊随访指 Admission = '-'; 1991年10月的实验室检查指 Date like '1991-10%'; 总胆红素水平在正常范围内指 T-BIL < 2.0;"
+  },
+  "1195": {
+    "question_cn": "被诊断为SLE的女性患者中血小板(PLT)大于400的患者的平均血清白蛋白水平是多少?",
+    "evidence_cn": "平均血清白蛋白水平指 AVG(ALB); 女性指 SEX = 'F'; 血小板大于400指 PLT > 400; 被诊断为SLE指 Diagnosis= 'SLE'"
+  },
+  "1198": {
+    "question_cn": "有多少名女性患者被诊断为APS?",
+    "evidence_cn": "female指SEX = 'F'; APS diagnosis指Diagnosis='APS'"
+  },
+  "1201": {
+    "question_cn": "出生于1980年且被诊断为RA的患者中，女性患者的百分比是多少？",
+    "evidence_cn": "出生于1980年指 YEAR(BIRTHDAY) = '1980'；'RA'指 Diagnosis='RA'；女性指 SEX = 'F'；计算 = DIVIDE(SUM(SEX = 'F'), COUNT(SEX)) * 100"
+  },
+  "1205": {
+    "question_cn": "患者号码为57266的患者的尿酸是否在正常范围内？",
+    "evidence_cn": "尿酸在正常范围内是指UA > 8.0且SEX = 'M'或UA > 6.5且SEX = 'F'"
+  },
+  "1208": {
+    "question_cn": "提供性别为男性且丙氨酸转移酶(GPT)超过正常范围的患者ID。",
+    "evidence_cn": "男性是指 SEX = 'M'；丙氨酸转移酶(GPT)超过正常范围是指 GPT >= 60"
+  },
+  "1209": {
+    "question_cn": "请按出生日期升序提供ALT谷丙转氨酶超过正常范围的患者的诊断。",
+    "evidence_cn": "ALT谷丙转氨酶超过正常范围是指 GPT > 60；出生日期值越大，人越年轻，反之亦然；"
+  },
+  "1220": {
+    "question_cn": "提供所有尿素氮 (UN) 刚好在通过临界值范围内的患者的 ID、性别和生日？",
+    "evidence_cn": "尿素氮 (UN) 刚好在通过临界值范围内是指 UN = 29;"
+  },
+  "1225": {
+    "question_cn": "按性别列出并分组所有总胆红素 (T-BIL) 水平不在正常范围内的患者。",
+    "evidence_cn": "总胆红素 (T-BIL) 不在正常范围内是指 T-BIL >= 2.0"
+  },
+  "1227": {
+    "question_cn": "高胆固醇男性患者的平均年龄是多少？",
+    "evidence_cn": "average age = DIVIDE(SUM(SUBTRACT(YEAR(NOW()), YEAR(birthday))), COUNT(ID)); 男性患者是指 sex = 'M'; 高胆固醇是指 `T-CHO` >= 250;"
+  },
+  "1229": {
+    "question_cn": "对于所有甘油三酯 (TG) 水平超出正常范围的患者，年龄超过50岁的人数有多少？",
+    "evidence_cn": "甘油三酯 (TG) 水平超出正常范围是指 TG > = 200; 年龄超过50岁 = SUBTRACT(year(current_timestamp), year(Birthday)) > 50; 最终结果中应考虑使用 DISTINCT;"
+  },
+  "1231": {
+    "question_cn": "对于出生年份在1936-1956年之间的患者，有多少名男性患者的肌酸激酶超出正常范围？",
+    "evidence_cn": "出生年份在1936-1956年之间是指 year(Birthday) BETWEEN '1936' AND '1956'；男性患者是指 sex = 'M'；肌酸激酶超出正常范围是指 CPK >= 250；最终结果应考虑使用 DISTINCT；"
+  },
+  "1232": {
+    "question_cn": "提供血糖 (GLU) 不在正常范围内但总胆固醇 (T-CHO) 在正常范围内的患者的 ID、性别和年龄。",
+    "evidence_cn": "年龄 = SUBTRACT(year(current_timestamp), year(Birthday)); 血糖 (GLU) 不在正常范围内指 GLU >= 180; 总胆固醇 (T-CHO) 在正常范围内指 `T-CHO` < 250;"
+  },
+  "1235": {
+    "question_cn": "对于红细胞较低的患者，他们的诊断是什么？请说明他们的ID和年龄。",
+    "evidence_cn": "患者的诊断指的是 Diagnosis；红细胞较低指的是 RBC < 3.5；年龄 = SUBTRACT(year(current_timestamp), year(Birthday));"
+  },
+  "1238": {
+    "question_cn": "在被诊断为SLE的患者中，血红蛋白水平正常的最年长患者是谁。提供ID和性别。",
+    "evidence_cn": "被诊断为SLE是指 Diagnosis = 'SLE'；生日值越大，人越年轻，反之亦然；血红蛋白水平正常是指 10 < HGB < 17；"
+  },
+  "1239": {
+    "question_cn": "列出进行了两次或以上实验室检查且血液血细胞比容水平超过正常范围的患者的ID和年龄。",
+    "evidence_cn": "年龄 = SUBTRACT(year(current_timestamp), year(Birthday)); 进行了两次或以上实验室检查指 COUNT(ID) > 2; 血液血细胞比容水平超过正常范围指 HCT >= 52;"
+  },
+  "1241": {
+    "question_cn": "对于血小板水平异常的患者，请说明血小板水平低于正常范围的患者数量。与血小板水平高于正常范围的患者数量相比如何？",
+    "evidence_cn": "异常血小板水平是指 PLT <= 100 或 PLT >= 400；血小板水平低于正常范围是指 PLT < 100；计算 = SUBTRACT(SUM(PLT < 100), SUM(PLT > 400))；血小板水平高于正常范围是指 PLT > 400；"
+  },
+  "1242": {
+    "question_cn": "对于1984年进行的实验室检查，列出所有血小板水平正常且年龄低于50岁的患者。",
+    "evidence_cn": "1984年进行的实验室检查是指 YEAR(Date) = '1984'；年龄低于50岁 = SUBTRACT(year(current_timestamp), year(Birthday)) < 50；血小板水平正常是指 PLT 在100到400之间"
+  },
+  "1243": {
+    "question_cn": "对于所有年龄超过55岁的患者，其中异常凝血酶原时间(PT)患者中女性所占的百分比是多少？",
+    "evidence_cn": "年龄超过55岁 = SUBTRACT(year(current_timestamp), year(Birthday)) > 55; 异常凝血酶原时间(PT)指 PT >= 14; 百分比 = DIVIDE(SUM(PT >= 14 AND SEX = 'F'), SUM(PT >= 14)) * 100; 女性指 sex = 'F';"
+  },
+  "1247": {
+    "question_cn": "在白细胞水平正常的男性患者中，有多少人的纤维蛋白原水平异常？",
+    "evidence_cn": "男性患者指 Sex = 'M'；白细胞水平正常指 WBC > 3.5 and WBC < 9.0；纤维蛋白原水平异常指 FG <= 150 or FG >= 450；不计算重复的。"
+  },
+  "1251": {
+    "question_cn": "有多少患者的免疫球蛋白G高于正常值？",
+    "evidence_cn": "免疫球蛋白G高于正常值是指 IGG >= 2000；最终结果应考虑使用 DISTINCT；"
+  },
+  "1252": {
+    "question_cn": "在IGG水平正常的患者中，有多少患者有症状？",
+    "evidence_cn": "IGG水平正常是指 IGG > 900 且 IGG < 2000；有症状是指 Symptoms IS NOT NULL；"
+  },
+  "1254": {
+    "question_cn": "有多少名免疫球蛋白A水平正常的患者在1990年1月1日之后来医院就诊？",
+    "evidence_cn": "免疫球蛋白A水平正常是指 IGA > 80 AND IGA < 500；在1990年1月1日之后来医院就诊是指 YEAR(`First Date`) >= 1990；"
+  },
+  "1255": {
+    "question_cn": "对于Ig M水平异常的患者，他们被诊断的最常见疾病是什么？",
+    "evidence_cn": "异常Ig M水平指IGM <=40 OR IGM >= 400；最常见疾病指MAX(COUNT(Diagnosis));"
+  },
+  "1256": {
+    "question_cn": "有多少患者的C-反应蛋白异常但没有记录其数据?",
+    "evidence_cn": "C-反应蛋白异常指 CRP = '+'; 没有记录数据指 Description IS NULL;"
+  },
+  "1257": {
+    "question_cn": "在肌酐水平异常的患者中，有多少人年龄不满70岁？",
+    "evidence_cn": "肌酐水平异常指 CRE >= 1.5；年龄不满70岁指 SUBTRACT((YEAR(CURDATE()), YEAR(Birthday))) < 70；"
+  },
+  "1265": {
+    "question_cn": "有多少患者的抗核糖核蛋白水平正常且已被住院？",
+    "evidence_cn": "抗核糖核蛋白水平正常指 RNP = '-', '+-'；其中 '-' 表示 '阴性'；'+-' 表示 '0'；住院指 Admission = '+'；最终结果应考虑 DISTINCT；"
+  },
+  "1267": {
+    "question_cn": "在抗SM正常的患者中，有多少人没有血栓形成？",
+    "evidence_cn": "抗SM正常指SM IN('-', '+-')；SM = 'negative'表示'-'；SM = '0'表示'+-'；SM = '1'表示'+'；没有血栓形成指Thrombosis = 0；"
+  },
+  "1270": {
+    "question_cn": "在具有正常抗scl70的患者中，有多少名女性患者没有任何症状？",
+    "evidence_cn": "正常抗scl70是指SC170 IN('negative', '0')；女性是指Sex = 'F'；没有任何症状是指Symptoms IS NULL；最终结果应考虑DISTINCT。"
+  },
+  "1275": {
+    "question_cn": "在具有正常抗核膜抗体水平和正常抗SSB水平的患者中，有多少名患者是男性？",
+    "evidence_cn": "正常抗核膜抗体水平是指 CENTROMEA IN('-', '+-')；正常抗SSB水平是指 SSB IN('-', '+-')；男性是指 Sex = 'M'；最终结果应考虑使用 DISTINCT；"
+  },
+  "1281": {
+    "question_cn": "在谷草转氨酶水平异常的患者中，其中最年轻的患者的出生日期是什么时候？",
+    "evidence_cn": "谷草转氨酶水平异常是指 GOT >= 60；出生日期值越大，人越年轻，反之亦然；"
+  },
+  "1302": {
+    "question_cn": "对于肌酸激酶在正常范围内的患者，其中有多少人的凝血程度测量为阳性？",
+    "evidence_cn": "肌酸激酶的正常范围是指 CPK < 250；凝血程度测量为阳性是指 KCT = '+' 或 RVVT = '+' 或 LAC = '+'"
+  },
+  "1025": {
+    "question_cn": "在2016赛季中，哪个联赛的进球最多？",
+    "evidence_cn": "进球最多的联赛是指 MAX(SUM(home_team_goal, away_team_goal))；2016赛季是指 season = '2015/2016'；"
+  },
+  "1028": {
+    "question_cn": "在苏格兰超级联赛中，2010赛季哪支客队赢得最多比赛？",
+    "evidence_cn": "最终结果应该返回 Team.team_long_name；苏格兰超级联赛指 League.name = 'Scotland Premier League'；客队指 away_team_api_id；赢得最多的客队指 MAX(SUBTRACT(away_team_goal, home_team_goal) > 0)；2010赛季指 season = '2009/2010'；赢得最多指 MAX(COUNT(*))；"
+  },
+  "1029": {
+    "question_cn": "速度最快的前4支球队的攻防组织速度是多少？",
+    "evidence_cn": "攻防组织速度是指buildUpPlaySpeed;速度最快是指MAX(buildUpPlaySpeed)"
+  },
+  "1030": {
+    "question_cn": "在 2016 赛季中，哪一个联赛的平局场次最多？",
+    "evidence_cn": "“most matches end as draw” 指的是 MAX(SUM(home_team_goal = away_team_goal))；“2016 season” 指的是 season = '2015/2016'。"
+  },
+  "1031": {
+    "question_cn": "目前，计算2013至2015年间冲刺速度不少于97的球员的年龄。",
+    "evidence_cn": "球员目前的年龄 = SUBTRACT((DATETIME(), birthday)); 冲刺速度不少于97指的是 sprint_speed >= 97; 2013至2015年间指的是 YEAR(date) >= '2013' AND YEAR(date) <= '2015';"
+  },
+  "1032": {
+    "question_cn": "给出所有时间中比赛最多的联赛名称，以及该联赛中进行了多少场比赛。",
+    "evidence_cn": "所有时间中比赛最多的联赛是指 MAX(COUNT(league_id));"
+  },
+  "1035": {
+    "question_cn": "给出构建速度超过50但少于60的球队的team_fifa_api_id。",
+    "evidence_cn": "构建速度超过50但少于60的球队指的是buildUpPlaySpeed >50 AND buildUpPlaySpeed <60。"
+  },
+  "1036": {
+    "question_cn": "列出2012年建立进攻传球能力高于平均水平的球队的长名称。",
+    "evidence_cn": "球队的长名称指 team_long_name；建立进攻传球能力指 buildUpPlayPassing；高于平均水平的建立进攻传球能力 = buildUpPlayPassing > DIVIDE(SUM(buildUpPlayPassing), COUNT(team_long_name) WHERE buildUpPlayPassing IS NOT NULL)；2012年指 strftime('%Y', date) = '2012'；"
+  },
+  "1037": {
+    "question_cn": "计算出生年份在1987年至1992年之间且习惯左脚的球员所占的百分比。",
+    "evidence_cn": "习惯左脚的球员是指 preferred_foot = 'left'；习惯左脚的球员百分比 = DIVIDE(MULTIPLY((SUM(preferred_foot = 'left'), 100)), COUNT(player_fifa_api_id))；出生年份在1987年至1992年之间是指 YEAR(birthday) BETWEEN '1987' AND '1992'；"
+  },
+  "1039": {
+    "question_cn": "查找Ahmed Samir Farag的长射平均次数。",
+    "evidence_cn": "长射平均次数 = DIVIDE(SUM(long_shots), COUNT(player_fifa_api_id));"
+  },
+  "1040": {
+    "question_cn": "列出身高超过180的前10名球员的名字，按平均头球精准度降序排列。",
+    "evidence_cn": "身高超过180指Player.height > 180；平均头球精准度 = DIVIDE(SUM(heading_accuracy), COUNT(player_fifa_api_id));"
+  },
+  "1042": {
+    "question_cn": "列出2009/2010赛季中主队平均进球数高于客队的联赛名称。",
+    "evidence_cn": "联赛名称是指 League.name；主队平均进球数高于客队 = AVG(home_team_goal) > AVG(away_team_goal)；AVG(xx_goal) = SUM(xx_goal) / COUNT(DISTINCT Match.id)；2009/2010赛季是指 season = '2009/2010'"
+  },
+  "1044": {
+    "question_cn": "列出出生年份为1970年且出生月份为10月的足球运动员。",
+    "evidence_cn": "出生年份为1970年且出生月份为10月的运动员是指substr(birthday,1,7) AS 'year-month',WHERE year = '1970' AND month = '10';"
+  },
+  "1048": {
+    "question_cn": "足球运动员Gabriel Tamas在2011年的总体评分是多少？",
+    "evidence_cn": "在2011年是指strftime('%Y', date) = '2011';"
+  },
+  "1057": {
+    "question_cn": "计算2010/2011赛季波兰国家的主队平均进球数。",
+    "evidence_cn": "平均主队进球数 = AVG(home_team_goal)= SUM(home_team_goal) / COUNT(DISTINCT Match.id) WHERE name = 'Poland' and season = '2010/2011';"
+  },
+  "1058": {
+    "question_cn": "身高最高和身高最矮的足球运动员中，谁的平均完成率最高？",
+    "evidence_cn": "完成率指的是 finishing；最高平均完成率 = MAX(AVG(finishing))；身高最高的足球运动员指的是 MAX(height)；身高最矮的足球运动员指的是 MIN(height)；"
+  },
+  "1068": {
+    "question_cn": "从2010年到2015年，身高超过170的球员的平均总体评分是多少？",
+    "evidence_cn": "从2010年到2015年指的是 strftime('%Y', date) >= '2010' AND <= '2015'；平均总体评分 = SUM(t2.overall_rating)/ COUNT(t2.id)；身高超过170指的是 Player.height > 170；"
+  },
+  "1076": {
+    "question_cn": "Abdou Diallo 和 Aaron Appindangoye 的平均 ball_control 分数差异是多少？",
+    "evidence_cn": "平均 ball_control 分数的差异 = SUBTRACT(AVG(ball_control WHERE player_name = 'Abdou Diallo'), AVG(ball_control WHERE player_name = 'Aaron Appindangoye')); AVG(ball_control WHERE player_name = 'XX XX') = SUM(CASE WHEN player_name = 'XX XX' THEN ball_control ELSE 0 END) / COUNT(CASE WHEN player_name = 'XX XX' THEN id ELSE NULL END)"
+  },
+  "1078": {
+    "question_cn": "谁更年长，Aaron Lennon 还是 Abdelaziz Barrada？",
+    "evidence_cn": "生日值越大，人越年轻，反之亦然；"
+  },
+  "1079": {
+    "question_cn": "哪位球员身高最高？",
+    "evidence_cn": "身高最高的球员指的是 MAX(height);"
+  },
+  "1080": {
+    "question_cn": "在进攻时习惯用左脚的球员中，有多少人在球队进攻时会保持位置不变？",
+    "evidence_cn": "进攻时习惯用左脚指的是 preferred_foot = 'left'；在球队进攻时保持位置不变指的是 attacking_work_rate = 'low'；"
+  },
+  "1084": {
+    "question_cn": "在1986年之前出生的球员中，有多少人会在球队进攻时留在自己的位置并进行防守？",
+    "evidence_cn": "在1986年之前出生的球员指的是 strftime('%Y', birthday)<'1986'; 在球队进攻时会留在自己位置并防守的球员指的是 defensive_work_rate = 'high'; 在最终结果中应考虑 DISTINCT;"
+  },
+  "1088": {
+    "question_cn": "请列出排球得分和盘带得分都超过70的球员姓名。",
+    "evidence_cn": "排球得分超过70是指 volleys > 70；盘带得分超过70是指 dribbling > 70;"
+  },
+  "1092": {
+    "question_cn": "给出2008/2009赛季中比赛最多的联赛的名称？",
+    "evidence_cn": "2008/2009赛季中比赛最多的联赛指的是 MAX(league_name WHERE season = '2008/2009');"
+  },
+  "1094": {
+    "question_cn": "阿里埃尔·博里西乌克(Ariel Borysiuk)的总体评分比保林·普埃尔(Paulin Puel)的总体评分高出多少百分比?",
+    "evidence_cn": "高出百分比 = MULTIPLY(DIVIDE(SUBTRACT(overall_rating WHERE player_name = 'Ariel Borysiuk', overall_rating WHERE player_name = 'Paulin Puel'), overall_rating WHERE player_name = 'Paulin Puel'), 100);"
+  },
+  "1098": {
+    "question_cn": "Ajax的最高进攻机会创造传中得分是多少，它被分类为什么？",
+    "evidence_cn": "Ajax指的是team_long_name = 'Ajax'；进攻机会创造传中得分指的是MAX(chanceCreationPassing)；分类指的是chanceCreationPassingClass"
+  },
+  "1102": {
+    "question_cn": "对于在2016年6月23日整体评分为77分的球员，谁是年纪最大的？请给出该球员的名字。",
+    "evidence_cn": "77分整体评分指的是overall_rating = 77；在2016年6月23日指的是date LIKE '2016-06-23%'；生日值越大，说明该人越年轻，反之亦然。"
+  },
+  "1103": {
+    "question_cn": "Aaron Mooy在2016年2月4日的总体评分是多少?",
+    "evidence_cn": "Aaron Mooy指的是player_name = 'Aaron Mooy'; 2016年2月4日指的是date LIKE '2016-02-04%';"
+  },
+  "1105": {
+    "question_cn": "2015年5月1日弗朗切斯科·米利奥雷的进攻工作强度是多少?",
+    "evidence_cn": "Francesco Migliore 指的是 player_name = 'Francesco Migliore'; 2015年5月1日指的是 date LIKE '2015-05-01%';"
+  },
+  "1107": {
+    "question_cn": "Kevin Constant 第一次达到他最高传中得分是什么时候？请给出日期。",
+    "evidence_cn": "Kevin Constant 指 player_name = 'Kevin Constant'; 最高传中得分指 MAX(crossing)"
+  },
+  "1110": {
+    "question_cn": "告诉我\"FC Lorient\"在2010年2月22日的buildUpPlayPassingClass。",
+    "evidence_cn": "\"FC Lorient\"指的是team_long_name = 'FC Lorient'；2010年2月22日指的是date LIKE '2010-02-22%'；"
+  },
+  "1113": {
+    "question_cn": "对于球队\"汉诺威96\"，它在2015年9月10日的防守侵略性等级是什么？",
+    "evidence_cn": "\"汉诺威96\"指代team_long_name = 'Hannover 96'；2015年9月10日指代date LIKE '2015-09-10%'；"
+  },
+  "1114": {
+    "question_cn": "Marko Arnautovic从2007/2/22到2016/4/21期间的平均总体评分是多少?",
+    "evidence_cn": "平均总体评分指avg(overall_rating); Marko Arnautovic指player_name = 'Marko Arnautovic'; 从2007/2/22到2016/4/21指date的前10个字符BETWEEN '2007-02-22' and '2016-04-21'"
+  },
+  "1115": {
+    "question_cn": "在 2013/7/12，Landon Donovan 的 overall_rating 比 Jordan Bowery 的 overall_rating 高出多少百分比？",
+    "evidence_cn": "'Landon Donovan' 指 player_name = 'Landon Donovan'；'Jordan Bowery' 指 player_name = 'Jordan Bowery'；百分比定义为 DIVIDE(SUBTRACT(player_name = 'Landon Donovan' overall_rating; player_name = 'Jordan Bowery' overall_rating), player_name = 'Landon Donovan' overall_rating)*100"
+  },
+  "1116": {
+    "question_cn": "列出身高最高的球员姓名。",
+    "evidence_cn": "最高指按身高降序排列；身高最高的球员指排名 = 1"
+  },
+  "1122": {
+    "question_cn": "说出最强的球员的名字。",
+    "evidence_cn": "最强的球员指的是拥有 MAX(overall_rating) 的球员"
+  },
+  "1124": {
+    "question_cn": "哪些球员在队友进行进攻时倾向于参与进攻？列出他们的名字。",
+    "evidence_cn": "在队友进行进攻时倾向于参与进攻指的是 attacking_work_rate = 'high'；"
+  },
+  "1133": {
+    "question_cn": "有多少名在1990年代后出生且名字为\"Aaron\"的足球运动员？",
+    "evidence_cn": "名字为\"Aaron\"指的是 player_name LIKE 'Aaron%'；在1990年代后出生指的是 birthday > '1990'"
+  },
+  "1134": {
+    "question_cn": "球员 6 和 23 的 jumping 得分差是多少？",
+    "evidence_cn": "球员 6 和 23 的 jumping 得分差是指 SUBTRACT(jumping AND id = 6,jumping AND id = 23)"
+  },
+  "1135": {
+    "question_cn": "请提供潜力最低的足球运动员中偏好右脚进攻的前四名球员的ID。",
+    "evidence_cn": "潜力最低的球员指的是 MIN(potential)；偏好右脚进攻指的是 preferred_foot = 'right'"
+  },
+  "1136": {
+    "question_cn": "有多少名球员的传中潜力评分最高，并且在进攻时更喜欢使用左脚？",
+    "evidence_cn": "传中潜力评分最高指的是 MAX(crossing)；在进攻时更喜欢使用左脚指的是 preferred_foot = 'left'"
+  },
+  "1139": {
+    "question_cn": "2008年9月24日比利时朱比勒联赛主客队之间的比赛最终比分是多少?",
+    "evidence_cn": "2008年9月24日指的是date类似'2008-09-24%'; 比利时朱比勒联赛指的是League.name = 'Belgium Jupiler League'; 主队最终比分指的是home_team_goal; 客队最终比分指的是away_team_goal"
+  },
+  "1141": {
+    "question_cn": "KSV Cercle Brugge队的速度等级是慢速、平衡还是快速？",
+    "evidence_cn": "KSV Cercle Brugge指的是team_long_name = 'KSV Cercle Brugge'；速度等级指的是buildUpPlaySpeedClass"
+  },
+  "1144": {
+    "question_cn": "请说出体重最重的球员的进球能力评分和弧线球评分。",
+    "evidence_cn": "进球能力评分指 finishing；弧线球评分指 curve；体重最重指 MAX(weight)"
+  },
+  "1145": {
+    "question_cn": "2015-2016赛季中哪4个顶级联赛的比赛场数最多？",
+    "evidence_cn": "2015-2016赛季指 season = '2015/2016'；比赛场数最多的联赛指 League.name，其中 MAX(COUNT(id))"
+  },
+  "1146": {
+    "question_cn": "请提供进球最多的客队的全名。",
+    "evidence_cn": "“全名”指的是 team_long_name；“客队”指的是 away_team_api_id；“得分最多”指的是 MAX(away_team_goal)。"
+  },
+  "1147": {
+    "question_cn": "请命名一位整体实力最强的球员。",
+    "evidence_cn": "整体实力最强是指 MAX(overall_rating)"
+  },
+  "1148": {
+    "question_cn": "身高低于180厘米且整体实力评分超过70的球员占比是多少？",
+    "evidence_cn": "百分比指的是 DIVIDE(COUNT(height < 180 AND overall_rating > 70),COUNT(id)) * 100"
+  },
+  "846": {
+    "question_cn": "请列出比赛编号20中在第一阶段被淘汰的驾驶员的参考名称。",
+    "evidence_cn": "驾驶员参考名称指 driverRef；第一次排位赛阶段指 q1；在第一次排位赛阶段被淘汰的驾驶员指 5 个 MAX(q1) 的驾驶员；比赛编号指 raceId。"
+  },
+  "847": {
+    "question_cn": "在第19场比赛中，第二预选赛阶段圈速最快的车手的姓氏是什么？",
+    "evidence_cn": "race number指的是raceId；second qualifying period指的是q2；best lap time指的是MIN(q2);"
+  },
+  "850": {
+    "question_cn": "请给出在德国赛道举行的比赛的名称。",
+    "evidence_cn": "Germany 是一个国家的名称;"
+  },
+  "854": {
+    "question_cn": "澳大利亚大奖赛的赛道坐标位置是多少？",
+    "evidence_cn": "坐标位置指的是 lat, lng；澳大利亚大奖赛的赛道指的是 races.name = 'Australian Grand Prix'"
+  },
+  "859": {
+    "question_cn": "布鲁诺·塞纳在资格赛第354场比赛中的Q1成绩是多少?",
+    "evidence_cn": "race number指的是raceId；Bruno Senna指的是驾驶员的全名；驾驶员的全名指的是drivers.forename和drivers.surname；"
+  },
+  "861": {
+    "question_cn": "在第903场资格赛的Q3中，完成时间为0:01:54的车手号码是多少？",
+    "evidence_cn": "race number指的是raceId；在Q3中完成0:01:54指的是q3 LIKE '0:01:54%'"
+  },
+  "862": {
+    "question_cn": "2007年巴林大奖赛中,有多少名车手没有完成比赛?",
+    "evidence_cn": "巴林大奖赛指的是 races.name = 'Bahrain Grand Prix';完成比赛的车手指的是 time 不为空(即 time IS NOT NULL);"
+  },
+  "865": {
+    "question_cn": "对于所有在比赛号码 592 中完成比赛的驾驶员，谁年纪最大？",
+    "evidence_cn": "完成比赛的驾驶员是指 time 不为空（即 time IS NOT NULL）；比赛号码是指 raceId；出生日期是指 drivers.dob；生日值越大，说明该人越年轻，反之亦然；"
+  },
+  "866": {
+    "question_cn": "在第161场比赛中，谁的圈速时间为0:01:27？显示他的介绍网站。",
+    "evidence_cn": "player和driver是同义词；圈速时间0:0M:SS指的是lapTime.time LIKE 'M:SS%'；比赛编号指的是raceId；驾驶员的介绍网站指的是url；"
+  },
+  "868": {
+    "question_cn": "马来西亚大奖赛在哪里举办？给出地点坐标。",
+    "evidence_cn": "地点坐标指的是 (lat, lng)；马来西亚大奖赛指的是 races.name = 'Malaysian Grand Prix'"
+  },
+  "869": {
+    "question_cn": "对于在第9场比赛中获得最高积分的制造商，其介绍网站是什么？",
+    "evidence_cn": "比赛编号指的是 raceId；在最高积分的制造商指的是 MAX(constructorResults.points)；制造商的介绍网站指的是 url；"
+  },
+  "872": {
+    "question_cn": "在比赛编号45中，Q3成绩为0:01:33的车手的缩写代码是什么？",
+    "evidence_cn": "比赛编号指的是raceId；Q3成绩为0:0M:SS指的是q3 LIKE 'M:SS%'"
+  },
+  "875": {
+    "question_cn": "请展示赛事编号901所在赛季的赛季页面。",
+    "evidence_cn": "赛季页面指的是url；赛事编号指的是raceId;"
+  },
+  "877": {
+    "question_cn": "对于在第872号比赛中完成比赛的所有车手，谁是最年轻的？",
+    "evidence_cn": "比赛号码指的是raceId；完成比赛的车手指的是time有值的车手；最年轻的是一个驾驶员，其中MAX(dob)；"
+  },
+  "879": {
+    "question_cn": "设定最快圈速的驾驶员的国籍是什么?",
+    "evidence_cn": "最快圈速是指 (MAX) fastestLapSpeed;"
+  },
+  "880": {
+    "question_cn": "保罗·迪·雷斯塔在第853场比赛中的最快圈速比第854场比赛快了多少百分比？",
+    "evidence_cn": "保罗·迪·雷斯塔是指驾驶员的全名；驾驶员的全名是指 drivers.forename ='Paul' 且 drivers.surname = 'di Resta'；比赛号指 raceId；百分比 = DIVIDE(SUBTRACT(fastestLapSpeed(raceId = 853), fastestLapSpeed(raceId = 854)) * 100, fastestLapSpeed(raceId = 853))"
+  },
+  "881": {
+    "question_cn": "对于参加了1983年7月16日那场比赛的所有车手，他们的比赛完赛率是多少？",
+    "evidence_cn": "计算方法：在`date = '1983-07-16'`的比赛中，使用 DIVIDE(COUNT(driverId 且 `time` 有值的记录), COUNT(driverId)) 得到完成率百分比。"
+  },
+  "884": {
+    "question_cn": "列出最早记录年份和月份中发生的所有比赛的名称。",
+    "evidence_cn": "最早记录年份和月份是指 year = year(min(date)) 和 month = month(min(date))；"
+  },
+  "894": {
+    "question_cn": "记录的最佳圈速是多少？列出拥有此记录的驾驶员和比赛。",
+    "evidence_cn": "最佳圈速是指 min(milliseconds)；列出驾驶员是指 drivers.forename 和 drivers.surname；列出比赛是指 races.name"
+  },
+  "895": {
+    "question_cn": "Lewis Hamilton 在 2009 年马来西亚大奖赛中的平均圈速是多少？",
+    "evidence_cn": "average lap time = AVG(milliseconds); 'Lewis Hamilton' 指的是驾驶员的全名；驾驶员的全名指的是 drivers.forename 和 drivers.surname；'Malaysian Grand Prix' 指的是 races.name = 'Malaysian Grand Prix'"
+  },
+  "896": {
+    "question_cn": "计算自2010年以来，Hamilton 在F1赛道中没有处于第1名位置的比赛所占百分比。",
+    "evidence_cn": "percentage = DIVIDE(COUNT(raceId) where surname = 'Hamilton' and position>1), (COUNT(raceId) where surname = 'Hamilton'); 其中“since 2010”指的是 year >= 2010。"
+  },
+  "897": {
+    "question_cn": "找出赢得比赛次数最多的车手。说明他的国籍和他的最高积分。",
+    "evidence_cn": "车手的全名指的是 drivers.forename 和 drivers.surname；赢得比赛次数最多指的是 MAX(COUNT(wins))；最高积分指的是 MAX(points);"
+  },
+  "898": {
+    "question_cn": "最年轻的日本车手有多大年纪？他叫什么名字？",
+    "evidence_cn": "出生日期指drivers.dob；生日数值越大，该人越年轻，反之亦然；日本指nationality = 'Japanese'；年龄 = YEAR(CURRENT_TIMESTAMP) - YEAR(dob)；"
+  },
+  "901": {
+    "question_cn": "列出2005年9月举办的一级方程式赛事的赛事名称、赛道名称和位置。",
+    "evidence_cn": "2005年9月指的是 MONTH(date) = 9 且 YEAR(date) = 2005"
+  },
+  "902": {
+    "question_cn": "当Alex Yoong的track number少于20时，他参加了哪场比赛？",
+    "evidence_cn": "Alex Yoong指的是驾驶员的全名；驾驶员的全名指的是drivers.forename和drivers.surname；track number少于20指的是position < 20"
+  },
+  "904": {
+    "question_cn": "说出迈克尔·舒马赫获得最快圈速的比赛和年份。",
+    "evidence_cn": "最快圈速指最小的milliseconds；Alex Yoong指驾驶员的全名；驾驶员的全名指drivers.forename和drivers.surname；"
+  },
+  "906": {
+    "question_cn": "Lewis Hamilton的第一场比赛是哪一场？他在第一场比赛中获得了多少分？",
+    "evidence_cn": "第一场比赛是指min(year)；Lewis Hamilton指驾驶员的全名；驾驶员的全名指drivers.forename和drivers.surname"
+  },
+  "909": {
+    "question_cn": "在所有欧洲大奖赛(European Grand Prix)中,有多少百分比的比赛在德国举办?",
+    "evidence_cn": "欧洲大奖赛是指 races.name = 'European Grand Prix';百分比 = (计数(races 其中 country = Germany 且 name = 'European Grand Prix') / 计数(races 其中 name = 'European Grand Prix')) * 100"
+  },
+  "910": {
+    "question_cn": "银石赛道的位置坐标是多少？",
+    "evidence_cn": "位置坐标指的是 (lat, lng)；银石赛道指的是 circuits.name = 'Silverstone Circuit'"
+  },
+  "912": {
+    "question_cn": "滨海湾街道赛道的参考名称是什么?",
+    "evidence_cn": "参考名称是指 circuitRef；滨海湾街道赛道是指 circuits.name = 'Marina Bay Street Circuit'"
+  },
+  "915": {
+    "question_cn": "最年长的驾驶员来自哪个国家？",
+    "evidence_cn": "出生日期指的是 drivers.dob；生日值越大，该人越年轻，反之亦然；"
+  },
+  "928": {
+    "question_cn": "哪位车手在2007年加拿大大奖赛中排名第一？请给出他的参考名称。",
+    "evidence_cn": "参考名称指 driverRef；加拿大大奖赛指 races.name = 'Canadian Grand Prix'；"
+  },
+  "930": {
+    "question_cn": "Lewis Hamilton 在哪场 Formula_1 比赛中排名最高？",
+    "evidence_cn": "排名最高指 min(rank)；Lewis Hamilton 指驾驶员的全名；驾驶员的全名指 drivers.forename 和 drivers.surname；"
+  },
+  "931": {
+    "question_cn": "2009年西班牙大奖赛中所有车手的最快单圈速度是多少？",
+    "evidence_cn": "所有车手的最快单圈速度指 max(fastestLapSpeed)；西班牙大奖赛指 races.name = 'Spanish Grand Prix'"
+  },
+  "933": {
+    "question_cn": "刘易斯·哈密尔顿在2008年中国大奖赛中的最终排名是多少?",
+    "evidence_cn": "刘易斯·哈密尔顿指驾驶员的全名; 驾驶员的全名指drivers.forename和drivers.surname; 最终排名指positionOrder; 中国大奖赛指races.name = 'Chinese Grand Prix';"
+  },
+  "937": {
+    "question_cn": "2008年中国大奖赛中排名第二的车手的完赛时间是多少？",
+    "evidence_cn": "完赛时间指的是 time；中国大奖赛指的是 races.name = 'Chinese Grand Prix'；"
+  },
+  "944": {
+    "question_cn": "2008年澳大利亚大奖赛中,冠军比最后完赛的车手快了百分之多少?",
+    "evidence_cn": "快的百分比 = divide(subtract(增量时间, 冠军时间), 最后一名车手时间) * 100; 最后一名车手完赛时间 = 增量时间 + 冠军时间; 只有冠军的完赛时间以'HH:MM:SS.mmm'格式表示; 完赛是指time不为null"
+  },
+  "945": {
+    "question_cn": "澳大利亚阿德莱德有多少个赛车场？",
+    "evidence_cn": "澳大利亚是国家；墨尔本是赛道的位置；"
+  },
+  "948": {
+    "question_cn": "英国制造商的最高积分是多少？",
+    "evidence_cn": "最高积分 = MAX(points)；英国是一个国籍"
+  },
+  "950": {
+    "question_cn": "请列出比赛 291 中得分为 0 分的构造商名称。",
+    "evidence_cn": "比赛 291 指的是 raceID = 291；"
+  },
+  "951": {
+    "question_cn": "有多少个日本制造商在2场比赛中获得0分？",
+    "evidence_cn": "2场比赛指的是 COUNT(raceID) = 2；日本指的是 constructors.nationality = 'Japanese'；"
+  },
+  "954": {
+    "question_cn": "请计算2007年至2009年期间日本车手的完赛百分比。",
+    "evidence_cn": "2007年至2009年是指year在2007和2009之间；完赛是指time不为null；百分比 = 除法(COUNT(DriverID其中time不为null且year在2007和2009之间),COUNT(DriverID其中year在2007和2009之间))*100;"
+  },
+  "955": {
+    "question_cn": "1975年之前，每年冠军的平均完成时间（以秒计）是多少？",
+    "evidence_cn": "只有冠军的完成时间采用'HH:MM:SS.mmm'格式表示；完成比赛指time不为null；1975年之前指year < 1975；"
+  },
+  "959": {
+    "question_cn": "2009年冠军的最快圈数是多少?",
+    "evidence_cn": "2009年指的是 year = 2009; 只有冠军的时间以\"小时:分钟:秒.毫秒\"的格式显示"
+  },
+  "960": {
+    "question_cn": "2009年西班牙大奖赛中最快单圈速度的平均值是多少？",
+    "evidence_cn": "西班牙大奖赛是指 name = 'Spanish Grand Prix' 的比赛；最快单圈速度的平均值指 avg(fastestLapSpeed)；"
+  },
+  "962": {
+    "question_cn": "从2000年到2005年，出生年份在1985年之前且圈数超过50的驾驶员占比是多少？",
+    "evidence_cn": "出生年份在1985年之前指 year(dob)<1985；2000年到2005年指 year between 2000 and 2005；百分比 = Divide(COUNT(driverId where year (dob) <1985 and laps >50),COUNT(DriverID where year between 2000 and 2005) *100"
+  },
+  "963": {
+    "question_cn": "有多少名法国车手的单圈时间少于 02:00.00？",
+    "evidence_cn": "单圈时间少于 02:00.00 指的是秒数 < 120;"
+  },
+  "964": {
+    "question_cn": "列出那些国籍为 American 的车手的 code。",
+    "evidence_cn": "nationality = 'American'"
+  },
+  "967": {
+    "question_cn": "给出前3位最年轻驾驶员的代码号。其中有多少名荷兰籍驾驶员？",
+    "evidence_cn": "最年轻驾驶员指的是Max（根据year(dob)）；Netherlandic和Dutch指的是同一个国家"
+  },
+  "971": {
+    "question_cn": "请说出最年长的德国车手的参考名称。",
+    "evidence_cn": "最年长是指MIN(year(dob));参考名称出现在driverRef中。"
+  },
+  "972": {
+    "question_cn": "哪些在1971年出生的车手在比赛中获得了最快圈速？请给出这些车手的id和code。",
+    "evidence_cn": "在1971年出生是指 year(dob) = 1971；获得最快圈速是指 fastestLapTime 有值"
+  },
+  "977": {
+    "question_cn": "从第50场到第100场比赛中，有多少名完赛者被取消资格？",
+    "evidence_cn": "取消资格指statusID = 2，完赛者指time != null；比赛号指raceId；raceId > 50 and raceId < 100；"
+  },
+  "978": {
+    "question_cn": "奥地利的赛道举办过多少次？请给出它们的位置和坐标。",
+    "evidence_cn": "location coordinates 指的是 (lat,lng)；Austria 指的是 country = 'Austria'；"
+  },
+  "981": {
+    "question_cn": "最年轻的车手在哪一年进行了他的首次排位赛？同时说明该比赛的名称、日期和时间。",
+    "evidence_cn": "出生日期指的是drivers.dob；生日值越大，人越年轻，反之亦然；首次排位赛指的是MIN(races.date)；"
+  },
+  "988": {
+    "question_cn": "列出出生于1980-1985年间，平均进站时间最短的前3名德国车手。",
+    "evidence_cn": "驾驶员的全名由drivers.forename和drivers.surname组成；出生于1980-1985年间是指1980<= year(dob) <=1985；平均进站时间是指SUM(duration)/COUNT(duration)；最短平均时间是指Min(avg(duration))；"
+  },
+  "989": {
+    "question_cn": "谁是2008年加拿大大奖赛的冠军？请说明他的完成时间。",
+    "evidence_cn": "只有冠军的时间以\"小时:分钟:秒.毫秒\"的格式显示；"
+  },
+  "990": {
+    "question_cn": "2009年新加坡大奖赛冠军的constructorRef是什么？请提供其网站。",
+    "evidence_cn": "冠军的time显示为\"minutes: seconds.millionsecond\"的格式，即Max(time)；constructor reference name指constructorRef；website指url"
+  },
+  "717": {
+    "question_cn": "请列出3-D Man的所有超能力。",
+    "evidence_cn": "3-D Man指superhero_name = '3-D Man'；超能力指power_name"
+  },
+  "994": {
+    "question_cn": "1980年至2010年间，哪个制造商在摩纳哥大奖赛中得分最多？列出该车队的得分、名称和国籍。",
+    "evidence_cn": "摩纳哥大奖赛指的是比赛；比赛年份在1980年至2010年之间的比赛"
+  },
+  "1001": {
+    "question_cn": "在2008年滨海湾街道赛道举行的第3场排位赛中，排名第1的赛车手的全名是什么？",
+    "evidence_cn": "排名第1的第3场排位赛是指 MIN(q3)；2008是比赛的年份；赛车手的全名 = forename, surname"
+  },
+  "1002": {
+    "question_cn": "截至目前，最年轻的赛车手的全名是什么？请说明他/她的国籍以及他/她首次参加的比赛名称。",
+    "evidence_cn": "全名是指 forename+surname；最年轻的赛车手 = MAX(dob)"
+  },
+  "1003": {
+    "question_cn": "在加拿大大奖赛中，发生事故次数最多的车手发生了多少次事故？",
+    "evidence_cn": "事故次数是指 statusid = 3 的记录数量；加拿大大奖赛是指 name 为该赛事的比赛"
+  },
+  "1011": {
+    "question_cn": "哪位排名前20的车手在一级方程式比赛中创造了有史以来最短的单圈时间？请给出他们的全名。",
+    "evidence_cn": "最短单圈时间指 MIN(time)；最短单圈时间的时间格式为 'MM:SS.mmm' 或 'M:SS.mmm'；车手的全名指 forename, surname"
+  },
+  "1014": {
+    "question_cn": "请列出意大利赛道的圈速记录。",
+    "evidence_cn": "圈速记录是指记录的最快时间，指的是时间"
+  },
+  "719": {
+    "question_cn": "在具有\"超级力量\"超能力的超级英雄中，有多少人的身高超过200厘米?",
+    "evidence_cn": "power_name = 'Super Strength' 表示超能力为\"超级力量\"; height_cm > 200 表示身高超过200厘米"
+  },
+  "723": {
+    "question_cn": "在拥有蓝色眼睛的超级英雄中，有多少个拥有\"敏捷性\"这一超级能力？",
+    "evidence_cn": "蓝色眼睛指的是 colour = 'Blue' 和 eye_colour_id = colour.id；超级能力\"敏捷性\"指的是 power_name = 'Agility'"
+  },
+  "726": {
+    "question_cn": "按身高从高到低排列由Marvel Comics出版的英雄。",
+    "evidence_cn": "name指superhero_name; 最高的英雄指MAX(height_cm); 由Marvel Comics出版指publisher_name = 'Marvel Comics'"
+  },
+  "728": {
+    "question_cn": "按眼睛颜色的流行度对Marvel Comics的超级英雄进行排名，从最常见的颜色开始。",
+    "evidence_cn": "来自Marvel Comics的超级英雄指的是publisher_name = 'Marvel Comics'；最常见的颜色指的是COUNT(superhero.id) DESC；"
+  },
+  "730": {
+    "question_cn": "列出拥有“Super Strength”超能力的 Marvel Comics 出版的所有超级英雄。",
+    "evidence_cn": "“the superheroes from Marvel Comics” 指的是 `publisher_name` = 'Marvel Comics' 的超级英雄；“super power of \"Super Strength\"” 指的是 `power_name` = 'Super Strength'。"
+  },
+  "732": {
+    "question_cn": "哪个出版商出版了速度最慢的超级英雄？",
+    "evidence_cn": "速度最慢的超级英雄指的是 attribute_name = 'Speed' 其中 MIN(attribute_value)；出版商指的是 publisher_name"
+  },
+  "733": {
+    "question_cn": "漫威漫画公司出版了多少个金色眼睛的超级英雄？",
+    "evidence_cn": "gold-eyed 指的是 colour = 'Gold' 其中 eye_colour_id = colour.id；漫威漫画公司出版的超级英雄指的是 publisher_name = 'Marvel Comics'"
+  },
+  "736": {
+    "question_cn": "谁是最愚蠢的超级英雄?",
+    "evidence_cn": "最愚蠢的超级英雄指的是 MIN(attribute_value) where attribute_name = 'Intelligence'"
+  },
+  "737": {
+    "question_cn": "Copycat 的种族是什么?",
+    "evidence_cn": "Copycat 是 superhero_name;"
+  },
+  "738": {
+    "question_cn": "哪些超级英雄的耐久性属性值小于50?",
+    "evidence_cn": "耐久性小于50指的是 attribute_name = 'Durability' AND attribute_value < 50"
+  },
+  "739": {
+    "question_cn": "具有死亡触摸能力的超级英雄的名称是什么？",
+    "evidence_cn": "超级英雄的名称指的是 superhero_name；死亡触摸的能力指的是 power_name = 'Death Touch'"
+  },
+  "740": {
+    "question_cn": "有多少位女性超级英雄的力量数值为100？",
+    "evidence_cn": "female 指的是 gender = 'Female'；力量数值为100指的是 attribute_name = 'Strength' 且 attribute_value = 100"
+  },
+  "743": {
+    "question_cn": "有多少百分比的超级英雄按照自己的利益行动或根据自己的道德准则做决定?指出有多少这样的超级英雄由Marvel Comics出版。",
+    "evidence_cn": "由Marvel Comics出版指的是 publisher_name = 'Marvel Comics';按照自己的利益行动或根据自己的道德准则做决定的超级英雄指的是 alignment = 'Bad';计算 = MULTIPLY(DIVIDE(SUM(alignment = 'Bad'), count(id)), 100)"
+  },
+  "744": {
+    "question_cn": "在DC和Marvel Comics之间，哪个出版商出版了更多的超级英雄？找出他们出版的超级英雄数量的差异。",
+    "evidence_cn": "DC指publisher_name = 'DC Comics'; Marvel Comics指publisher_name = 'Marvel Comics'; calculation = SUBTRACT(SUM(publisher_name = 'Marvel Comics'), SUM(publisher_name = 'DC Comics'))"
+  },
+  "745": {
+    "question_cn": "给出星际迷航的出版商ID。",
+    "evidence_cn": "Star Trek 是 publisher_name；"
+  },
+  "747": {
+    "question_cn": "没有full_name的superhero一共有多少个？",
+    "evidence_cn": "“没有full_name的superhero”是指满足条件 full_name IS NULL 的superhero"
+  },
+  "750": {
+    "question_cn": "所有女性超级英雄的平均体重是多少？",
+    "evidence_cn": "女性指性别 = 'Female'；平均体重指 AVG(weight_kg)"
+  },
+  "751": {
+    "question_cn": "列出至少五个男性超级英雄的超能力。",
+    "evidence_cn": "male 指代 gender = 'Male'; superpowers 指代 power_name;"
+  },
+  "753": {
+    "question_cn": "在身高在 170 到 190 之间的超级英雄中，列出那些没有眼睛颜色的超级英雄名字。",
+    "evidence_cn": "“height from 170 to 190” 指的是 height_cm BETWEEN 170 AND 190；“no eye color” 指的是 colour = 'No Colour'。"
+  },
+  "758": {
+    "question_cn": "提供身高185厘米的人类超级英雄的头发颜色。",
+    "evidence_cn": "身高185厘米指的是 height_cm = 185；人类超级英雄指的是 race = 'human'；头发颜色指的是 colour 其中 hair_colour_id = colour.id；"
+  },
+  "760": {
+    "question_cn": "在身高在150到180之间的超级英雄中，由Marvel Comics出版的英雄所占的百分比是多少？",
+    "evidence_cn": "身高在150到180之间是指 height_cm BETWEEN 150 AND 180；由Marvel Comics出版的英雄是指 publisher_name = 'Marvel Comics'；计算方式 = MULTIPLY(DIVIDE(SUM(publisher.id = 13)), COUNT(publisher.id), 100)"
+  },
+  "761": {
+    "question_cn": "在男性超级英雄中，列出体重大于所有超级英雄平均体重的79%的超级英雄的名字。",
+    "evidence_cn": "super hero names 指的是 superhero_name；male superheros 指的是 gender = 'Male'；计算 = weight_kg > MULTIPLY(AVG(weight_kg), 0.79)"
+  },
+  "764": {
+    "question_cn": "ID为1的英雄拥有哪些超级力量？",
+    "evidence_cn": "superpowers指的是power_name; ID为1的英雄指的是hero_id = 1;"
+  },
+  "766": {
+    "question_cn": "具有最高力量属性的英雄的全名是什么?",
+    "evidence_cn": "最高力量属性是指 MAX(attribute_value) WHERE attribute_name = 'strength';"
+  },
+  "769": {
+    "question_cn": "哪位超级英雄具有Dark Horse Comics出版的最高耐久度？",
+    "evidence_cn": "which superhero指superhero_name；most durability指MAX(attribute_value) WHERE attribute_name = 'durability'；published by Dark Horse Comics指publisher_name = 'Dark Horse Comics';"
+  },
+  "772": {
+    "question_cn": "列出所有由Dark Horse Comics出版的女性超级英雄的眼睛、头发和皮肤颜色。",
+    "evidence_cn": "eyes指eye_colour_id；hair指hair_colour_id；skin colour指skin_colour_id；female superheroes指gender = 'Female'；published by Dark Horse Comics指publisher_name = 'Dark Horse Comics'；"
+  },
+  "773": {
+    "question_cn": "哪些超级英雄具有相同的眼睛、头发和皮肤颜色？请给出这些超级英雄的出版商。",
+    "evidence_cn": "“which superhero” 指的是 `superhero_name`；“the same eyes, hair and skin colour” 指的是 `hair_colour_id = skin_colour_id AND hair_colour_id = eye_colour_id`；“publisher” 指的是 `publisher_name`。"
+  },
+  "775": {
+    "question_cn": "在所有女性超级英雄中，皮肤颜色为蓝色的女性超级英雄所占的百分比是多少？",
+    "evidence_cn": "percentage = MULTIPLY(DIVIDE(SUM(colour = 'Blue' WHERE gender = 'Female'), COUNT(gender = 'Female')), 100); 其中，blue 指的是在 `colour` 表中满足 colour = 'Blue' 且 `skin_colour_id = colour.id` 的记录；female 指的是 gender = 'Female' 的情况。"
+  },
+  "779": {
+    "question_cn": "Amazo 英雄有多少种超能力？",
+    "evidence_cn": "Amazo 英雄指的是 superhero_name = 'Amazo';"
+  },
+  "781": {
+    "question_cn": "提供眼睛颜色为琥珀色的英雄的身高。",
+    "evidence_cn": "英雄的身高指的是 height_cm；眼睛颜色为琥珀色指的是 colour.colour = 'Amber' WHERE eye_colour_id = colour.id;"
+  },
+  "785": {
+    "question_cn": "描述中立阵营超级英雄的名称。",
+    "evidence_cn": "超级英雄的名称指的是 superhero_name；中立阵营指的是 alignment = 'Neutral'；"
+  },
+  "786": {
+    "question_cn": "有多少个英雄具有力量属性的最高属性值?",
+    "evidence_cn": "力量属性的最高属性值指的是 MAX(attribute_value) WHERE attribute_name = 'Strength';"
+  },
+  "788": {
+    "question_cn": "Marvel Comics 出版的女性英雄占多少百分比？",
+    "evidence_cn": "percent = MULTIPLY(DIVIDE(SUM(gender = 'Female' WHERE publisher_name = 'Marvel Comics'), COUNT(publisher_name = 'Marvel Comics')), 100); 女性英雄指 gender = 'Female'; Marvel Comics 指 publisher_name = 'Marvel Comics';"
+  },
+  "790": {
+    "question_cn": "计算Emil Blonsky的体重和Charles Chandler的体重之差。",
+    "evidence_cn": "difference = SUBTRACT(SUM(weight_kg WHERE full_name = 'Emil Blonsky'), SUM(weight_kg WHERE full_name = 'Charles Chandler')); Emil Blonsky是超级英雄的全名; Charles Chandler是超级英雄的全名;"
+  },
+  "791": {
+    "question_cn": "计算所有superhero的平均身高。",
+    "evidence_cn": "average = DIVIDE(SUM(height_cm), COUNT(所有hero));"
+  },
+  "792": {
+    "question_cn": "Abomination的超能力是什么？",
+    "evidence_cn": "Abomination指superhero_name = 'Abomination'; superpower指power_name;"
+  },
+  "794": {
+    "question_cn": "哪个英雄是速度最快的？",
+    "evidence_cn": "“which hero” 指的是 `superhero_name`；“fastest” 指的是在 `attribute_name` = 'Speed' 条件下 `attribute_value` 的最大值（MAX(attribute_value)）。"
+  },
+  "796": {
+    "question_cn": "列出3-D Man的所有属性及其对应的值。",
+    "evidence_cn": "3-D Man是superhero_name。属性指attribute_name；值指attribute_value。"
+  },
+  "797": {
+    "question_cn": "哪些超级英雄有蓝色眼睛并且是棕色头发？",
+    "evidence_cn": "“哪些超级英雄”对应 `superhero_name`；“蓝色眼睛”指 `colour = 'Blue'` 且 `colour.id = eye_colour_id`；“棕色头发”指 `colour = 'Brown'` 且 `colour.id = hair_colour_id`。"
+  },
+  "798": {
+    "question_cn": "Hawkman、Karate Kid和Speedy的出版商是什么？",
+    "evidence_cn": "publisher指publisher_name；Hawkman指superhero_name = 'Hawkman'；Karate Kid指superhero_name = 'Karate Kid'；Speedy指superhero_name = 'Speedy'；"
+  },
+  "800": {
+    "question_cn": "计算拥有蓝色眼睛的超级英雄的百分比。",
+    "evidence_cn": "percentage = MULTIPLY(DIVIDE(SUM(superhero_name WHERE colour = 'Blue'), COUNT(superhero_name)), 100.0); 蓝色眼睛是指 colour = 'Blue' 且 colour.id = eye_colour_id = 7;"
+  },
+  "801": {
+    "question_cn": "求男性超级英雄与女性超级英雄之间的数量比。",
+    "evidence_cn": "ratio = DIVIDE(SUM(gender_id = 1) / SUM(gender_id = 2)); 这里的“male superheroes”指的是 gender = 'Female'；“female superheroes”指的是 gender = 'Male'。"
+  },
+  "806": {
+    "question_cn": "提供全名为 Karen Beecher-Duncan 的超级英雄的眼睛颜色。",
+    "evidence_cn": "眼睛颜色指的是 colour.colour，其中 eye_colour_id = colour.id；Karen Beecher-Duncan 是超级英雄的全名；"
+  },
+  "819": {
+    "question_cn": "在缺失体重数据的超级英雄中，计算蓝眼睛超级英雄数量与无眼睛颜色超级英雄数量之间的差异。",
+    "evidence_cn": "缺失体重数据指 weight_kg = 0 OR T1.weight_kg = NULL；差异 = SUBTRACT(SUM(colour.id = 7), SUM(colour.id = 1))；蓝眼睛指 eye_colour_id WHERE colour.id = 7；无眼睛颜色指 eye_colour_id WHERE colour.id = 1；"
+  },
+  "822": {
+    "question_cn": "超级英雄宇宙中有多少个绿色皮肤的恶棍？",
+    "evidence_cn": "green-skinned 指的是 colour.colour = 'Green' WHERE skin_colour_id = colour.id; villains 指的是 alignment = 'Bad';"
+  },
+  "824": {
+    "question_cn": "找出能够控制风的超级英雄,并按字母顺序列出他们的名字。",
+    "evidence_cn": "superheroes 指代 superhero_name; 能够控制风 指代 power_name = 'Wind Control';"
+  },
+  "825": {
+    "question_cn": "确定拥有 Phoenix Force 能力的超级英雄的性别。",
+    "evidence_cn": "“Phoenix Force”的能力对应于 power_name = 'Phoenix Force';"
+  },
+  "829": {
+    "question_cn": "哪个出版商创造的超级英雄更多：DC 还是 Marvel Comics？找出超级英雄数量的差异。",
+    "evidence_cn": "DC 指的是 publisher_name = 'DC Comics'；Marvel Comics 指的是 publisher_name = 'Marvel Comics'；difference = SUBTRACT(SUM(publisher_name = 'DC Comics'), SUM(publisher_name = 'Marvel Comics'));"
+  },
+  "531": {
+    "question_cn": "哪个用户的声誉更高，Harlan 还是 Jarrod Dixon?",
+    "evidence_cn": "\"Harlan\" 和 \"Jarrod Dixon\" 都是 DisplayName；最高声誉指的是 Max(Reputation)"
+  },
+  "532": {
+    "question_cn": "请列出所有在2011年创建账户的用户的显示名称。",
+    "evidence_cn": "账户在2011年创建是指 year(CreationDate) = 2011"
+  },
+  "533": {
+    "question_cn": "有多少用户在2014年9月1日之后最后一次访问了该网站？",
+    "evidence_cn": "last accessed after 2014/9/1 指的是 LastAccessDate > '2014-09-01'"
+  },
+  "539": {
+    "question_cn": "谁是帖子 “Eliciting priors from experts” 的所有者？",
+    "evidence_cn": "“Eliciting priors from experts” 是帖子的 Title；所有者指的是 DisplayName"
+  },
+  "537": {
+    "question_cn": "用户 csgillespie 拥有多少篇帖子?",
+    "evidence_cn": "\"csgillespie\" 是用户的 DisplayName"
+  },
+  "544": {
+    "question_cn": "最后编辑了标题为「Examples for teaching: Correlation does not mean causation」的帖子的用户的显示名称是什么?",
+    "evidence_cn": "「Examples for teaching: Correlation does not mean causation」是帖子的 Title；最后编辑的用户指的是 LastEditorUserId"
+  },
+  "547": {
+    "question_cn": "在年龄超过65岁的用户拥有的帖子中，有多少个帖子的得分超过19？",
+    "evidence_cn": "年长用户是指Age > 65；得分超过19是指Score >= 20"
+  },
+  "549": {
+    "question_cn": "标签\"bayesian\"是从哪篇文章摘录的？请给出该文章的正文内容。",
+    "evidence_cn": "\"bayesian\"是TagName；摘录来自ExcerptPostId"
+  },
+  "555": {
+    "question_cn": "用户 csgillespie 拥有的帖子的平均分数是多少？",
+    "evidence_cn": "\"csgillespie\" 是用户的 DisplayName；平均分数是指 AVG(Score)"
+  },
+  "557": {
+    "question_cn": "在得分超过5的帖子中，由老年用户拥有的帖子占比多少？",
+    "evidence_cn": "得分超过5指Score > 5；老年用户指Age > 65；百分比 = 除法 (Count(Id where Age>65), Count(Id)) * 100"
+  },
+  "563": {
+    "question_cn": "用户号3025在2014/4/23 20:29:39对一篇帖子进行了评论,该帖子获得了多少次收藏?",
+    "evidence_cn": "用户号3025指UserId = '3025';在2014/4/23 20:29:39发表评论指CreationDate = '2014/4/23 20:29:39.0'"
+  },
+  "565": {
+    "question_cn": "用户No.23853在2013/7/12 9:08:18给一篇帖子留下了评论，那篇帖子是否已完成？",
+    "evidence_cn": "user no. 23853指UserId = '23853'；at 9:08:18 on 2013/7/12指CreationDate = '2013-07-12 09:08:18.0'；not well-finished指ClosedDate IS NULL，反之亦然"
+  },
+  "567": {
+    "question_cn": "对于 DisplayName 为“Tiago Pasqualini”的用户，他/她一共拥有哪些 posts（作为 OwnerUserId）的数量是多少？",
+    "evidence_cn": "“Tiago Pasqualini” 是该用户在 users 表中的 DisplayName，需要统计在 posts 表中以该用户 Id 作为 OwnerUserId 的帖子数量。"
+  },
+  "568": {
+    "question_cn": "提供进行投票号6347的用户的显示名称。",
+    "evidence_cn": "投票号6347指的是 Id = '6347'"
+  },
+  "571": {
+    "question_cn": "对于用户编号24，他/她的帖子数量相比于投票数量多少倍？",
+    "evidence_cn": "用户编号24指的是 UserId = OwnerUserId = '24'；他/她的帖子数量相比投票数量的倍数 = Divide (Count(post.Id), Count(votes.Id))"
+  },
+  "572": {
+    "question_cn": "标题为'Integration of Weka and/or RapidMiner into Informatica PowerCenter/Developer'的帖子获得了多少浏览量？",
+    "evidence_cn": "\"Integration of Weka and/or RapidMiner into Informatica PowerCenter/Developer\"是帖子的Title；浏览量指的是ViewCount"
+  },
+  "573": {
+    "question_cn": "写出分数为 17 的评论的内容。",
+    "evidence_cn": "分数为 17 是指 Score = 17；评论的内容是指 Text"
+  },
+  "576": {
+    "question_cn": "找出发表了评论'thank you user93!'的用户名",
+    "evidence_cn": "\"thank you user93\"是评论的Text；user指的是DisplayName"
+  },
+  "578": {
+    "question_cn": "哪个用户发布了标题为'Understanding what Dassault iSight is doing?'的帖子，该用户的声望值是多少？",
+    "evidence_cn": "'Understanding what Dassault iSight is doing?'是帖子的Title；用户指的是DisplayName；"
+  },
+  "581": {
+    "question_cn": "谁是标题为'Open source tools for visualizing multi-dimensional data'的帖子的所有者？",
+    "evidence_cn": "'Open source tools for visualizing multi-dimensional data'是Post的Title；所有者指的是DisplayName；"
+  },
+  "584": {
+    "question_cn": "写出所有由编辑过标题为'Why square the difference instead of taking the absolute value in standard deviation?'的帖子的用户留下的评论",
+    "evidence_cn": "'Why square the difference instead of taking the absolute value in standard deviation?'是帖子的Title"
+  },
+  "586": {
+    "question_cn": "哪位用户为提到方差的帖子添加了50的悬赏金额？",
+    "evidence_cn": "50的悬赏金额是指 BountyAmount = 50；用户是指 DisplayName；提到方差的标题是指 Title 包含 'variance'"
+  },
+  "587": {
+    "question_cn": "计算标记为'humor'的每个帖子的平均浏览量，并列出每个帖子的标题和评论。",
+    "evidence_cn": "标记为'humor'指的是 tag = '<humor>'；帖子的评论指的是 Text；平均浏览量 = AVG(ViewCount)"
+  },
+  "592": {
+    "question_cn": "有多少用户被授予超过5个徽章?",
+    "evidence_cn": "超过5个徽章指 Count (Name) > 5; 用户指 UserId"
+  },
+  "595": {
+    "question_cn": "哪个用户的每个帖子只有一条帖子历史记录，且至少有1000次浏览？",
+    "evidence_cn": "至少有1000次浏览是指 Views >= 1000；用户是指 UserId"
+  },
+  "598": {
+    "question_cn": "2010年和2011年授予的学生徽章的百分比差异是多少?",
+    "evidence_cn": "student badges 指徽章名称 = 'Student'; during 2010 指 Year(Date) = 2010; during 2011 指 Year(Date) = 2011; percentage difference = Subtract (Divide(Count(Name where Year(Date) = 2010), Count (Name)) *100, Divide(Count(Name where Year(Date) = 2011), Count(Name)) * 100)"
+  },
+  "604": {
+    "question_cn": "创建超过10篇帖子的用户的平均赞成票数和平均年龄是多少？",
+    "evidence_cn": "创建超过10篇帖子是指 Count (UserId) > 10；平均赞成票数 = Divide (Sum(UpVotes), Count (UserId))；平均年龄 = Divide (Sum(Age), Count(UserId))"
+  },
+  "629": {
+    "question_cn": "计算 2010 年与 2011 年投票数量的比值。",
+    "evidence_cn": "从 votes 中计算：用 2010 年的 COUNT(Id where YEAR(CreationDate) = 2010) 除以 2011 年的 COUNT(Id where YEAR(CreationDate) = 2011)，即 DIVIDE(COUNT(Id where YEAR(CreationDate) = 2010), COUNT(Id where YEAR(CreationDate) = 2011))。"
+  },
+  "633": {
+    "question_cn": "slashnick 发布的哪个帖子拥有最多的回答数量？请给出该帖子的 Id。",
+    "evidence_cn": "“最多的回答数量”指的是 MAX(AnswerCount)；“slashnick 发布的帖子”指的是 DisplayName = 'slashnick'。"
+  },
+  "634": {
+    "question_cn": "在Harvey Motulsky和Noah Snyder发布的帖子中，哪一个的受欢迎程度更高？",
+    "evidence_cn": "受欢迎程度更高意味着帖子有更高的浏览量；计算 = MAX(SUM(ViewCount)) where DisplayName = 'Harvey Motulsky' OR DisplayName = 'Noah Snyder';"
+  },
+  "637": {
+    "question_cn": "列出Mark Meckes在没有评论的帖子中使用的所有标签。",
+    "evidence_cn": "Mark Meckes使用指DisplayName = 'Mark Meckes'；没有评论指CommentCount = 0;"
+  },
+  "639": {
+    "question_cn": "基于Community发布的帖子，计算使用R语言的帖子的百分比。",
+    "evidence_cn": "DIVIDE(COUNT(PostId WHERE TagName = 'r')), (COUNT(PostId WHERE DisplayName = 'Community')) as percentage; R语言指的是tagname = 'r'"
+  },
+  "640": {
+    "question_cn": "计算由 Mornington 发布的帖子浏览量总和与由 Amos 发布的帖子浏览量总和之间的差值。",
+    "evidence_cn": "calculation = SUBTRACT(SUM(ViewCount where DisplayName = 'Mornington'), SUM(ViewCount where DisplayName = 'Amos'))；即先分别求出 DisplayName 为 'Mornington' 和 'Amos' 的帖子 ViewCount 之和，然后用前者减去后者。"
+  },
+  "665": {
+    "question_cn": "对于那些回答数不超过 2 个的帖子，在 2010 年中每月平均创建的链接数量是多少？",
+    "evidence_cn": "calculation = DIVIDE(COUNT(Id，其中 YEAR(CreationDate) = 2010 且 AnswerCount <= 2)，12)"
+  },
+  "669": {
+    "question_cn": "用户“chl”第一次在帖子中投票是在哪一天？",
+    "evidence_cn": "DisplayName = 'chl'；“cast its first vote”指的是 votes 表中该用户记录的 MIN(CreationDate)。"
+  },
+  "671": {
+    "question_cn": "获得第一个Autobiographer徽章的用户的显示名称是什么？",
+    "evidence_cn": "Autobiographer是徽章的名称；获得第一个指的是MIN(Date)；"
+  },
+  "672": {
+    "question_cn": "在位置为United Kingdom的用户中，有多少个用户的帖子的总收藏数为4或更多？",
+    "evidence_cn": "收藏数为4或更多是指 FavoriteCount >= 4; Location = 'United Kingdom';"
+  },
+  "678": {
+    "question_cn": "Harvey Motulsky 的哪篇帖子的浏览量最多?请给出该帖子的 id 和标题。",
+    "evidence_cn": "DisplayName = 'Harvey Motulsky'; 最多的浏览量指的是 MAX(ViewCount);"
+  },
+  "682": {
+    "question_cn": "2010年最有价值的帖子是哪一个？请给出其Id和所有者的显示名称。",
+    "evidence_cn": "2010年最有价值的帖子是指MAX(FavoriteCount)，其中year(CreationDate) = 2010;"
+  },
+  "683": {
+    "question_cn": "在2011年中，帖主声望值超过1000的帖子占全部帖子的百分比是多少？",
+    "evidence_cn": "percentage = DIVIDE(COUNT(Id where YEAR(CreationDate) = 2011 and Reputation > 1000), COUNT(Id) ) * 100;"
+  },
+  "685": {
+    "question_cn": "找出题目为'Computer Game Datasets'的帖子的总浏览次数。命名最后一次发布该帖子的用户。",
+    "evidence_cn": "总浏览次数指的是 ViewCount；命名用户指的是 DisplayName；题目为'Computer Game Datasets'的帖子指的是 Title = 'Computer Game Datasets'；"
+  },
+  "687": {
+    "question_cn": "得分最高的帖子添加了多少条评论？",
+    "evidence_cn": "得分最高是指 MAX(Score);"
+  },
+  "694": {
+    "question_cn": "提供标题为'Analysing wind data with R'的帖子的最新10条评论的文本，以及留下评论的用户的显示名称。",
+    "evidence_cn": "最新的评论是指 MAX(CreationDate);"
+  },
+  "701": {
+    "question_cn": "在最具影响力的用户发布的所有帖子中，识别得分超过50的帖子所占的百分比。",
+    "evidence_cn": "用户的声誉越高，影响力就越大；百分比 = DIVIDE(COUNT(stats_posts.Id where Score > 50 and MAX(Reputation))), COUNT(stats_posts.Id where MAX(Reputation));"
+  },
+  "704": {
+    "question_cn": "标签名称为 sample 的摘录文章 ID 和 wiki 文章 ID 是什么？",
+    "evidence_cn": "标签名称为 sample 指的是 TagName = 'sample'；"
+  },
+  "705": {
+    "question_cn": "给出那位发表评论“fine, you win :)”的用户的用户声望值和点赞数。",
+    "evidence_cn": "Text = 'fine, you win :)';"
+  },
+  "707": {
+    "question_cn": "在那些 ViewCount 在 100 到 150 之间的 posts 中，哪一条具有最高 Score 的评论 Text？",
+    "evidence_cn": "“views ranging from 100 to 150” 指的是 ViewCount BETWEEN 100 AND 150；“comment with the highest score” 指的是在这些记录中，Score 最大所对应的 Text（即 Text WHERE MAX(Score)）。"
+  },
+  "710": {
+    "question_cn": "在有1条评论的帖子中，有多少条评论的分数为0？",
+    "evidence_cn": "有1条评论的帖子指的是 CommentCount = 1;"
+  },
+  "716": {
+    "question_cn": "在所有 Score 在 5 到 10 之间的评论中，UpVotes 为 0 的用户所占的百分比是多少？",
+    "evidence_cn": "percentage = 将 (COUNT(UserId，条件为 UpVotes = 0 且 Score BETWEEN 5 and 10)) 除以 (COUNT(UserId，条件为 Score BETWEEN 5 and 10))，再乘以 100。"
+  },
+  "340": {
+    "question_cn": "哪些卡牌拥有极其强大的闪卡版本？",
+    "evidence_cn": "极其强大的闪卡版本是指 cardKingdomFoilId 不为空 AND cardKingdomId 不为空"
+  },
+  "341": {
+    "question_cn": "哪些无边框卡牌没有强力闪卡版本可用？",
+    "evidence_cn": "'borderless'指的是borderColor；强力闪卡指的是cardKingdomFoilId与cardKingdomId配对且cardKingdomId不为空"
+  },
+  "344": {
+    "question_cn": "列出所有在角斗士(Gladiator)格式中被禁用的神话稀有度卡牌。",
+    "evidence_cn": "神话稀有度卡牌指 rarity = 'mythic'; 被禁用的卡牌指 status = 'Banned'; 角斗士格式指 format = 'gladiator';"
+  },
+  "345": {
+    "question_cn": "对于不具有同卡多面的人工物类型的卡牌，说明其在复古(vintage)游戏格式中的合法性状态。",
+    "evidence_cn": "人工物类型的卡牌是指 types = 'Artifact'; 卡牌不具有同卡多面是指 side is NULL; 复古游戏格式是指 format = 'vintage';"
+  },
+  "346": {
+    "question_cn": "列出所有具有未知力量且在指挥官格式中合法的卡牌的id和艺术家。",
+    "evidence_cn": "未知力量指的是power = '*'或POWER IS NULL；指挥官游玩格式指的是format = 'commander'；在指挥官游玩格式中合法指的是format = 'commander'且status = 'Legal'"
+  },
+  "347": {
+    "question_cn": "查找由Stephen Daniel绘制的所有卡牌，并描述这些卡牌的规则文本。说明这些卡牌是否具有缺失或降级的属性和值。",
+    "evidence_cn": "卡牌具有缺失或降级的属性和值指hasContentWarning = 1；'Stephen Daniel'是artist；查找所有卡牌指返回card id"
+  },
+  "349": {
+    "question_cn": "找出拥有最多规则信息的卡牌和艺术家的名称。同时说明该卡牌是否是宣传版印刷。",
+    "evidence_cn": "拥有最多规则信息是指 Max(count(rulings.uuid))；卡牌是宣传版印刷是指 isPromo = 1；"
+  },
+  "352": {
+    "question_cn": "计算简体中文语言的卡牌百分比。",
+    "evidence_cn": "'Chinese Simplified' 是语言；百分比 = 将(Sum(id where language = 'Chinese Simplified'), Count(id)) 除法 *100"
+  },
+  "356": {
+    "question_cn": "有多少张卡牌具有无限力量？",
+    "evidence_cn": "无限力量是指 power = '*';"
+  },
+  "358": {
+    "question_cn": "卡牌\"Ancestor's Chosen\"的边框颜色是什么？",
+    "evidence_cn": "卡牌的 name = 'Ancestor''s Chosen' ;"
+  },
+  "366": {
+    "question_cn": "牌“Benalish Knight”在什么赛制中可以使用？",
+    "evidence_cn": "“Benalish Knight”是牌的名称；“rule of playing card”指的是该牌在不同比赛“format”中的使用规则。"
+  },
+  "368": {
+    "question_cn": "无边框卡牌的百分比是多少？",
+    "evidence_cn": "无边框卡牌是指 borderColor = 'borderless' 的卡牌；百分比 = 除法(统计 borderColor = 'borderless' 的 id 数量，统计 id 总数) * 100"
+  },
+  "371": {
+    "question_cn": "在故事聚焦卡牌中，语言为法语的卡牌所占的百分比是多少？",
+    "evidence_cn": "故事聚焦卡牌是指 isStorySpotlight = 1；法语是语言；百分比 = 除法(计数(id) 其中 language = 'French' 且 isStorySpotlight = 1，计数(id) 其中 isStorySpotlight = 1)*100"
+  },
+  "377": {
+    "question_cn": "有多少张原始类型为\"Summon - Angel\"但副类型不是\"Angel\"的卡牌？",
+    "evidence_cn": "副类型不是Angel指的是subtypes不等于'Angel'；"
+  },
+  "379": {
+    "question_cn": "哪些卡牌属于对战套牌 A？列出 ID。",
+    "evidence_cn": "对战套牌 A 指的是 duelDeck = a;"
+  },
+  "383": {
+    "question_cn": "有多少张被禁用的牌是白色边框？",
+    "evidence_cn": "被禁用的牌是指 status = 'Banned'；白色边框是指 borderColor = 'white'；"
+  },
+  "391": {
+    "question_cn": "在人工制品卡牌中，哪些是黑色的并附有外语翻译？",
+    "evidence_cn": "人工制品卡牌指 originalType = 'Artifact'；黑色指 colors = 'B'；外语翻译指 foreign_data 中的 language"
+  },
+  "402": {
+    "question_cn": "没有文本框的故事聚焦卡牌的百分比是多少？按其ID列出它们。",
+    "evidence_cn": "没有文本框的故事聚焦卡牌是指 isStorySpotlight = 1 且 isTextless = 0；百分比 = DIVIDE(SUM(count(id) where isStorySpotlight = 1 AND isTextless = 0), SUM(count(id))) * 100"
+  },
+  "405": {
+    "question_cn": "Commander区块中有多少个巴西葡萄牙语翻译的系列？",
+    "evidence_cn": "Commander区块指block = 'Commander'; 系列指code = setCode; 葡萄牙语指language = 'Portuguese (Brasil)'"
+  },
+  "407": {
+    "question_cn": "列出所有德语卡牌的类型。",
+    "evidence_cn": "German 指语言; all types 指 subtypes、supertypes; subtypes 不为空 AND supertypes 不为空"
+  },
+  "408": {
+    "question_cn": "有多少张未知力量的牌包含关于触发式异能的信息",
+    "evidence_cn": "未知力量的牌指的是power为null或power = '*'；包含关于触发式异能的信息指的是text中包含'triggered ability'"
+  },
+  "409": {
+    "question_cn": "指示具有前现代格式、裁决文本为\"This is a triggered mana ability.\"且不具有多个面的卡牌数量。",
+    "evidence_cn": "前现代格式指 format = 'premodern' ;不具有多个面指 side IS NULL"
+  },
+  "412": {
+    "question_cn": "什么是法语中类型为生物、普通布局且黑色边框的卡牌的外文名称，由艺术家 Matthew D. Wilson 创作？",
+    "evidence_cn": "法语指 language = 'French'；黑色边框指 borderColor = 'black'"
+  },
+  "414": {
+    "question_cn": "拥有180张卡牌的拉尼卡(Ravnica)区块的套牌被翻译成了哪些语言?",
+    "evidence_cn": "拥有180张卡牌指的是 baseSetSize = 180"
+  },
+  "415": {
+    "question_cn": "格式为指挥官且合法状态的卡牌中，没有内容警告的卡牌占百分之几？",
+    "evidence_cn": "没有内容警告是指 hasContentWarning = 0；百分比是指 DIVIDE(COUNT(hasContentWarning = 0),COUNT(ID))*100，其中 format = 'commander' AND status = 'legal'；"
+  },
+  "416": {
+    "question_cn": "没有力量值的卡牌中，有多少百分比是法语的？",
+    "evidence_cn": "法语指 language = 'French'; 没有力量值的卡牌指 power IS NULL OR power = '*'; 百分比 = DIVIDE(COUNT(language = 'French' and power is NULL or power = '*'), COUNT(power is NULL or power = '*'))*100"
+  },
+  "422": {
+    "question_cn": "多元宇宙编号为149934的卡牌的语言是什么？",
+    "evidence_cn": "多元宇宙编号149934指的是multiverseid = 149934；"
+  },
+  "427": {
+    "question_cn": "已知名称为Archenemy且代码为ARC的魔法集合在魔法卡牌市场上有哪些语言可用？",
+    "evidence_cn": "已知名称为Archenemy指的是 mcmName = 'Archenemy'；代码为ARC指的是 setCode = 'ARC'"
+  },
+  "440": {
+    "question_cn": "\"A Pedra Fellwar\"使用哪种外语？",
+    "evidence_cn": "\"A Pedra Fellwar\"指的是name = 'A Pedra Fellwar'"
+  },
+  "459": {
+    "question_cn": "哪张卡牌的转换法力费用更高，\"Serra Angel\"还是\"Shrine Keeper\"？",
+    "evidence_cn": "\"Serra Angel\"指代name = 'Serra Angel'；\"Shrine Keeper\"指代name = 'Shrine Keeper'；当convertedManaCost的值更大时，卡牌的转换法力费用更高"
+  },
+  "462": {
+    "question_cn": "包含\"Ancestor's Chosen\"的卡牌组合的意大利语名称是什么?",
+    "evidence_cn": "意大利语是指language = 'Italian'的语言;\"Ancestor's Chosen\"在卡牌组合中指name = 'Ancestor''s Chosen'"
+  },
+  "465": {
+    "question_cn": "对于包含“Ancestor's Chosen”的那一组牌来说，其中是否有韩文版本？",
+    "evidence_cn": "“set of cards with \"Ancestor''s Chosen\" in it”指的是在`cards`表中满足`name = 'Ancestor''s Chosen'`的那一组牌；“Korean version”指的是在`foreign_data`表中满足`language = 'Korean'`的记录。"
+  },
+  "466": {
+    "question_cn": "在卡牌组\"Hauptset Zehnte Edition\"中，由Adam Rex设计的卡牌有多少张？",
+    "evidence_cn": "卡牌组\"Hauptset Zehnte Edition\"指的是translation = 'Hauptset Zehnte Edition'; 由Adam设计指的是artist = 'Adam Rex'"
+  },
+  "469": {
+    "question_cn": "卡牌「怜悯天使」所属的套牌是否出现在《魔法风云会》在线版中？",
+    "evidence_cn": "卡牌套牌「怜悯天使」指的是 name = 'Angel of Mercy'；出现在《魔法风云会》在线版中指的是 mtgoCode 不为 NULL，反之亦然"
+  },
+  "472": {
+    "question_cn": "在\"冰河时代\"这个系列中，有多少个系列有意大利语翻译？",
+    "evidence_cn": "\"冰河时代\"这个系列中的系列指的是 block = 'Ice Age'; 意大利语翻译指的是 language = 'Italian' 且 translation 不为空"
+  },
+  "473": {
+    "question_cn": "包含阿达卡瓦尔基里的卡牌集合是否仅在美国以外的地区发行？",
+    "evidence_cn": "卡牌集合阿达卡瓦尔基里指name = 'Adarkar Valkyrie'；isForeignOnly = 1表示仅在美国以外的地区发行；"
+  },
+  "474": {
+    "question_cn": "在拥有意大利语翻译的卡牌套装中，有多少个套装的基础套装数量少于100?",
+    "evidence_cn": "意大利语翻译是指 language = 'Italian'; 拥有翻译意味着 translation is not null; 基础套装数量少于100是指 baseSetSize < 100"
+  },
+  "477": {
+    "question_cn": "这些艺术家中，哪位在Coldsnap系列中设计过卡牌：Jeremy Jarvis、Aaron Miller还是Chippy？",
+    "evidence_cn": "卡牌系列Coldsnap指的是name = 'Coldsnap'；Jeremy Jarvis、Aaron Miller或Chippy是艺术家的名字，指的是artist IN ('Jeremy Jarvis', 'Aaron Miller','Chippy')"
+  },
+  "479": {
+    "question_cn": "在冷雪集合中，转化法力值高于5的卡牌中，有多少张的力量值未知？",
+    "evidence_cn": "卡牌集合冷雪指的是 name = 'Coldsnap'；转化法力值高于5指的是 convertedManaCost > 5；未知的力量值指的是 power = '*' 或 T1.power is null"
+  },
+  "480": {
+    "question_cn": "卡牌\"Ancestor's Chosen\"的意大利语风味文本是什么？",
+    "evidence_cn": "意大利语指 language = 'Italian'; 风味文本指 flavorText; \"Ancestor's Chosen\" 指 name = 'Ancestor''s Chosen'"
+  },
+  "483": {
+    "question_cn": "请列出冰冷时代(Coldsnap)套牌中所有卡牌的意大利文本规则。",
+    "evidence_cn": "卡牌套牌Coldsnap指的是name = 'Coldsnap'; 意大利文指的是language = 'Italian'"
+  },
+  "484": {
+    "question_cn": "请列出冰冷时节(Coldsnap)套牌中转换法力值最高的卡牌的意大利语名称。",
+    "evidence_cn": "卡牌套牌Coldsnap指的是name = 'Coldsnap'; 意大利语指的是language = 'Italian'; 最高转换法力值指的是MAX(convertedManaCost)"
+  },
+  "486": {
+    "question_cn": "在Coldsnap卡组中，转换法力费用为7的卡牌占比是多少？",
+    "evidence_cn": "转换法力费用为7指的是 convertedManaCost = 7；卡牌卡组Coldsnap指的是 name = 'Coldsnap'；占比 = DIVIDE(SUM(convertedManaCost = 7), SUM(convertedManaCost))*100"
+  },
+  "487": {
+    "question_cn": "在Coldsnap系列中，极其强大的卡牌的百分比是多少？",
+    "evidence_cn": "卡牌系列Coldsnap指name = 'Coldsnap'；极其强大的foil卡牌指cardKingdomFoilId不为null且cardKingdomId不为null；系列中极其强大卡牌的百分比指DIVIDE(SUM(极其强大), SUM(name = 'Coldsnap'))*100"
+  },
+  "518": {
+    "question_cn": "哪个游戏格式中被禁用（banned status）的卡牌数量最多？指出该游戏格式以及满足条件的所有卡牌名称。",
+    "evidence_cn": "游戏格式指 format；被禁用状态指 status = 'Banned'；被禁用状态数量最多指 MAX(COUNT(status = 'Banned'))"
+  },
+  "522": {
+    "question_cn": "哪些卡牌在EDHRec上排名第1?列出所有卡牌的名称及其被禁用的游戏格式。",
+    "evidence_cn": "在EDHRec上排名第1指edhrecRank = 1;被禁用指status = 'Banned';游戏格式指format;卡牌名称指name"
+  },
+  "528": {
+    "question_cn": "列出末日时刻集合中所有卡牌的名称，并找出这些卡牌合法的游戏格式。",
+    "evidence_cn": "set Hour of Devastation 指的是 set.name = 'Hour of Devastation'；集合中所有卡牌的名称指的是 cards.name；合法卡牌指的是 status = 'legal'；游戏格式指的是 format"
+  },
+  "529": {
+    "question_cn": "查找并列出没有日文翻译但有韩文翻译的set的名称。",
+    "evidence_cn": "set的名称指的是name；没有日文翻译指的是language不包含'%Japanese%'；有韩文翻译指的是language = 'Korean'"
+  },
+  "530": {
+    "question_cn": "列出Allen Williams创作的所有卡牌的框架风格，并找出其中是否有任何禁用的卡牌。",
+    "evidence_cn": "框架风格指frameVersion；Allen Williams创作的卡牌指artist = 'Allen Williams'；禁用的卡牌指status = 'Banned'"
+  },
+  "195": {
+    "question_cn": "最常见的键型是什么?",
+    "evidence_cn": "最常见的键型指 MAX(COUNT(bond_type))"
+  },
+  "197": {
+    "question_cn": "计算仅含单键的分子中氧原子的平均数量。",
+    "evidence_cn": "仅含单键的分子是指 bond_type = '-' ; 氧原子的平均数量 = AVG(element = 'o')"
+  },
+  "198": {
+    "question_cn": "平均而言，有多少个致癌分子是单键的？",
+    "evidence_cn": "致癌分子指的是 label = '+'; 单键指的是 bond_type = '-'; 平均值 = DIVIDE(SUM(bond_type = '-'), COUNT(atom_id))"
+  },
+  "200": {
+    "question_cn": "找到含有三键且具有致癌性的分子。",
+    "evidence_cn": "含有三键的分子是指 bond_type = '#'；具有致癌性是指 label = '+'"
+  },
+  "201": {
+    "question_cn": "在具有双键的分子中，碳元素所占的百分比是多少？",
+    "evidence_cn": "carbon 指的是 element = 'c'；double-bond molecules 指的是 bond_type = '='；percentage = DIVIDE(SUM(element = 'c'), COUNT(atom_id)) 表示用碳原子数量除以总原子数量来计算百分比。"
+  },
+  "206": {
+    "question_cn": "TR004_8_9 键中的原子包含哪些元素？",
+    "evidence_cn": "TR004_8_9 键原子指的是 bond_id = 'TR004_8_9';"
+  },
+  "207": {
+    "question_cn": "双键中包含哪些元素？",
+    "evidence_cn": "double type bond 指 bond_type = '='"
+  },
+  "208": {
+    "question_cn": "在含氢的原子中，哪种类型的label数量最多？",
+    "evidence_cn": "“with hydrogen” 指的是 element = 'h'；“label most numerous in atoms” 指的是 MAX(COUNT(label))；"
+  },
+  "212": {
+    "question_cn": "在非致癌分子中，哪种元素的数量最少？",
+    "evidence_cn": "label = '-' 表示分子是非致癌的；数量最少指的是 MIN(COUNT(element))；"
+  },
+  "213": {
+    "question_cn": "TR004_8 和 TR004_20 这两个原子之间存在什么类型的化学键？",
+    "evidence_cn": "化学键的类型指的是 bond_type；TR004_8 和 TR004_20 这两个原子之间指的是 atom_id = 'TR004_8' AND atom_id2 = 'TR004_20' 或者反过来的情况"
+  },
+  "215": {
+    "question_cn": "在单键分子中，有多少个碘元素和硫元素类型的原子？",
+    "evidence_cn": "碘元素指 element = 'i'；硫元素指 element = 's'；单键类型指 bond_type = '-'；计数时应考虑不同的原子。"
+  },
+  "220": {
+    "question_cn": "请按字母顺序列出分子 TR000 的毒理学中排名前三的元素。",
+    "evidence_cn": "TR000 是分子 id；"
+  },
+  "226": {
+    "question_cn": "分子 TR008 中双键的百分比是多少？请以五位小数的百分比形式提供答案。",
+    "evidence_cn": "双键指 bond_type = '='；TR008 是分子 id；percentage = DIVIDE(SUM(bond_type = '='), COUNT(bond_id)) as percent where molecule_id = 'TR008'"
+  },
+  "227": {
+    "question_cn": "致癌分子的百分比是多少？请以三位小数的百分比形式提供答案。",
+    "evidence_cn": "label = '+' 表示分子是致癌的；percentage = DIVIDE(SUM(label = '+'), COUNT(molecule_id)) as percent"
+  },
+  "228": {
+    "question_cn": "分子 TR206 中的氢元素占比是多少？请以百分比形式提供答案，精确到小数点后四位。",
+    "evidence_cn": "氢元素是指 element = 'h'；TR206 是分子 id；百分比 = DIVIDE(SUM(element = 'h'), COUNT(atom_id)) as percent，其中 molecule_id = 'TR206'"
+  },
+  "230": {
+    "question_cn": "分子 TR060 的毒理学元素和标签是什么？",
+    "evidence_cn": "TR060 是分子 id；"
+  },
+  "231": {
+    "question_cn": "分子TR010中哪种键型占大多数，以及这个分子是否具有致癌性？",
+    "evidence_cn": "TR010是分子id；找到的大多数键指的是MAX(COUNT(bond_type));"
+  },
+  "232": {
+    "question_cn": "请按字母顺序列出具有两个原子之间单键且不是致癌的前三个分子。",
+    "evidence_cn": "label = '-' 表示分子不是致癌的；单类型键指 bond_type = '-'；列出前三个分子是指返回 molecule_id 并按 molecule_id 排序"
+  },
+  "234": {
+    "question_cn": "分子 TR009 中涉及原子 12 的键有多少个？",
+    "evidence_cn": "TR009 是分子 id；涉及原子 12 指的是 atom_id = 'TR009_12' 或 atom_id2 = 'TR009_12'"
+  },
+  "236": {
+    "question_cn": "键ID TR001_6_9的键类型和原子是什么?",
+    "evidence_cn": "原子是指atom_id或atom_id2"
+  },
+  "239": {
+    "question_cn": "原子19有多少个连接？",
+    "evidence_cn": "connections指的是bond_id；原子19指的是atom_id，如'TR%_19';"
+  },
+  "240": {
+    "question_cn": "列出分子\"TR004\"的毒理学中的所有元素。",
+    "evidence_cn": "TR004 是分子 id；"
+  },
+  "242": {
+    "question_cn": "在所有编号从21到25的原子中，列出所有致癌的分子。",
+    "evidence_cn": "编号从21到25的原子是指 SUBSTR(atom_id, 7, 2) between '21' and '25'；label = '+' 表示分子是致癌的"
+  },
+  "243": {
+    "question_cn": "哪些键的原子元素既包含磷又包含氮？",
+    "evidence_cn": "包含磷作为原子元素是指 element = 'p'；包含氮作为原子元素是指 element = 'n'"
+  },
+  "244": {
+    "question_cn": "拥有最多双键的分子是否具有致癌性?",
+    "evidence_cn": "双键指的是 bond_type = ' = '; label = '+' 表示分子具有致癌性"
+  },
+  "245": {
+    "question_cn": "含有碘元素的原子平均有多少个键？",
+    "evidence_cn": "含有碘元素的原子是指 element = 'i'；平均值 = DIVIDE(COUNT(bond_id), COUNT(atom_id)) where element = 'i'"
+  },
+  "247": {
+    "question_cn": "列出所有无法与任何其他原子形成键的原子的元素。",
+    "evidence_cn": "原子无法与其他原子形成键意味着 atom_id 不在 connected 表中；"
+  },
+  "248": {
+    "question_cn": "分子\"TR041\"中三键的原子是什么？",
+    "evidence_cn": "TR041 是分子 id；三键指的是 bond_type = '#'；"
+  },
+  "249": {
+    "question_cn": "TR144_8_19 的原子的元素是什么？",
+    "evidence_cn": "TR144_8_19 是键的 id；"
+  },
+  "253": {
+    "question_cn": "列出所有三键的元素。",
+    "evidence_cn": "三键是指 bond_type = '#';"
+  },
+  "255": {
+    "question_cn": "单键中有多大比例是致癌的？请以百分比形式提供答案，精确到小数点后五位。",
+    "evidence_cn": "单键指 bond_type = '-'；label = '+' 表示分子是致癌的；比例 = DIVIDE(SUM(label = '+') * 100, COUNT(bond_id)) 其中 bond_type = '-'"
+  },
+  "260": {
+    "question_cn": "计算在具有三键的分子中，包含元素磷或溴的原子总数。",
+    "evidence_cn": "三键是指 bond_type = '#'; 磷是指 element = 'p'; 溴是指 element = 'br'"
+  },
+  "263": {
+    "question_cn": "在单键分子中，氯元素的组成百分比是多少？",
+    "evidence_cn": "氯元素指的是 element = 'cl'；单键指的是 bond_type = '-'；百分比 = DIVIDE(SUM(element = 'cl'), COUNT(atom_id)) as percent where bond_type = '-'"
+  },
+  "273": {
+    "question_cn": "致癌分子中氯元素的百分比是多少？",
+    "evidence_cn": "氯指的是 element = 'cl'；label = '+' 表示分子是致癌的；percentage = DIVIDE(SUM(element = 'pb'); COUNT(molecule_id)) as percentage where label = '+'"
+  },
+  "281": {
+    "question_cn": "统计每个致癌分子的第4个原子的毒理学元素。",
+    "evidence_cn": "label = '+' 表示分子是致癌的；每个分子的第4个原子是指 substr(atom_id, 7, 1) = '4'；"
+  },
+  "282": {
+    "question_cn": "分子ID TR006中氢元素的比例是多少？列出该比例及其标签。",
+    "evidence_cn": "氢元素指的是 element = 'h'；比例 = DIVIDE(SUM(element = 'h'), count(element)) 其中 molecule_id = 'TR006'；标签 '+' 表示分子具有致癌性；标签 '-' 表示分子无致癌性"
+  },
+  "327": {
+    "question_cn": "哪些非致癌分子包含超过5个原子?",
+    "evidence_cn": "label = '-' 表示分子是非致癌的; 包含超过5个原子的分子是指 COUNT(molecule_id) > 5"
+  },
+  "5": {
+    "question_cn": "在SAT数学平均分超过400分的学校中，有多少所是完全虚拟教学的？",
+    "evidence_cn": "完全虚拟教学是指 Virtual = 'F'"
+  },
+  "11": {
+    "question_cn": "请列出总入学人数超过500的学校代码。",
+    "evidence_cn": "总入学人数可以用 `Enrollment (K-12)` + `Enrollment (Ages 5-17)` 表示"
+  },
+  "12": {
+    "question_cn": "在SAT卓越率超过0.3的学校中，5-17岁学生的最高免费餐资格率是多少？",
+    "evidence_cn": "卓越率 = NumGE1500 / NumTstTakr；5-17岁学生的免费餐资格率 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`"
+  },
+  "17": {
+    "question_cn": "排名平均写作分数大于499的学校，显示其特许学校编号。",
+    "evidence_cn": "有效的特许学校编号意味着该编号不为空"
+  },
+  "23": {
+    "question_cn": "列出K-12和5-17岁年龄段招生人数差异超过30的学校名称。请同时提供这些学校的完整街道地址。",
+    "evidence_cn": "招生人数差异 = `Enrollment (K-12)` - `Enrollment (Ages 5-17)`"
+  },
+  "24": {
+    "question_cn": "给出K-12年级中免费餐食合格比例超过0.1且SAT考试成绩大于等于1500的考生数量大于0的学校名称?",
+    "evidence_cn": "免费餐食合格比例 = Free Meal Count (K-12) / Total (Enrollment (K-12))"
+  },
+  "25": {
+    "question_cn": "列出河滨县(Riverside)中SAT平均数学成绩的平均值大于400的学校,这些学校的资金类型是什么?",
+    "evidence_cn": "平均数学成绩的平均值 = 数学成绩之和 / 学校数量"
+  },
+  "26": {
+    "question_cn": "列出蒙特雷县拥有超过800份免费或降价餐食（15-17岁年龄段）的高中的名称和完整通讯地址？",
+    "evidence_cn": "完整通讯地址应包括街道、城市、州和邮编（如有）。"
+  },
+  "27": {
+    "question_cn": "对于1991年后开校或2000年前关闭的学校，写作平均分是多少？列出学校名称和分数。如果有的话，也列出学校的通讯号码。",
+    "evidence_cn": "通讯号码指的是电话号码。"
+  },
+  "28": {
+    "question_cn": "考虑当地资助学校的K-12招生人数与5-17岁招生人数之间的平均差异，列出差异高于此平均值的学校名称和DOC类型。",
+    "evidence_cn": "K-12招生人数与5-17岁招生人数之间的差异可通过 `Enrollment (K-12)` - `Enrollment (Ages 5-17)` 计算"
+  },
+  "31": {
+    "question_cn": "在1至12年级的学生中，入学人数最多的学校里排名第10和第11的学校的可获免费率各是多少？",
+    "evidence_cn": "K-12 指1至12年级的学生；K-12 的可获免费率 = `Free Meal Count (K-12)` / `Enrollment (K-12)`"
+  },
+  "32": {
+    "question_cn": "对于所有权代码为 66 的学校中，1-12 年级免费或降价餐点数最多的前 5 所学校，它们的合格免费或降价餐点率是多少？",
+    "evidence_cn": "1-12 年级表示 K-12；K-12 的合格免费或降价餐点率 = `FRPM Count (K-12)` / `Enrollment (K-12)`"
+  },
+  "37": {
+    "question_cn": "具有最低卓越率的学校的完整地址是什么？请提供Street、City、Zip和State。",
+    "evidence_cn": "卓越率 = NumGE1500 / NumTstTakr；完整地址包括Street、City、State、Zip代码"
+  },
+  "36": {
+    "question_cn": "哪位管理人员领导的学校学生SAT分数达到1500或以上的人数最多?请提供他们的全名。",
+    "evidence_cn": "全名指名字和姓氏;每所学校最多有3位管理人员;SAT分数大于等于1500是指NumGE1500"
+  },
+  "39": {
+    "question_cn": "从1980年1月1日至1980年12月31日期间开办的Fresno学校的平均考生人数是多少？",
+    "evidence_cn": "between 1/1/1980 and 12/31/1980 表示年份 = 1980"
+  },
+  "40": {
+    "question_cn": "Fresno Unified中平均阅读分数最低的学校的电话号码是多少?",
+    "evidence_cn": "Fresno Unified是一个学区的名称;"
+  },
+  "41": {
+    "question_cn": "列出在各自县中基于平均阅读成绩排名前5的虚拟学校的名称。",
+    "evidence_cn": "完全虚拟学校指Virtual = 'F'; 各自县是指PARTITION BY County"
+  },
+  "45": {
+    "question_cn": "Ricci Ulrich管理的每所学校的平均写作成绩是多少？列出学校及对应的平均写作成绩。",
+    "evidence_cn": "通常，管理员负责学校的事务。"
+  },
+  "46": {
+    "question_cn": "哪所州特殊学校的1至12年级学生入学人数最多？",
+    "evidence_cn": "州特殊学校指 DOC = 31；1至12年级指 K-12"
+  },
+  "47": {
+    "question_cn": "1980年阿拉米达县初等学区管辖下平均每月开办的学校数量是多少?",
+    "evidence_cn": "初等学区指DOC = 52;1980年平均每月开办的学校数量 = 1980年开办的学校数量 / 12"
+  },
+  "48": {
+    "question_cn": "Orange County中合并的统一学区学校与合并的小学区学校的比例是多少？",
+    "evidence_cn": "小学区是指 DOC = 52；统一学区是指 DOC = 54。"
+  },
+  "50": {
+    "question_cn": "请指出数学平均分排名第7高的学校的邮寄街道地址是什么？并指明该学校的名称。",
+    "evidence_cn": "邮寄街道和mailing street是同义词。"
+  },
+  "62": {
+    "question_cn": "洛杉矶县中，特许学校数为0且一年级至十二年级符合条件的免费餐食百分比低于0.18%的非特许学校的总数是多少？",
+    "evidence_cn": "非特许学校是指Charter = 0的学校；K-12表示一年级至十二年级；K-12符合条件的免费餐食百分比 = `Free Meal Count (K-12)` * 100 / `Enrollment (K-12)`"
+  },
+  "72": {
+    "question_cn": "2014-2015学年弗里蒙特州立特殊教育学校（State Special School）5至17岁学生的入学人数是多少？",
+    "evidence_cn": "State Special School 表示 EdOpsCode = 'SSS'"
+  },
+  "79": {
+    "question_cn": "在 San Diego 和 Santa Barbara 这两个县中，哪一个县拥有最多“不提供实体校舍”的学校？请给出该县学校的数量。",
+    "evidence_cn": "“不提供实体校舍”的含义是：在数据库中，`Virtual` 字段的取值为 `F`。"
+  },
+  "82": {
+    "question_cn": "经度最高的学校提供的年级跨度是多少？",
+    "evidence_cn": "最高的经度是指具有最大绝对经度值的学校。"
+  },
+  "83": {
+    "question_cn": "在提供磁石项目并服务于幼儿园至8年级的学校中，有多少所提供多种供应类型？列出提供幼儿园至8年级年级跨度的城市数量，并指出每个城市中服务于该年级跨度的学校数量。",
+    "evidence_cn": "幼儿园至8年级是指K-8；'提供磁石项目'是指Magnet = 1；多种供应类型是指`NSLP Provision Status` = 'Multiple Provision Types'"
+  },
+  "85": {
+    "question_cn": "在其管理员的名字为 Alusine 的学校中，`Percent (%) Eligible Free (K-12)` 是多少？请给出该学校的 `District Code`。",
+    "evidence_cn": "`Percent (%) Eligible Free (K-12)` = `Free Meal Count (K-12)` / `Enrollment (K-12)` * 100%"
+  },
+  "87": {
+    "question_cn": "圣贝纳迪诺县、圣贝纳迪诺市统一学区中，公立初中/中学且属于统一学区、开校时间在2009年1月1日至2010年12月31日之间的学校管理员的有效电子邮件地址是什么？",
+    "evidence_cn": "初中/中学指 SOC = 62；统一学区指 DOC = 54；2009年至2010年之间的年份可以指'2009年1月1日至2010年12月31日之间'"
+  },
+  "89": {
+    "question_cn": "有多少个选择交易后手续费的账户位于东波西米亚地区？",
+    "evidence_cn": "A3 包含地区数据；'POPLATEK PO OBRATU' 表示'交易后手续费'。"
+  },
+  "92": {
+    "question_cn": "列出女性平均薪资超过6000但低于10000的地区数量？",
+    "evidence_cn": "A11 指平均薪资；女性映射到 gender = 'F'"
+  },
+  "93": {
+    "question_cn": "有多少位居住在北波希米亚地区的男性客户的平均工资大于8000?",
+    "evidence_cn": "男性表示 gender = 'M'; A3 代表地区; A11 代表平均工资。"
+  },
+  "94": {
+    "question_cn": "列出性别为女性且年龄最大、平均工资最低的客户的账户号，计算这个最低平均工资与最高平均工资之间的差距？",
+    "evidence_cn": "女性是指 gender = 'F'；A11 指平均工资；差距 = 最高平均工资 - 最低平均工资；如果人物 A 的出生日期 > 人物 B 的出生日期，说明人物 B 比人物 A 年长。"
+  },
+  "95": {
+    "question_cn": "列出年龄最小且平均薪资最高的客户的账户号？",
+    "evidence_cn": "如果A的出生日期 < B的出生日期，说明B比A年龄更小；A11指平均薪资"
+  },
+  "98": {
+    "question_cn": "在1997年获得贷款批准的账户中，列出获批金额最低且选择每周发行对账单的账户。",
+    "evidence_cn": "'POPLATEK TYDNE' 代表每周发行"
+  },
+  "99": {
+    "question_cn": "在贷款期限超过12个月的账户中，列出批准额度最高且账户开户日期在1993年的账户。",
+    "evidence_cn": "贷款期限超过12个月是指 duration > 12"
+  },
+  "100": {
+    "question_cn": "在已开立的 `account` 中，有多少女性客户（`gender = 'F'`），出生于1950年之前并且居住在 Sokolov？",
+    "evidence_cn": "Customers 指 `client`；Female 指 `gender = 'F'`；区域名称出现在列 `A2`。"
+  },
+  "112": {
+    "question_cn": "对于出生于1976年1月29日的女性客户，她开设账户的地区是哪个？",
+    "evidence_cn": "女性指 gender = 'F'；A2 指地区名称"
+  },
+  "115": {
+    "question_cn": "对于位于南波西米亚地区且居民数最多的分支，男性客户的百分比是多少？",
+    "evidence_cn": "男性客户百分比 = DIVIDE(COUNT(男性客户), COUNT(客户)) * 100; 男性指 gender = 'M', A3 是地区名称。A4 包含居民数的信息。"
+  },
+  "116": {
+    "question_cn": "对于贷款在1993年7月5日首次获批的客户，其账户余额从1993年3月22日到1998年12月27日的增长率是多少？",
+    "evidence_cn": "账户余额增长率 = [(日期A的余额 - 日期B的余额) / 日期B的余额] * 100%"
+  },
+  "117": {
+    "question_cn": "已全额支付且无问题的贷款金额占比是多少。",
+    "evidence_cn": "贷款已全额支付且无问题意味着合同已完成，无问题；status = 'A' 表示合同已完成，无问题；按条件划分的账户百分比 = [(total(amount) & condition) / (total amount)] * 100%"
+  },
+  "118": {
+    "question_cn": "对于贷款金额少于100000美元的情况，仍在运行且没有问题的账户占的百分比是多少?",
+    "evidence_cn": "Status = 'C' 表示运行中的合同,目前没有问题;按条件统计的账户百分比 = [(total(amount) & condition) / (total amount)] * 100。"
+  },
+  "125": {
+    "question_cn": "对于仍在运行且客户处于债务状态的贷款合同，列出地区和失业率从1995年到1996年的增长百分比。",
+    "evidence_cn": "失业率增长百分比 = [(1996年失业率 - 1995年失业率) / 1995年失业率] * 100；1995年失业率出现在 A12 中；1996年失业率出现在 A13 中；仍在运行且客户处于债务状态的贷款合同可以表示为 status = 'D'"
+  },
+  "128": {
+    "question_cn": "列出按降序排列的前九个地区，从最高到最低，女性账户持有人的数量。",
+    "evidence_cn": "A2 指的是地区；女性指的是 gender = 'F'"
+  },
+  "136": {
+    "question_cn": "在1995年1月1日至1997年12月31日期间，选择按月发放对账单的账户中，批准金额至少为250,000的贷款有多少笔？",
+    "evidence_cn": "Frequency = 'POPLATEK MESICNE' 表示按月发放对账单"
+  },
+  "137": {
+    "question_cn": "有多少个账户在分支位置1有正在进行的合同?",
+    "evidence_cn": "Status = 'C' 表示合同正在进行中，目前状态良好；Status = 'D' 表示合同正在进行中，客户欠债"
+  },
+  "138": {
+    "question_cn": "在1995年犯罪数第二高的分支机构所在地区，有多少名男性客户？",
+    "evidence_cn": "男性是指 gender = 'M'；A15 代表1995年犯罪数"
+  },
+  "129": {
+    "question_cn": "1996年1月份按地区名称统计，金额最大的十笔非信用卡取款是哪些？",
+    "evidence_cn": "非信用卡取款是指 type = 'VYDAJ'；1996年1月份可以通过数据库中 date LIKE '1996-01%' 找到；A2 表示地区名称"
+  },
+  "145": {
+    "question_cn": "在1998年，哪些账户持有人的身份证号码进行了金额低于平均值的信用卡交易？",
+    "evidence_cn": "Operation = 'VYBER KARTOU' 指信用卡提取"
+  },
+  "149": {
+    "question_cn": "请列出不符合贷款资格的账户类型，以及该账户所在地区的居民平均收入超过 $8000 但不超过 $9000。",
+    "evidence_cn": "A11 代表平均工资；工资和收入有相似的含义；当账户类型 = 'OWNER' 时，符合贷款资格"
+  },
+  "152": {
+    "question_cn": "在1995年犯罪数超过4000且该地区有从1997年开始开立账户的地区中，1995年犯罪数的平均值是多少？",
+    "evidence_cn": "A3 指地区名称；A15 表示1995年犯罪数。"
+  },
+  "159": {
+    "question_cn": "列出客户id为3356的所有现金提取交易。",
+    "evidence_cn": "operation = 'VYBER' 指的是现金提取"
+  },
+  "168": {
+    "question_cn": "在平均工资超过10000的地区开设账户的客户中，女性客户的百分比是多少？",
+    "evidence_cn": "女性指 gender = 'F'；女性和女性含义相同；平均工资可以在 A11 中找到"
+  },
+  "169": {
+    "question_cn": "对于男性客户，1996年至1997年间所有账户的贷款总额增长率是多少？",
+    "evidence_cn": "增长率 = (1997年amount总和 - 1996年amount总和) / (1996年amount总和) * 100%; 男性指gender = 'M'"
+  },
+  "173": {
+    "question_cn": "账户号码3多久请求一次发布账户对账单？总共扣款3539的目的是什么？",
+    "evidence_cn": "k_symbol指的是付款的目的"
+  },
+  "186": {
+    "question_cn": "请求每周发放对账单的男性客户占比是多少？",
+    "evidence_cn": "男性客户的百分比 = [请求每周发放对账单的男性客户数 / 请求每周发放对账单的客户总数] * 100%；男性指 gender = 'M'；'POPLATEK TYDNE' 表示每周发放"
+  },
+  "189": {
+    "question_cn": "找出最年长且平均工资最低的女性客户的账户号?",
+    "evidence_cn": "女性在 gender 中用 'F' 表示; A11 包含平均工资的信息"
+  },
+  "192": {
+    "question_cn": "仍处于运行合同且在每笔交易后出具对账单的 loan 的平均 amount 是多少？",
+    "evidence_cn": "status = 'C' 表示合同正在执行，至今正常；status = 'D' 表示合同正在执行，客户有欠款。'POPLATEK PO OBRATU' 表示在每笔交易后出具对账单。"
+  },
+  "194": {
+    "question_cn": "提供拥有高等级信用卡且有贷款资格的客户的ID和年龄。",
+    "evidence_cn": "高等级信用卡指 card.type = 'gold'；有贷款资格指 disp.type = 'OWNER'"
+  },
+  "119": {
+    "question_cn": "对于1993年的账户，其中statement在交易后发行，列出账户ID、地区名称和地区区域。",
+    "evidence_cn": "关于地区名称的记录可以在A2中找到；A3包含区域信息。'POPLATEK PO OBRATU'表示交易后发行。"
+  },
+  "1464": {
+    "question_cn": "写出在 9/9/2019 这一天收到资金的学生的全名，并包含其收到的金额。",
+    "evidence_cn": "full name 指的是 first_name 和 last_name；收到的资金金额指的是 amount；在某日期收到资金指的是 date_received。"
+  },
+  "1175": {
+    "question_cn": "在化验时，血红蛋白（HGB）数值最高的那位患者当时多大年龄？医生的诊断是什么？",
+    "evidence_cn": "“患者年龄”指的是 SUBTRACT(year(`Examination Date`), year(Birthday))；“血红蛋白数值最高”指的是 MAX(HGB)"
+  },
+  "1091": {
+    "question_cn": "2009 年 4 月在 Belgium Jupiler League 中一共进行了多少场比赛？",
+    "evidence_cn": "“Belgium Jupiler League” 指的是 League.name = 'Belgium Jupiler League'；“在 2009 年 4 月” 指的是 SUBSTR(`date`, 1, 7)；"
+  },
+  "1130": {
+    "question_cn": "在制造传球进攻机会时被标记为“Safe”的球队，它们的简称（team_short_name）是什么？",
+    "evidence_cn": "“played safe while creating chance of passing” 指的是 `chanceCreationPassingClass = 'Safe'`；“short name of team” 指的是 `team_short_name`。"
+  },
+  "857": {
+    "question_cn": "请给出阿布扎比大奖赛的坐标位置。",
+    "evidence_cn": "“坐标位置/地点”指的是`lat`, `lng`；“阿布扎比大奖赛”指的是`races.name = 'Abu Dhabi Grand Prix'`。"
+  },
+  "892": {
+    "question_cn": "说明积分最高的车手，并给出他的全名以及该积分。",
+    "evidence_cn": "“积分最高”是指 max(points)；车手的全名由 drivers.forename 和 drivers.surname 组成。"
+  },
+  "940": {
+    "question_cn": "在2008年中国大奖赛中，在完成比赛的车手中，有多少人参加过 Formula_1 分站比赛？",
+    "evidence_cn": "条件 COUNT(raceID) > 0 表明该车手参与过分站比赛；完成比赛的车手是指其 time 字段有值。"
+  },
+  "724": {
+    "question_cn": "请列出所有拥有蓝色眼睛并且金色头发的超级英雄的superhero_name。",
+    "evidence_cn": "“蓝色眼睛”指的是colour = 'Blue' 且 eye_colour_id = colour.id；“金色头发”指的是colour = 'Blond' 且 hair_colour_id = colour.id；“Agility”这一超级能力指的是power_name = 'Agility'。"
+  },
+  "765": {
+    "question_cn": "有多少位英雄拥有隐身能力？",
+    "evidence_cn": "隐身能力是指其 power_name = 'Stealth'。"
+  },
+  "782": {
+    "question_cn": "列出眼睛和头发颜色均为黑色的英雄的名字。",
+    "evidence_cn": "英雄的名字指的是 superhero_name；眼睛和头发的颜色都为黑色指的是 eye_colour_id AND hair_colour_id WHERE colour.colour = 'Black';"
+  },
+  "397": {
+    "question_cn": "具有普通layout、2003版frameVersion、黑色borderColor并且availability为'mtgo,paper'的牌，其manaCost是什么？",
+    "evidence_cn": "“available in paper and mtgo”指的是availability = 'mtgo,paper'；frameVersion = 2003；borderColor = 'black'。"
+  },
+  "424": {
+    "question_cn": "在所有牌中，“normal” 布局下没有文字框的牌所占的比例是多少？",
+    "evidence_cn": "“do not have a text box” 指的是 isTextless = 1；“proportion” 指的是 DIVIDE(COUNT(isTextless = 1 且 layout = 'normal'), COUNT(isTextless)) * 100"
+  },
+  "468": {
+    "question_cn": "集合 name = 'Eighth Edition' 的名称在简体中文中的 translation 是什么？",
+    "evidence_cn": "Eighth Edition 是卡牌集合的名称，对应于 name = 'Eighth Edition'；简体中文对应于 language = 'Chinese Simplified'；名称的翻译对应于 translation。"
+  },
+  "218": {
+    "question_cn": "在所有致癌类型的分子中，不含氟元素的分子占百分之多少？",
+    "evidence_cn": "label = '+' 表示分子是致癌的；含氟指的是 element = 'f'；百分比的计算为：在 label = '+' 的条件下，用 DIVIDE(SUM(element = 'f') * 100, COUNT(molecule_id))；在进行计数时应当按不同的原子去重计算。"
+  },
+  "219": {
+    "question_cn": "在具有三键类型键的分子中，致癌分子所占的百分比是多少？",
+    "evidence_cn": "label = '+' 表示分子是致癌的；三键是指 bond_type = '#'; 百分比 = 在 label = '+' 的条件下，计算 DIVIDE(SUM(bond_type = '#') * 100, COUNT(bond_id)) 作为 percent"
+  },
+  "268": {
+    "question_cn": "bond id 为 TR001_10_11 的元素是什么？",
+    "evidence_cn": "TR001_10_11 是 bond id；"
+  },
+  "77": {
+    "question_cn": "在县域为 Los Angeles 的学校中，哪些学校的 GSserved 年级跨度为从 Kindergarten 到 9th grade？这些学校各自的 Percent (%) Eligible FRPM (Ages 5-17) 是多少？",
+    "evidence_cn": "Percent (%) Eligible FRPM (Ages 5-17) 可以通过 `FRPM Count (Ages 5-17)` / `Enrollment (Ages 5-17)` * 100 来获得。"
+  },
+  "120": {
+    "question_cn": "从1995年到2000年，“east Bohemia”地区的账户持有人是谁？请给出对应的account_id以及对账单发送frequency。",
+    "evidence_cn": "账户持有人指的是拥有该account的个人。"
+  }
+}

@@ -1,0 +1,12 @@
+[
+    {
+        "sql_id": "0",
+        "sql": "WITH period1_users AS (SELECT DISTINCT `vplayerid` FROM `dwd_jordass_activityrecord_hi` WHERE `dteventtime` >= '2024-01-01' AND `dteventtime` <= '2024-01-07' AND `actid` = 1001), period2_users AS (SELECT DISTINCT `vplayerid` FROM `dwd_jordass_activityrecord_hi` WHERE `dteventtime` >= '2024-01-08' AND `dteventtime` <= '2024-01-14' AND `actid` <> 1001), period3_users AS (SELECT DISTINCT `vplayerid` FROM `dwd_jordass_activityrecord_hi` WHERE `dteventtime` >= '2024-01-15' AND `dteventtime` <= '2024-01-21' AND `actid` = 1001) SELECT COUNT(*) AS player_count FROM period1_users AS p1 INNER JOIN period2_users AS p2 ON p1.`vplayerid` = p2.`vplayerid` INNER JOIN period3_users AS p3 ON p1.`vplayerid` = p3.`vplayerid`",
+        "status": "success",
+        "result": [
+            {
+                "player_count": 0
+            }
+        ]
+    }
+]
