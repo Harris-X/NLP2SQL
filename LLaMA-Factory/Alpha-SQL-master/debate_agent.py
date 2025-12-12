@@ -108,6 +108,15 @@ SQL_FIX_SYSTEM_PROMPT = (
 HistoryMode = Literal["compact", "full", "none"]
 
 
+_LLM_CALL_SEQ = 0
+
+
+def _next_llm_call_id() -> int:
+    global _LLM_CALL_SEQ
+    _LLM_CALL_SEQ += 1
+    return _LLM_CALL_SEQ
+
+
 def _truncate_text(text: str, max_chars: int) -> str:
     if max_chars <= 0:
         return ""
@@ -371,6 +380,28 @@ def append_dialogue(dialogues: List[Dict[str, Any]], entry: Dict[str, Any], log_
             pass
 
 
+def append_dialogue_dual(
+    *,
+    dialogues_ctx: List[Dict[str, Any]],
+    dialogues_log: Optional[List[Dict[str, Any]]],
+    entry: Dict[str, Any],
+    log_path: Optional[Path],
+) -> None:
+    """Append a dialogue entry to context (for LLM) and to log (for audit).
+
+    - `dialogues_ctx` is the in-memory list that will be fed back to LLMs.
+    - `dialogues_log` is the full audit list; when provided, it is also streamed to `log_path`.
+    """
+    if dialogues_log is None:
+        append_dialogue(dialogues_ctx, entry, log_path)
+        return
+    append_dialogue(dialogues_log, entry, log_path)
+    # Avoid duplicating if both lists are the same object.
+    if dialogues_ctx is dialogues_log:
+        return
+    append_dialogue(dialogues_ctx, entry, None)
+
+
 def append_history(history: List[Dict[str, Any]], entry: Dict[str, Any], log_path: Optional[Path]) -> None:
     """Append a history entry and stream it to the same log for richer metadata."""
     history.append(entry)
@@ -420,18 +451,40 @@ def _contains_any(text: str, terms: List[str]) -> bool:
     return any(term in t for term in terms if term)
 
 
+def _normalize_reason_prefix_text(text: str) -> str:
+    return (
+        str(text or "")
+        .strip()
+        .replace("：", ":")
+        .replace("（", "(")
+        .replace("）", ")")
+    )
+
+
+def _reason_has_expected_prefix(reason: str, expected_prefix: str) -> bool:
+    r = _normalize_reason_prefix_text(reason)
+    p = _normalize_reason_prefix_text(expected_prefix)
+    if not r or not p:
+        return False
+    if r.startswith(p):
+        return True
+    # tolerate extra spaces/newlines right after the prefix
+    return r.replace(" ", "").startswith(p.replace(" ", ""))
+
+
 def _validate_judge_parsed(
     parsed: Dict[str, Any],
     expected_prefix: str,
     *,
     require_other_ref_terms: Optional[List[str]] = None,
     require_critique_markers: bool = False,
+    disallow_same_reason_as: Optional[List[str]] = None,
 ) -> str:
     reason = str(parsed.get("reason") or "").strip()
     incorrect_parts = parsed.get("incorrect_parts")
     if not reason:
         return "missing_reason"
-    if not reason.startswith(expected_prefix):
+    if not _reason_has_expected_prefix(reason, expected_prefix):
         return "bad_prefix"
     if incorrect_parts is not None and not isinstance(incorrect_parts, list):
         return "bad_incorrect_parts_type"
@@ -441,6 +494,11 @@ def _validate_judge_parsed(
         haystack = json.dumps(parsed, ensure_ascii=False)
         if not _contains_any(haystack, require_other_ref_terms):
             return "missing_counter_to_other"
+
+    if disallow_same_reason_as:
+        for r in disallow_same_reason_as:
+            if _is_same_reason(reason, str(r or "")):
+                return "duplicate_reason"
 
     if require_critique_markers:
         # Require at least one critique marker (lightweight heuristic).
@@ -472,7 +530,9 @@ def _enforce_judge_output(
     max_retries: int = 1,
     require_other_ref_terms: Optional[List[str]] = None,
     require_critique_markers: bool = False,
+    disallow_same_reason_as: Optional[List[str]] = None,
     log_tag: str = "",
+    print_llm_calls: bool = False,
     print_raw: bool = False,
     print_raw_max_chars: int = 0,
 ) -> Dict[str, Any]:
@@ -483,23 +543,46 @@ def _enforce_judge_output(
     for attempt in range(0, max(0, max_retries) + 1):
         hard = ""
         if attempt > 0:
+            other_req = ""
+            if require_other_ref_terms:
+                # Prefer a stable token so models reliably satisfy it.
+                token = require_other_ref_terms[0]
+                other_req = f"reason字段中必须包含对方标签：{token}；"
             hard = (
-                f"【输出无效:{err or 'unknown'}】你必须只输出JSON，且用```json代码块包裹；"
+                f"【输出无效:{err or 'unknown'}】只输出一个```json代码块（不要任何其它文字）；"
                 f"reason必须以'{expected_prefix}'开头；incorrect_parts必须是数组；"
-                "不要复述别人的句子；必须给出可核验的差异观点与批判。"
+                + other_req
+                + "并且必须包含至少1个批判/反驳词（如：反驳/不同意/质疑/纠正/澄清/修正/补充）。"
+                "请严格按以下模板输出：\n"
+                "```json\n"
+                "{\n"
+                "  \"incorrect_parts\": [{\"segment\": \"...\", \"reason\": \"...\"}],\n"
+                f"  \"reason\": \"{expected_prefix} ...\",\n"
+                "  \"understanding_notes\": [\"...\"],\n"
+                "  \"question_intent_guess\": \"...\",\n"
+                "  \"schema_gap_hypotheses\": [],\n"
+                "  \"missing_question_info_to_fields\": [],\n"
+                "  \"unused_table_backfill\": [],\n"
+                "  \"next_round_advice\": \"...\"\n"
+                "}\n"
+                "```"
             )
         merged_extra = (extra_context + "\n\n" + hard).strip() if (extra_context and hard) else (extra_context or hard)
         last = call_judge(
-            model,
-            system_prompt,
-            prompt_text,
-            merged_extra,
-            dialogues,
-            temperature,
-            max_tokens,
-            history_mode,
-            history_max_turns,
-            history_max_chars,
+            model=model,
+            system_prompt=system_prompt,
+            prompt=prompt_text,
+            extra_context=merged_extra,
+            dialogues=dialogues,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            history_mode=history_mode,
+            history_max_turns=history_max_turns,
+            history_max_chars=history_max_chars,
+            print_llm_calls=print_llm_calls,
+            print_raw=False,
+            print_raw_max_chars=0,
+            log_tag=log_tag,
         )
 
         if print_raw:
@@ -512,6 +595,7 @@ def _enforce_judge_output(
             expected_prefix,
             require_other_ref_terms=require_other_ref_terms,
             require_critique_markers=require_critique_markers,
+            disallow_same_reason_as=disallow_same_reason_as,
         )
         if not err:
             return last
@@ -553,6 +637,7 @@ def validate_sql_with_fixes(
     prompt_text: str,
     model_c: LLMClient,
     dialogues: List[Dict[str, Any]],
+    dialogues_log: Optional[List[Dict[str, Any]]],
     history: List[Dict[str, Any]],
     dialogue_log: Optional[Path],
     exec_results_path: Optional[Path],
@@ -566,6 +651,7 @@ def validate_sql_with_fixes(
     history_max_turns: int,
     history_max_chars: int,
     require_nonempty: bool,
+    print_llm_calls: bool = False,
     print_raw: bool = False,
     print_raw_max_chars: int = 0,
     log_tag: str = "",
@@ -597,9 +683,10 @@ def validate_sql_with_fixes(
         exec_result = sql_tool.run(current_sql, timeout=sql_timeout)
         last_exec = exec_result
         err_text = str(exec_result.get("error") or "").strip() or "(empty)"
+        rows_sample = exec_result.get("rows_sample") or []
         print(
             f"[{question_id}] round={round_idx + 1} tool=mysql_exec attempt={fix_idx} "
-            f"status={exec_result.get('status')} error={_short(err_text, 220)}"
+            f"status={exec_result.get('status')} rows_sample_len={len(rows_sample)} error={_short(err_text, 220)}"
         )
         attempts.append({"attempt": fix_idx, "sql": current_sql, **exec_result})
 
@@ -629,9 +716,10 @@ def validate_sql_with_fixes(
             },
             dialogue_log,
         )
-        append_dialogue(
-            dialogues,
-            {
+        append_dialogue_dual(
+            dialogues_ctx=dialogues,
+            dialogues_log=dialogues_log,
+            entry={
                 "model": "TOOL",
                 "verdict": "sql_exec",
                 "round": round_idx,
@@ -641,16 +729,16 @@ def validate_sql_with_fixes(
                 "rows_sample": exec_result.get("rows_sample"),
                 "sql": current_sql,
             },
-            dialogue_log,
+            log_path=dialogue_log,
         )
 
         if exec_result.get("status") == "success":
-            rows_sample = exec_result.get("rows_sample") or []
             empty_result = len(rows_sample) == 0
             exec_context = _format_exec_context(current_sql, exec_result)
-            append_dialogue(
-                dialogues,
-                {
+            append_dialogue_dual(
+                dialogues_ctx=dialogues,
+                dialogues_log=dialogues_log,
+                entry={
                     "model": "SYS",
                     "verdict": "sql_exec_summary",
                     "round": round_idx,
@@ -662,7 +750,7 @@ def validate_sql_with_fixes(
                     },
                     "response_raw": exec_context,
                 },
-                dialogue_log,
+                log_path=dialogue_log,
             )
             append_exec_result(
                 exec_results_path,
@@ -691,6 +779,7 @@ def validate_sql_with_fixes(
             history_mode=history_mode,
             history_max_turns=history_max_turns,
             history_max_chars=history_max_chars,
+            print_llm_calls=print_llm_calls,
             print_raw=print_raw,
             print_raw_max_chars=print_raw_max_chars,
             log_tag=(log_tag or f"{question_id} round={round_idx + 1} model=C verdict=sql_fix attempt={fix_idx}"),
@@ -715,8 +804,22 @@ def validate_sql_with_fixes(
                 "response_raw": fix.get("raw"),
                 "parsed": {"fixed_sql": fix.get("fixed_sql"), "reason": fix.get("reason")},
             },
-            dialogue_log,
+            None,
         )
+        if dialogues_log is not None:
+            append_dialogue(
+                dialogues_log,
+                {
+                    "model": "C",
+                    "verdict": "sql_fix",
+                    "round": round_idx,
+                    "attempt": fix_idx,
+                    "messages": fix.get("messages"),
+                    "response_raw": fix.get("raw"),
+                    "parsed": {"fixed_sql": fix.get("fixed_sql"), "reason": fix.get("reason")},
+                },
+                dialogue_log,
+            )
 
         if fix.get("fixed_sql"):
             current_sql = str(fix.get("fixed_sql") or "").strip()
@@ -724,16 +827,17 @@ def validate_sql_with_fixes(
             break
 
     exec_context = _format_exec_context(current_sql, last_exec)
-    append_dialogue(
-        dialogues,
-        {
+    append_dialogue_dual(
+        dialogues_ctx=dialogues,
+        dialogues_log=dialogues_log,
+        entry={
             "model": "SYS",
             "verdict": "sql_exec_summary",
             "round": round_idx,
             "parsed": {"status": str(last_exec.get("status") or ""), "validated": False, "error": last_error},
             "response_raw": exec_context,
         },
-        dialogue_log,
+        log_path=dialogue_log,
     )
     append_exec_result(
         exec_results_path,
@@ -761,14 +865,16 @@ def call_sql_fixer(
     history_mode: HistoryMode,
     history_max_turns: int,
     history_max_chars: int,
+    print_llm_calls: bool = False,
     print_raw: bool = False,
     print_raw_max_chars: int = 0,
     log_tag: str = "",
 ) -> Dict[str, Any]:
     history_text = ""
-    if history_mode in {"full", "compact"}:
-        # Do not truncate or drop content; keep full history.
+    if history_mode == "full":
         history_text = dialogues_to_text(dialogues)
+    elif history_mode == "compact":
+        history_text = render_compact_history(dialogues, history_max_turns, history_max_chars)
 
     messages: List[Dict[str, str]] = [
         {"role": "system", "content": SQL_FIX_SYSTEM_PROMPT},
@@ -790,6 +896,12 @@ def call_sql_fixer(
         }
     )
 
+    if print_llm_calls:
+        call_id = _next_llm_call_id()
+        print(
+            f"[LLM_CALL] id={call_id} tag={log_tag or 'sql_fix'} model={getattr(model, 'model', '')} "
+            f"messages={len(messages)} max_tokens={max_tokens}"
+        )
     resp = model.invoke(messages=messages, temperature=temperature, max_tokens=max_tokens)
     if print_raw:
         _print_raw(log_tag or "sql_fix", resp, print_raw_max_chars)
@@ -827,14 +939,16 @@ def call_judge(
     history_mode: HistoryMode,
     history_max_turns: int,
     history_max_chars: int,
+    print_llm_calls: bool = False,
     print_raw: bool = False,
     print_raw_max_chars: int = 0,
     log_tag: str = "",
 ) -> Dict[str, Any]:
     history_text = ""
-    if history_mode in {"full", "compact"}:
-        # Do not truncate or drop content; keep full history.
+    if history_mode == "full":
         history_text = dialogues_to_text(dialogues)
+    elif history_mode == "compact":
+        history_text = render_compact_history(dialogues, history_max_turns, history_max_chars)
 
     messages: List[Dict[str, str]] = [
         {"role": "system", "content": system_prompt},
@@ -850,6 +964,12 @@ def call_judge(
     if history_mode != "none" and history_text:
         messages.append({"role": "user", "content": f"【历史记录（摘要）】\n{history_text}"})
 
+    if print_llm_calls:
+        call_id = _next_llm_call_id()
+        print(
+            f"[LLM_CALL] id={call_id} tag={log_tag or 'judge'} model={getattr(model, 'model', '')} "
+            f"messages={len(messages)} max_tokens={max_tokens}"
+        )
     resp = model.invoke(messages=messages, temperature=temperature, max_tokens=max_tokens)
     if print_raw:
         _print_raw(log_tag or "judge", resp, print_raw_max_chars)
@@ -875,14 +995,16 @@ def call_decider(
     history_mode: HistoryMode,
     history_max_turns: int,
     history_max_chars: int,
+    print_llm_calls: bool = False,
     print_raw: bool = False,
     print_raw_max_chars: int = 0,
     log_tag: str = "",
 ) -> Dict[str, Any]:
     history_text = ""
-    if history_mode in {"full", "compact"}:
-        # Do not truncate or drop content; keep full history.
+    if history_mode == "full":
         history_text = dialogues_to_text(dialogues)
+    elif history_mode == "compact":
+        history_text = render_compact_history(dialogues, history_max_turns, history_max_chars)
 
     messages: List[Dict[str, str]] = [
         {"role": "system", "content": DECISION_SYSTEM_PROMPT},
@@ -898,6 +1020,12 @@ def call_decider(
     if history_mode != "none" and history_text:
         messages.append({"role": "user", "content": f"【历史记录（摘要）】\n{history_text}"})
 
+    if print_llm_calls:
+        call_id = _next_llm_call_id()
+        print(
+            f"[LLM_CALL] id={call_id} tag={log_tag or 'decision'} model={getattr(model, 'model', '')} "
+            f"messages={len(messages)} max_tokens={max_tokens}"
+        )
     resp = model.invoke(messages=messages, temperature=temperature, max_tokens=max_tokens)
     if print_raw:
         _print_raw(log_tag or "decision", resp, print_raw_max_chars)
@@ -937,6 +1065,8 @@ def run_debate(
     sql_fix_max_tries: int,
     exec_results_path: Optional[Path],
     require_nonempty: bool,
+    forget_history_between_rounds: bool,
+    print_llm_calls: bool,
     print_raw: bool,
     print_raw_max_chars: int,
 ) -> Dict[str, Any]:
@@ -944,7 +1074,8 @@ def run_debate(
     current_sql = read_sql_text(sql_dir, question_id)
     prompt_text = build_prompt(record, current_sql)
     history: List[Dict[str, Any]] = []
-    dialogues: List[Dict[str, Any]] = []
+    dialogues_log: List[Dict[str, Any]] = []
+    dialogues_ctx: List[Dict[str, Any]] = []
     sql_tool = None
     sql_tool_init_error = ""
     if execute_sql:
@@ -955,7 +1086,7 @@ def run_debate(
             sql_tool_init_error = f"SQLExecutionTool init failed: {e}"
 
     # log record start
-    append_dialogue(dialogues, {"type": "record_start", "question_id": question_id}, dialogue_log)
+    append_dialogue(dialogues_log, {"type": "record_start", "question_id": question_id}, dialogue_log)
     print(f"[{question_id}] start")
     if execute_sql and sql_tool is None:
         append_history(
@@ -980,15 +1111,29 @@ def run_debate(
         )
 
     exec_context_for_next_round = ""
+    last_a_first_reason = ""
+    last_b_first_reason = ""
+    last_a_second_reason = ""
+    last_b_second_reason = ""
+    force_regen_next_round_due_to_empty = False
 
     for round_idx in range(max_rounds):
-        round_base_dialogues = copy.deepcopy(dialogues)
-        # First-pass judgments (pass full dialogues list so model receives all prior turns)
+        if forget_history_between_rounds and round_idx > 0:
+            dialogues_ctx = []
+
+        round_base_dialogues = copy.deepcopy(dialogues_ctx)
+        # First-pass judgments (base snapshot to avoid same-round leakage)
+        a_first_extra = exec_context_for_next_round
+        if (not forget_history_between_rounds) and round_idx > 0 and last_a_first_reason:
+            a_first_extra = (a_first_extra + "\n\n" if a_first_extra else "") + (
+                "【跨轮约束】你是A(业务)。本轮first_pass必须与上一轮A的first_pass不同（reason不可同句、不可复述），"
+                "需要基于上一轮执行结果/修正SQL给出新的业务口径问题或修正点。"
+            )
         judge_a = _enforce_judge_output(
             model=model_a,
             system_prompt=EVAL_SYSTEM_PROMPT_A,
             prompt_text=prompt_text,
-            extra_context=exec_context_for_next_round,
+            extra_context=a_first_extra,
             dialogues=round_base_dialogues,
             temperature=temperature,
             max_tokens=max_tokens,
@@ -997,7 +1142,9 @@ def run_debate(
             history_max_chars=history_max_chars,
             expected_prefix="A(业务):",
             max_retries=1,
+            disallow_same_reason_as=[last_a_first_reason] if (round_idx > 0 and last_a_first_reason) else None,
             log_tag=f"{question_id} round={round_idx + 1} model=A verdict=first_pass",
+            print_llm_calls=print_llm_calls,
             print_raw=print_raw,
             print_raw_max_chars=print_raw_max_chars,
         )
@@ -1015,7 +1162,7 @@ def run_debate(
             "round": round_idx,
         }, dialogue_log)
         # Append A after both A/B are finished to avoid same-round leakage.
-        append_dialogue(dialogues, {
+        append_dialogue_dual(dialogues_ctx=dialogues_ctx, dialogues_log=dialogues_log, entry={
             "model": "A",
             "verdict": "first_pass",
             "messages": judge_a.get("messages"),
@@ -1023,13 +1170,25 @@ def run_debate(
             "history_snapshot": judge_a.get("history_snapshot"),
             "response_raw": judge_a.get("raw"),
             "parsed": parsed_a_1,
-        }, dialogue_log)
+        }, log_path=dialogue_log)
+
+        # B first-pass: must be role-specific and must not repeat A's sentence.
+        b_first_extra = exec_context_for_next_round
+        if (not forget_history_between_rounds) and round_idx > 0 and last_b_first_reason:
+            b_first_extra = (b_first_extra + "\n\n" if b_first_extra else "") + (
+                "【跨轮约束】你是B(SQL)。本轮first_pass必须与上一轮B的first_pass不同（reason不可同句、不可复述），"
+                "需要基于上一轮执行结果/修正SQL给出新的SQL逻辑问题或修正点。"
+            )
+        if judge_a.get("reason"):
+            b_first_extra = (b_first_extra + "\n\n" if b_first_extra else "") + (
+                "【去重约束】你的reason不得与评审员A的reason同句或高度重复；你们职责不同，请用SQL逻辑角度重写。"
+            )
 
         judge_b = _enforce_judge_output(
             model=model_b,
             system_prompt=EVAL_SYSTEM_PROMPT_B,
             prompt_text=prompt_text,
-            extra_context=exec_context_for_next_round,
+            extra_context=b_first_extra,
             dialogues=round_base_dialogues,
             temperature=temperature,
             max_tokens=max_tokens,
@@ -1038,7 +1197,14 @@ def run_debate(
             history_max_chars=history_max_chars,
             expected_prefix="B(SQL):",
             max_retries=1,
+            disallow_same_reason_as=[
+                last_b_first_reason,
+                str(judge_a.get("reason") or ""),
+            ]
+            if (round_idx > 0 and (last_b_first_reason or judge_a.get("reason")))
+            else ([str(judge_a.get("reason") or "")] if judge_a.get("reason") else None),
             log_tag=f"{question_id} round={round_idx + 1} model=B verdict=first_pass",
+            print_llm_calls=print_llm_calls,
             print_raw=print_raw,
             print_raw_max_chars=print_raw_max_chars,
         )
@@ -1054,7 +1220,7 @@ def run_debate(
             "incorrect_parts": judge_b["incorrect_parts"],
             "reason": judge_b["reason"],
         }, dialogue_log)
-        append_dialogue(dialogues, {
+        append_dialogue_dual(dialogues_ctx=dialogues_ctx, dialogues_log=dialogues_log, entry={
             "model": "B",
             "verdict": "first_pass",
             "messages": judge_b.get("messages"),
@@ -1062,20 +1228,24 @@ def run_debate(
             "history_snapshot": judge_b.get("history_snapshot"),
             "response_raw": judge_b.get("raw"),
             "parsed": parsed_b_1,
-        }, dialogue_log)
+        }, log_path=dialogue_log)
+
+        last_a_first_reason = str(judge_a.get("reason") or "")
+        last_b_first_reason = str(judge_b.get("reason") or "")
 
         enrichment_for_second_pass = build_enrichment_text([parsed_a_1, parsed_b_1], max_chars=0)
         if enrichment_for_second_pass:
-            append_dialogue(
-                dialogues,
-                {
+            append_dialogue_dual(
+                dialogues_ctx=dialogues_ctx,
+                dialogues_log=dialogues_log,
+                entry={
                     "model": "SYS",
                     "verdict": "enrichment",
                     "round": round_idx,
                     "parsed": {"enrichment_chars": len(enrichment_for_second_pass)},
                     "response_raw": enrichment_for_second_pass,
                 },
-                dialogue_log,
+                log_path=dialogue_log,
             )
 
         # Second-pass with history
@@ -1092,17 +1262,19 @@ def run_debate(
             system_prompt=EVAL_SYSTEM_PROMPT_A,
             prompt_text=prompt_text,
             extra_context=a_second_extra,
-            dialogues=dialogues,
+            dialogues=dialogues_ctx,
             temperature=temperature,
             max_tokens=max_tokens,
             history_mode=history_mode,
             history_max_turns=history_max_turns,
             history_max_chars=history_max_chars,
             expected_prefix="A(业务):",
-            max_retries=1,
-            require_other_ref_terms=["评审员B", "B("],
+            max_retries=2,
+            require_other_ref_terms=["评审员B"],
             require_critique_markers=True,
+            disallow_same_reason_as=[last_a_second_reason] if (round_idx > 0 and last_a_second_reason) else None,
             log_tag=f"{question_id} round={round_idx + 1} model=A verdict=second_pass",
+            print_llm_calls=print_llm_calls,
             print_raw=print_raw,
             print_raw_max_chars=print_raw_max_chars,
         )
@@ -1117,20 +1289,30 @@ def run_debate(
                 "【检测到复读】你second_pass的reason/incorrect_parts与first_pass相同。"
                 "你必须提供与first_pass不同的更新观点，并反驳B至少1点；否则输出无效。"
             )
-            judge_a_2_retry = call_judge(
-                model_a,
-                EVAL_SYSTEM_PROMPT_A,
-                prompt_text,
-                (a_second_extra + "\n\n" + retry_note).strip(),
-                dialogues,
-                temperature,
-                max_tokens,
-                history_mode,
-                history_max_turns,
-                history_max_chars,
+            judge_a_2_retry = _enforce_judge_output(
+                model=model_a,
+                system_prompt=EVAL_SYSTEM_PROMPT_A,
+                prompt_text=prompt_text,
+                extra_context=(a_second_extra + "\n\n" + retry_note).strip(),
+                dialogues=dialogues_ctx,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                history_mode=history_mode,
+                history_max_turns=history_max_turns,
+                history_max_chars=history_max_chars,
+                expected_prefix="A(业务):",
+                max_retries=0,
+                require_other_ref_terms=["评审员B"],
+                require_critique_markers=True,
+                disallow_same_reason_as=[
+                    str(parsed_a_1.get("reason") or ""),
+                    str(parsed_a_2.get("reason") or ""),
+                    str(last_a_second_reason or ""),
+                ],
+                log_tag=f"{question_id} round={round_idx + 1} model=A verdict=second_pass_retry",
+                print_llm_calls=print_llm_calls,
                 print_raw=print_raw,
                 print_raw_max_chars=print_raw_max_chars,
-                log_tag=f"{question_id} round={round_idx + 1} model=A verdict=second_pass_retry",
             )
             parsed_a_2_retry = dict(judge_a_2_retry.get("parsed") or {})
             parsed_a_2_retry["_source"] = "A_second_pass_retry"
@@ -1149,7 +1331,7 @@ def run_debate(
             "reason": judge_a_2["reason"],
             "round": round_idx,
         }, dialogue_log)
-        append_dialogue(dialogues, {
+        append_dialogue_dual(dialogues_ctx=dialogues_ctx, dialogues_log=dialogues_log, entry={
             "model": "A",
             "verdict": "second_pass",
             "messages": judge_a_2.get("messages"),
@@ -1157,7 +1339,9 @@ def run_debate(
             "history_snapshot": judge_a_2.get("history_snapshot"),
             "response_raw": judge_a_2.get("raw"),
             "parsed": parsed_a_2,
-        }, dialogue_log)
+        }, log_path=dialogue_log)
+
+        last_a_second_reason = str(judge_a_2.get("reason") or "")
 
         b_second_extra = "\n\n".join(
             [
@@ -1171,7 +1355,7 @@ def run_debate(
             system_prompt=EVAL_SYSTEM_PROMPT_B,
             prompt_text=prompt_text,
             extra_context=b_second_extra,
-            dialogues=dialogues,
+            dialogues=dialogues_ctx,
             temperature=temperature,
             max_tokens=max_tokens,
             history_mode=history_mode,
@@ -1179,9 +1363,11 @@ def run_debate(
             history_max_chars=history_max_chars,
             expected_prefix="B(SQL):",
             max_retries=2,
-            require_other_ref_terms=["评审员A", "A("],
+            require_other_ref_terms=["评审员A"],
             require_critique_markers=True,
+            disallow_same_reason_as=[last_b_second_reason] if (round_idx > 0 and last_b_second_reason) else None,
             log_tag=f"{question_id} round={round_idx + 1} model=B verdict=second_pass",
+            print_llm_calls=print_llm_calls,
             print_raw=print_raw,
             print_raw_max_chars=print_raw_max_chars,
         )
@@ -1196,20 +1382,30 @@ def run_debate(
                 "【检测到复读】你second_pass的reason/incorrect_parts与first_pass相同。"
                 "你必须提供与first_pass不同的更新观点，并反驳A至少1点；否则输出无效。"
             )
-            judge_b_2_retry = call_judge(
-                model_b,
-                EVAL_SYSTEM_PROMPT_B,
-                prompt_text,
-                (b_second_extra + "\n\n" + retry_note).strip(),
-                dialogues,
-                temperature,
-                max_tokens,
-                history_mode,
-                history_max_turns,
-                history_max_chars,
+            judge_b_2_retry = _enforce_judge_output(
+                model=model_b,
+                system_prompt=EVAL_SYSTEM_PROMPT_B,
+                prompt_text=prompt_text,
+                extra_context=(b_second_extra + "\n\n" + retry_note).strip(),
+                dialogues=dialogues_ctx,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                history_mode=history_mode,
+                history_max_turns=history_max_turns,
+                history_max_chars=history_max_chars,
+                expected_prefix="B(SQL):",
+                max_retries=0,
+                require_other_ref_terms=["评审员A"],
+                require_critique_markers=True,
+                disallow_same_reason_as=[
+                    str(parsed_b_1.get("reason") or ""),
+                    str(parsed_b_2.get("reason") or ""),
+                    str(last_b_second_reason or ""),
+                ],
+                log_tag=f"{question_id} round={round_idx + 1} model=B verdict=second_pass_retry",
+                print_llm_calls=print_llm_calls,
                 print_raw=print_raw,
                 print_raw_max_chars=print_raw_max_chars,
-                log_tag=f"{question_id} round={round_idx + 1} model=B verdict=second_pass_retry",
             )
             parsed_b_2_retry = dict(judge_b_2_retry.get("parsed") or {})
             parsed_b_2_retry["_source"] = "B_second_pass_retry"
@@ -1226,7 +1422,7 @@ def run_debate(
             "incorrect_parts": judge_b_2["incorrect_parts"],
             "reason": judge_b_2["reason"],
         }, dialogue_log)
-        append_dialogue(dialogues, {
+        append_dialogue_dual(dialogues_ctx=dialogues_ctx, dialogues_log=dialogues_log, entry={
             "model": "B",
             "verdict": "second_pass",
             "messages": judge_b_2.get("messages"),
@@ -1234,7 +1430,9 @@ def run_debate(
             "history_snapshot": judge_b_2.get("history_snapshot"),
             "response_raw": judge_b_2.get("raw"),
             "parsed": parsed_b_2,
-        }, dialogue_log)
+        }, log_path=dialogue_log)
+
+        last_b_second_reason = str(judge_b_2.get("reason") or "")
 
         enrichment_for_decision = build_enrichment_text(
             [parsed_a_2, parsed_b_2, parsed_a_1, parsed_b_1],
@@ -1245,16 +1443,30 @@ def run_debate(
 
         # Decision and potential regeneration
         # Decision: pass full dialogues
+        # If last round produced empty result and require_nonempty, force regeneration in the next decision.
+        empty_force_note = ""
+        if force_regen_next_round_due_to_empty:
+            empty_force_note = (
+                "\n\n【硬性规则】上一轮SQL执行成功但结果为空（rows_sample_len=0）。"
+                "本轮必须 regenerate=true 并输出 fixed_sql，且修正应针对导致空结果的过滤/关联/时间窗口问题。"
+            )
+            force_regen_next_round_due_to_empty = False
+
         decision = call_decider(
             model_c,
             prompt_text,
-            (enrichment_for_decision + "\n\n" + exec_context_for_next_round).strip() if exec_context_for_next_round else enrichment_for_decision,
-            dialogues,
+            (
+                (enrichment_for_decision + "\n\n" + exec_context_for_next_round + empty_force_note).strip()
+                if exec_context_for_next_round
+                else (enrichment_for_decision + empty_force_note).strip()
+            ),
+            dialogues_ctx,
             temperature,
             max_tokens,
             history_mode,
             history_max_turns,
             history_max_chars,
+            print_llm_calls=print_llm_calls,
             print_raw=print_raw,
             print_raw_max_chars=print_raw_max_chars,
             log_tag=f"{question_id} round={round_idx + 1} model=C verdict=decision",
@@ -1271,12 +1483,13 @@ def run_debate(
                 model_c,
                 prompt_text,
                 (enrichment_for_decision + "\n\n" + forced_note).strip(),
-                dialogues,
+                dialogues_ctx,
                 temperature,
                 max_tokens,
                 history_mode,
                 history_max_turns,
                 history_max_chars,
+                print_llm_calls=print_llm_calls,
                 print_raw=print_raw,
                 print_raw_max_chars=print_raw_max_chars,
                 log_tag=f"{question_id} round={round_idx + 1} model=C verdict=decision_forced",
@@ -1300,12 +1513,13 @@ def run_debate(
                 model_c,
                 prompt_text,
                 (enrichment_for_decision + "\n\n" + must_provide_sql).strip(),
-                dialogues,
+                dialogues_ctx,
                 temperature,
                 max_tokens,
                 history_mode,
                 history_max_turns,
                 history_max_chars,
+                print_llm_calls=print_llm_calls,
                 print_raw=print_raw,
                 print_raw_max_chars=print_raw_max_chars,
                 log_tag=f"{question_id} round={round_idx + 1} model=C verdict=decision_retry",
@@ -1325,7 +1539,7 @@ def run_debate(
             "fixed_sql": decision["fixed_sql"],
             "round": round_idx,
         }, dialogue_log)
-        append_dialogue(dialogues, {
+        append_dialogue_dual(dialogues_ctx=dialogues_ctx, dialogues_log=dialogues_log, entry={
             "model": "C",
             "verdict": "decision",
             "messages": decision.get("messages"),
@@ -1337,7 +1551,7 @@ def run_debate(
                 "reason": decision.get("reason"),
                 "fixed_sql": decision.get("fixed_sql"),
             },
-        }, dialogue_log)
+        }, log_path=dialogue_log)
 
         # Execute (and fix if needed) at the end of every round, using the SQL that will be carried forward.
         if decision.get("regenerate") and (decision.get("fixed_sql") or "").strip():
@@ -1352,7 +1566,8 @@ def run_debate(
             sql_text=candidate_sql,
             prompt_text=prompt_text,
             model_c=model_c,
-            dialogues=dialogues,
+            dialogues=dialogues_ctx,
+            dialogues_log=dialogues_log,
             history=history,
             dialogue_log=dialogue_log,
             exec_results_path=exec_results_path,
@@ -1366,6 +1581,7 @@ def run_debate(
             history_max_turns=history_max_turns,
             history_max_chars=history_max_chars,
             require_nonempty=require_nonempty,
+            print_llm_calls=print_llm_calls,
             print_raw=print_raw,
             print_raw_max_chars=print_raw_max_chars,
             log_tag=f"{question_id} round={round_idx + 1}",
@@ -1378,65 +1594,16 @@ def run_debate(
             print(f"[{question_id}] stop: sql not validated")
             break
 
-        # If query succeeded but returned empty and require_nonempty, force regeneration once (bounded).
+        # If query succeeded but returned empty and require_nonempty:
+        # do NOT call model C again in the same round (avoids duplicated C calls / duplicated SQL exec logs).
+        # Instead, carry evidence to the next round and force regeneration there.
         if require_nonempty and empty_result:
             append_history(
                 history,
                 {"model": "TOOL", "verdict": "sql_empty_result", "round": round_idx, "sql": current_sql},
                 dialogue_log,
             )
-            empty_note = (
-                "【硬性规则】SQL执行成功但结果为空（rows_sample_len=0）。一般检索类题目结果不应为空，"
-                "请视为未满足题意，必须 regenerate=true 并输出能返回非空结果的 fixed_sql（仍需满足使用schema全部表）。"
-            )
-            decision_retry2 = call_decider(
-                model_c,
-                prompt_text,
-                (enrichment_for_decision + "\n\n" + exec_context_for_next_round + "\n\n" + empty_note).strip(),
-                dialogues,
-                temperature,
-                max_tokens,
-                history_mode,
-                history_max_turns,
-                history_max_chars,
-                print_raw=print_raw,
-                print_raw_max_chars=print_raw_max_chars,
-                log_tag=f"{question_id} round={round_idx + 1} model=C verdict=decision_retry_empty",
-            )
-            if (decision_retry2.get("fixed_sql") or "").strip():
-                decision = decision_retry2
-                decision["regenerate"] = True
-                regen_sql = str(decision.get("fixed_sql") or "").strip()
-                print(f"[{question_id}] regenerated_sql_chars={len(regen_sql)}")
-                validated_sql, validated, exec_ctx, empty_result = validate_sql_with_fixes(
-                    question_id=question_id,
-                    round_idx=round_idx,
-                    sql_text=regen_sql,
-                    prompt_text=prompt_text,
-                    model_c=model_c,
-                    dialogues=dialogues,
-                    history=history,
-                    dialogue_log=dialogue_log,
-                    exec_results_path=exec_results_path,
-                    sql_tool=sql_tool,
-                    execute_sql=execute_sql,
-                    sql_timeout=sql_timeout,
-                    sql_fix_max_tries=sql_fix_max_tries,
-                    temperature=temperature,
-                    max_tokens=max_tokens,
-                    history_mode=history_mode,
-                    history_max_turns=history_max_turns,
-                    history_max_chars=history_max_chars,
-                    require_nonempty=require_nonempty,
-                    print_raw=print_raw,
-                    print_raw_max_chars=print_raw_max_chars,
-                    log_tag=f"{question_id} round={round_idx + 1}",
-                )
-                exec_context_for_next_round = exec_ctx
-                current_sql = validated_sql
-                if not validated:
-                    print(f"[{question_id}] stop: sql not validated")
-                    break
+            force_regen_next_round_due_to_empty = True
 
         if not decision.get("regenerate"):
             print(f"[{question_id}] stop: regenerate=false")
@@ -1448,7 +1615,7 @@ def run_debate(
         "question_id": question_id,
         "final_sql": current_sql,
         "history": history,
-        "dialogues": dialogues,
+        "dialogues": dialogues_log,
         "prompt": prompt_text,
     }
 
@@ -1486,8 +1653,15 @@ def main() -> None:
     parser.add_argument("--dialogue-log", default=str(BASE_DIR / "debate_dialogues.log"), help="Path to stream dialogue entries (JSONL); empty to disable")
     parser.add_argument("--exec-results", default=str(BASE_DIR / "competion_dataset" / "debate_exec_results.jsonl"), help="Path to append SQL exec results JSONL; empty to disable")
     parser.add_argument("--require-nonempty", action="store_true", default=True, help="Treat successful-but-empty result as a hard issue and force regeneration")
+    parser.add_argument(
+        "--forget-history-between-rounds",
+        action="store_true",
+        default=False,
+        help="For round>1, drop prior dialogue context for LLMs; only carry forward the latest SQL (and exec summary via extra_context).",
+    )
     parser.add_argument("--print-raw", action="store_true", default=False, help="Print each model raw output to stdout (useful for debugging)")
     parser.add_argument("--print-raw-max-chars", type=int, default=0, help="Max chars for printing raw outputs; 0 means no truncation")
+    parser.add_argument("--print-llm-calls", action="store_true", default=False, help="Print a one-line trace for every LLM invocation (maps to retries)")
     parser.add_argument("--openai_base_url", default="https://api.gptbest.vip/v1")
     parser.add_argument("--openai_api_key", default="sk-GMYNUCidV96DStXskUpPqgemoaDur0alDXZkeyiq5E3mXGZn")
     args = parser.parse_args()
@@ -1530,6 +1704,8 @@ def main() -> None:
                 sql_fix_max_tries=args.sql_fix_max_tries,
                 exec_results_path=Path(args.exec_results) if args.exec_results else None,
                 require_nonempty=args.require_nonempty,
+                forget_history_between_rounds=args.forget_history_between_rounds,
+                print_llm_calls=args.print_llm_calls,
                 print_raw=args.print_raw,
                 print_raw_max_chars=args.print_raw_max_chars,
             )
