@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 import copy
 
-from augment_decomposition import LLMClient, SQLExecutionTool, safe_json_loads
+from augment_decomposition import LLMClient, safe_json_loads
 
 BASE_DIR = Path(__file__).resolve().parent
 PROCESSED_DATASET = BASE_DIR / "competion_dataset" / "final_dataset_processed.json"
@@ -39,16 +39,15 @@ PROMPT_SKELETON = (
 )
 
 EVAL_PROMPT = (
-    "你是严格的 SQL 评审员，需基于上下文逐条指出答案的正确和错误点。\n"
+    "你是严格的 SQL 评审员，只需挑出问题点（错误/缺漏），不必罗列正确部分。\n"
     "【问题上下文】\n{prompt}\n"
     "【历史记录（含上一轮判定与对话）】\n{history}\n"
     "【输出格式（仅 JSON）】\n"
-    "{{\n"
-    "  \"correct_parts\": [ {{\"segment\": \"...\", \"reason\": \"...\"}}, ... ],\n"
-    "  \"incorrect_parts\": [ {{\"segment\": \"...\", \"reason\": \"...\"}}, ... ],\n"
-    "  \"reason\": \"总体评价，20~60 字\"\n"
-    "}}\n"
-    "要求：每个 segment 引用SQL片段或规则点，reason 说明原因；如信息不足，请写明。"
+    "{\n"
+    "  \"incorrect_parts\": [ {\"segment\": \"...\", \"reason\": \"...\"}, ... ],\n"
+    "  \"reason\": \"总体评价，20~60 字，若信息不足请说明\"\n"
+    "}\n"
+    "要求：每个 segment 引用 SQL 片段或规则点，reason 说明原因；缺少信息需说明缺口。"
 )
 
 DECISION_PROMPT = (
@@ -56,11 +55,11 @@ DECISION_PROMPT = (
     "【问题上下文】\n{prompt}\n"
     "【历史记录（含所有评审对话）】\n{history}\n"
     "【输出格式（仅 JSON）】\n"
-    "{{\n"
+    "{\n"
     "  \"regenerate\": true/false,\n"
     "  \"reason\": \"是否重生成的依据，20~60 字\",\n"
     "  \"fixed_sql\": \"当 regenerate=true 时给出新的 SQL，需 MySQL 语法且仅查询；否则可空字符串\"\n"
-    "}}\n"
+    "}\n"
     "若重生成，请确保吸收历史反馈并修正错误；如无法改进，保持 regenerate=false。"
 )
 
@@ -126,39 +125,25 @@ def parse_json_response(text: str) -> Dict[str, Any]:
     return data
 
 
-def record_sql_execution(
-    sql_tool: Optional[SQLExecutionTool],
-    sql_text: str,
-    timeout: int,
-    dialogues: List[Dict[str, Any]],
-    history: List[Dict[str, Any]],
-    round_idx: int,
-) -> Optional[Dict[str, Any]]:
-    """Run SQL via the shared tool and log into both dialogues and history."""
-    if not sql_tool or not sql_text.strip():
-        return None
+def append_dialogue(dialogues: List[Dict[str, Any]], entry: Dict[str, Any], log_path: Optional[Path]) -> None:
+    """Append a dialogue entry and stream it to a local log file immediately."""
+    dialogues.append(entry)
+    if not log_path:
+        return
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with log_path.open("a", encoding="utf-8") as fw:
+        fw.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
-    exec_result = sql_tool.run(sql_text, timeout=timeout)
-    history.append(
-        {
-            "model": "TOOL",
-            "verdict": "execute",
-            "status": exec_result.get("status"),
-            "error": exec_result.get("error"),
-            "rows_sample": exec_result.get("rows_sample"),
-            "round": round_idx,
-        }
-    )
-    dialogues.append(
-        {
-            "model": "TOOL",
-            "verdict": "execute",
-            "prompt": sql_text,
-            "response_raw": json.dumps(exec_result, ensure_ascii=False, default=str),
-            "parsed": exec_result,
-        }
-    )
-    return exec_result
+
+def append_history(history: List[Dict[str, Any]], entry: Dict[str, Any], log_path: Optional[Path]) -> None:
+    """Append a history entry and stream it to the same log for richer metadata."""
+    history.append(entry)
+    if not log_path:
+        return
+    payload = {"type": "history", **entry}
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with log_path.open("a", encoding="utf-8") as fw:
+        fw.write(json.dumps(payload, ensure_ascii=False) + "\n")
 
 
 def apply_endpoint_overrides(base_url: str, api_key: str) -> None:
@@ -178,19 +163,14 @@ def call_judge(model: LLMClient, prompt: str, dialogues: List[Dict[str, Any]], t
     # render full dialogue history for model input
     history_text = dialogues_to_text(dialogues)
     rendered = EVAL_PROMPT.format(prompt=prompt, history=history_text)
-    if getattr(model, "offline", False):
-        resp = ""
-        parsed = {}
-    else:
-        resp = model.invoke(prompt=rendered, temperature=temperature, max_tokens=512)
-        parsed = parse_json_response(resp) or {}
+    resp = model.invoke(prompt=rendered, temperature=temperature, max_tokens=512)
+    parsed = parse_json_response(resp) or {}
     return {
         "prompt": rendered,
         "history_text": history_text,
         "history_struct": copy.deepcopy(dialogues),
         "raw": resp,
         "parsed": parsed,
-        "correct_parts": parsed.get("correct_parts") or [],
         "incorrect_parts": parsed.get("incorrect_parts") or [],
         "reason": parsed.get("reason") or "",
     }
@@ -199,12 +179,8 @@ def call_judge(model: LLMClient, prompt: str, dialogues: List[Dict[str, Any]], t
 def call_decider(model: LLMClient, prompt: str, dialogues: List[Dict[str, Any]], temperature: float) -> Dict[str, Any]:
     history_text = dialogues_to_text(dialogues)
     rendered = DECISION_PROMPT.format(prompt=prompt, history=history_text)
-    if getattr(model, "offline", False):
-        resp = ""
-        parsed = {}
-    else:
-        resp = model.invoke(prompt=rendered, temperature=temperature, max_tokens=512)
-        parsed = parse_json_response(resp) or {}
+    resp = model.invoke(prompt=rendered, temperature=temperature, max_tokens=512)
+    parsed = parse_json_response(resp) or {}
     return {
         "prompt": rendered,
         "history_text": history_text,
@@ -228,11 +204,9 @@ def run_debate(
     model_b: LLMClient,
     model_c: LLMClient,
     sql_dir: Path,
-    sql_tool: Optional[SQLExecutionTool],
-    execute_sql: bool,
-    sql_timeout: int,
     max_rounds: int,
     temperature: float,
+    dialogue_log: Optional[Path],
 ) -> Dict[str, Any]:
     question_id = record.get("question_id") or record.get("sql_id") or "unknown"
     current_sql = read_sql_text(sql_dir, question_id)
@@ -240,114 +214,114 @@ def run_debate(
     history: List[Dict[str, Any]] = []
     dialogues: List[Dict[str, Any]] = []
 
+    # log record start
+    append_dialogue(dialogues, {"type": "record_start", "question_id": question_id}, dialogue_log)
+
     for round_idx in range(max_rounds):
         # include both structured summary and full dialogue transcript
         hist_text = dialogues_to_text(dialogues)
 
         # First-pass judgments (pass full dialogues list so model receives all prior turns)
         judge_a = call_judge(model_a, prompt_text, dialogues, temperature)
-        history.append({
+        append_history(history, {
             "model": "A",
             "verdict": "first_pass",
-            "correct_parts": judge_a["correct_parts"],
             "incorrect_parts": judge_a["incorrect_parts"],
             "reason": judge_a["reason"],
             "round": round_idx,
-        })
-        dialogues.append({
+        }, dialogue_log)
+        append_dialogue(dialogues, {
             "model": "A",
             "verdict": "first_pass",
             "prompt": judge_a.get("prompt"),
+            "history_text": judge_a.get("history_text"),
             "history_snapshot": judge_a.get("history_snapshot"),
             "response_raw": judge_a.get("raw"),
             "parsed": {
-                "correct_parts": judge_a.get("correct_parts"),
                 "incorrect_parts": judge_a.get("incorrect_parts"),
                 "reason": judge_a.get("reason"),
             },
-        })
+        }, dialogue_log)
 
         judge_b = call_judge(model_b, prompt_text, dialogues, temperature)
-        history.append({
+        append_history(history, {
             "model": "B",
             "verdict": "first_pass",
-            "correct_parts": judge_b["correct_parts"],
             "incorrect_parts": judge_b["incorrect_parts"],
             "reason": judge_b["reason"],
-        })
-        dialogues.append({
+        }, dialogue_log)
+        append_dialogue(dialogues, {
             "model": "B",
             "verdict": "first_pass",
             "prompt": judge_b.get("prompt"),
+            "history_text": judge_b.get("history_text"),
             "history_snapshot": judge_b.get("history_snapshot"),
             "response_raw": judge_b.get("raw"),
             "parsed": {
-                "correct_parts": judge_b.get("correct_parts"),
                 "incorrect_parts": judge_b.get("incorrect_parts"),
                 "reason": judge_b.get("reason"),
             },
-        })
+        }, dialogue_log)
 
         # Second-pass with history
         # Second pass: include all accumulated dialogues
         judge_a_2 = call_judge(model_a, prompt_text, dialogues, temperature)
-        history.append({
+        append_history(history, {
             "model": "A",
             "verdict": "second_pass",
-            "correct_parts": judge_a_2["correct_parts"],
             "incorrect_parts": judge_a_2["incorrect_parts"],
             "reason": judge_a_2["reason"],
             "round": round_idx,
-        })
-        dialogues.append({
+        }, dialogue_log)
+        append_dialogue(dialogues, {
             "model": "A",
             "verdict": "second_pass",
             "prompt": judge_a_2.get("prompt"),
+            "history_text": judge_a_2.get("history_text"),
             "history_snapshot": judge_a_2.get("history_snapshot"),
             "response_raw": judge_a_2.get("raw"),
             "parsed": {
-                "correct_parts": judge_a_2.get("correct_parts"),
                 "incorrect_parts": judge_a_2.get("incorrect_parts"),
                 "reason": judge_a_2.get("reason"),
             },
-        })
+        }, dialogue_log)
 
         judge_b_2 = call_judge(model_b, prompt_text, dialogues, temperature)
-        history.append({
+        append_history(history, {
             "model": "B",
             "verdict": "second_pass",
-            "correct_parts": judge_b_2["correct_parts"],
             "incorrect_parts": judge_b_2["incorrect_parts"],
             "reason": judge_b_2["reason"],
-        })
-        dialogues.append({
+        }, dialogue_log)
+        append_dialogue(dialogues, {
             "model": "B",
             "verdict": "second_pass",
             "prompt": judge_b_2.get("prompt"),
+            "history_text": judge_b_2.get("history_text"),
             "history_snapshot": judge_b_2.get("history_snapshot"),
             "response_raw": judge_b_2.get("raw"),
             "parsed": {
-                "correct_parts": judge_b_2.get("correct_parts"),
                 "incorrect_parts": judge_b_2.get("incorrect_parts"),
                 "reason": judge_b_2.get("reason"),
             },
-        })
+        }, dialogue_log)
 
         # Decision and potential regeneration
         # Decision: pass full dialogues
         decision = call_decider(model_c, prompt_text, dialogues, temperature)
-        history.append({
+        append_history(history, {
             "model": "C",
             "verdict": "decision",
             "regenerate": decision["regenerate"],
             "reason": decision["reason"],
             "fixed_sql": decision["fixed_sql"],
             "round": round_idx,
-        })
-        dialogues.append({
+        }, dialogue_log)
+        append_dialogue(dialogues, {
             "model": "C",
             "verdict": "decision",
             "prompt": decision.get("prompt"),
+            "history_text": decision.get("history_text"),
             "history_snapshot": decision.get("history_snapshot"),
             "response_raw": decision.get("raw"),
             "parsed": {
@@ -355,32 +329,14 @@ def run_debate(
                 "reason": decision.get("reason"),
                 "fixed_sql": decision.get("fixed_sql"),
             },
-        })
+        }, dialogue_log)
 
-        # Apply decider's SQL before potential execution
-        if decision["fixed_sql"]:
-            current_sql = decision["fixed_sql"].strip()
-            prompt_text = build_prompt(record, current_sql)
-
-        exec_result: Optional[Dict[str, Any]] = None
-        exec_success = True
-        if execute_sql and sql_tool and current_sql:
-            exec_result = record_sql_execution(sql_tool, current_sql, sql_timeout, dialogues, history, round_idx)
-            exec_success = (exec_result or {}).get("status") == "success"
-
-        # Force another regeneration attempt if execution fails
-        decision_regen = decision["regenerate"] or (execute_sql and not exec_success)
-
-        if not exec_success:
-            # let the next round see the tool error in history/dialogues
-            continue
-
-        if not decision_regen:
+        if not decision["regenerate"]:
             break
 
         if decision["fixed_sql"]:
-            # already updated above; continue to next round for further vetting/repairs
-            continue
+            current_sql = decision["fixed_sql"].strip()
+            prompt_text = build_prompt(record, current_sql)
         else:
             # If no SQL provided, stop to avoid infinite loop.
             break
@@ -417,8 +373,7 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=-1, help="Optional cap on records processed")
     parser.add_argument("--start", type=int, default=0, help="Zero-based start index")
     parser.add_argument("--offline", action="store_true", help="Use offline heuristic mode for all models")
-    parser.add_argument("--execute-sql", action="store_true", help="Execute candidate SQL via SQLExecutionTool and feed errors back for repair")
-    parser.add_argument("--sql-timeout", type=int, default=60, help="SQL execution timeout in seconds")
+    parser.add_argument("--dialogue-log", default=str(BASE_DIR / "debate_dialogues.log"), help="Path to stream dialogue entries (JSONL); empty to disable")
     parser.add_argument("--openai_base_url", default="https://api.gptbest.vip/v1")
     parser.add_argument("--openai_api_key", default="sk-GMYNUCidV96DStXskUpPqgemoaDur0alDXZkeyiq5E3mXGZn")
     args = parser.parse_args()
@@ -438,7 +393,6 @@ def main() -> None:
     model_a = build_llm_client(args.model_a, args.temperature, args.offline)
     model_b = build_llm_client(args.model_b, args.temperature, args.offline)
     model_c = build_llm_client(args.model_c, args.temperature, args.offline)
-    sql_tool = SQLExecutionTool() if args.execute_sql and not args.offline else None
 
     processed = 0
     with output_path.open("w", encoding="utf-8") as writer:
@@ -449,11 +403,9 @@ def main() -> None:
                 model_b=model_b,
                 model_c=model_c,
                 sql_dir=sql_dir,
-                sql_tool=sql_tool,
-                execute_sql=args.execute_sql,
-                sql_timeout=args.sql_timeout,
                 max_rounds=args.max_rounds,
                 temperature=args.temperature,
+                dialogue_log=Path(args.dialogue_log) if args.dialogue_log else None,
             )
             writer.write(json.dumps(result, ensure_ascii=False) + "\n")
             # persist final SQL as .sql file per question
