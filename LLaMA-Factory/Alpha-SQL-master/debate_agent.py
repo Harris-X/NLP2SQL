@@ -124,6 +124,15 @@ def _short(text: str, max_len: int = 160) -> str:
     return s[: max(0, max_len - 3)] + "..."
 
 
+def _print_raw(label: str, text: str, max_chars: int) -> None:
+    if not label:
+        label = "RAW"
+    raw = text or ""
+    if max_chars and max_chars > 0:
+        raw = _truncate_text(raw, max_chars)
+    print(f"[{label}]\n{raw}\n")
+
+
 def _flush_writer(writer: TextIO) -> None:
     """Flush and best-effort fsync to ensure real-time persistence."""
     writer.flush()
@@ -404,7 +413,20 @@ def _judge_output_invalid_reason(expected_prefix: str) -> str:
     return f"{expected_prefix} (输出无效：未按要求提供JSON/前缀/有效内容)"
 
 
-def _validate_judge_parsed(parsed: Dict[str, Any], expected_prefix: str) -> str:
+def _contains_any(text: str, terms: List[str]) -> bool:
+    t = (text or "").strip()
+    if not t:
+        return False
+    return any(term in t for term in terms if term)
+
+
+def _validate_judge_parsed(
+    parsed: Dict[str, Any],
+    expected_prefix: str,
+    *,
+    require_other_ref_terms: Optional[List[str]] = None,
+    require_critique_markers: bool = False,
+) -> str:
     reason = str(parsed.get("reason") or "").strip()
     incorrect_parts = parsed.get("incorrect_parts")
     if not reason:
@@ -413,6 +435,24 @@ def _validate_judge_parsed(parsed: Dict[str, Any], expected_prefix: str) -> str:
         return "bad_prefix"
     if incorrect_parts is not None and not isinstance(incorrect_parts, list):
         return "bad_incorrect_parts_type"
+
+    if require_other_ref_terms:
+        # Require explicitly referencing the other judge in second-pass to force real debate.
+        haystack = json.dumps(parsed, ensure_ascii=False)
+        if not _contains_any(haystack, require_other_ref_terms):
+            return "missing_counter_to_other"
+
+    if require_critique_markers:
+        # Require at least one critique marker (lightweight heuristic).
+        combined = " ".join(
+            [
+                reason,
+                str(parsed.get("next_round_advice") or ""),
+                str(parsed.get("question_intent_guess") or ""),
+            ]
+        )
+        if not _contains_any(combined, ["反驳", "不同意", "质疑", "纠正", "澄清", "修正", "补充"]):
+            return "missing_critique_marker"
     return ""
 
 
@@ -430,35 +470,30 @@ def _enforce_judge_output(
     history_max_chars: int,
     expected_prefix: str,
     max_retries: int = 1,
+    require_other_ref_terms: Optional[List[str]] = None,
+    require_critique_markers: bool = False,
+    log_tag: str = "",
+    print_raw: bool = False,
+    print_raw_max_chars: int = 0,
 ) -> Dict[str, Any]:
     """Call judge and enforce minimally valid JSON+reason prefix; retry with harder instruction if needed."""
-    last = call_judge(
-        model,
-        system_prompt,
-        prompt_text,
-        extra_context,
-        dialogues,
-        temperature,
-        max_tokens,
-        history_mode,
-        history_max_turns,
-        history_max_chars,
-    )
-
-    for _ in range(max_retries + 1):
-        parsed = dict(last.get("parsed") or {})
-        err = _validate_judge_parsed(parsed, expected_prefix)
-        if not err:
-            return last
-        hard = (
-            f"【输出无效:{err}】你必须只输出JSON，且reason必须以'{expected_prefix}'开头，"
-            "incorrect_parts必须是数组；不要复述别人的句子；必须给出可核验的差异观点。"
-        )
+    # NOTE: retry budget should result in at most (1 + max_retries) model calls.
+    last: Dict[str, Any] = {}
+    err = ""
+    for attempt in range(0, max(0, max_retries) + 1):
+        hard = ""
+        if attempt > 0:
+            hard = (
+                f"【输出无效:{err or 'unknown'}】你必须只输出JSON，且用```json代码块包裹；"
+                f"reason必须以'{expected_prefix}'开头；incorrect_parts必须是数组；"
+                "不要复述别人的句子；必须给出可核验的差异观点与批判。"
+            )
+        merged_extra = (extra_context + "\n\n" + hard).strip() if (extra_context and hard) else (extra_context or hard)
         last = call_judge(
             model,
             system_prompt,
             prompt_text,
-            (extra_context + "\n\n" + hard).strip() if extra_context else hard,
+            merged_extra,
             dialogues,
             temperature,
             max_tokens,
@@ -466,6 +501,23 @@ def _enforce_judge_output(
             history_max_turns,
             history_max_chars,
         )
+
+        if print_raw:
+            attempt_no = attempt + 1
+            _print_raw(f"{log_tag} attempt={attempt_no}", str(last.get("raw") or ""), print_raw_max_chars)
+
+        parsed = dict(last.get("parsed") or {})
+        err = _validate_judge_parsed(
+            parsed,
+            expected_prefix,
+            require_other_ref_terms=require_other_ref_terms,
+            require_critique_markers=require_critique_markers,
+        )
+        if not err:
+            return last
+        # Print invalid reason for visibility (why a retry happened)
+        if log_tag:
+            print(f"[{log_tag}] output_invalid={err} retry={attempt}/{max_retries}")
 
     # Fallback: force a non-empty, correct-prefix reason so downstream logic can proceed.
     parsed = dict(last.get("parsed") or {})
@@ -488,7 +540,7 @@ def _format_exec_context(sql_text: str, exec_result: Dict[str, Any]) -> str:
         f"status={status}\n"
         f"rows_sample_len={len(rows_sample)}\n"
         f"rows_sample={sample_json}\n"
-        f"error={error or '(empty)'}\n"
+        f"error={(error.strip() or '(empty)')}\n"
         "【判定提示】一般情况下结果不应为空；若rows_sample_len=0请视为未满足题意并提出修正。"
     )
 
@@ -514,6 +566,9 @@ def validate_sql_with_fixes(
     history_max_turns: int,
     history_max_chars: int,
     require_nonempty: bool,
+    print_raw: bool = False,
+    print_raw_max_chars: int = 0,
+    log_tag: str = "",
 ) -> Tuple[str, bool, str, bool]:
     """Execute SQL (and fix on errors). Returns (final_sql, validated, exec_context, empty_result)."""
     if not execute_sql:
@@ -541,9 +596,10 @@ def validate_sql_with_fixes(
     for fix_idx in range(1, max(1, sql_fix_max_tries) + 1):
         exec_result = sql_tool.run(current_sql, timeout=sql_timeout)
         last_exec = exec_result
+        err_text = str(exec_result.get("error") or "").strip() or "(empty)"
         print(
             f"[{question_id}] round={round_idx + 1} tool=mysql_exec attempt={fix_idx} "
-            f"status={exec_result.get('status')} error={_short(str(exec_result.get('error') or ''), 220)}"
+            f"status={exec_result.get('status')} error={_short(err_text, 220)}"
         )
         attempts.append({"attempt": fix_idx, "sql": current_sql, **exec_result})
 
@@ -635,6 +691,9 @@ def validate_sql_with_fixes(
             history_mode=history_mode,
             history_max_turns=history_max_turns,
             history_max_chars=history_max_chars,
+            print_raw=print_raw,
+            print_raw_max_chars=print_raw_max_chars,
+            log_tag=(log_tag or f"{question_id} round={round_idx + 1} model=C verdict=sql_fix attempt={fix_idx}"),
         )
         print(
             f"[{question_id}] round={round_idx + 1} model=C verdict=sql_fix attempt={fix_idx} "
@@ -702,6 +761,9 @@ def call_sql_fixer(
     history_mode: HistoryMode,
     history_max_turns: int,
     history_max_chars: int,
+    print_raw: bool = False,
+    print_raw_max_chars: int = 0,
+    log_tag: str = "",
 ) -> Dict[str, Any]:
     history_text = ""
     if history_mode in {"full", "compact"}:
@@ -729,6 +791,8 @@ def call_sql_fixer(
     )
 
     resp = model.invoke(messages=messages, temperature=temperature, max_tokens=max_tokens)
+    if print_raw:
+        _print_raw(log_tag or "sql_fix", resp, print_raw_max_chars)
     parsed = parse_json_response(resp) or {}
     return {
         "messages": copy.deepcopy(messages),
@@ -763,6 +827,9 @@ def call_judge(
     history_mode: HistoryMode,
     history_max_turns: int,
     history_max_chars: int,
+    print_raw: bool = False,
+    print_raw_max_chars: int = 0,
+    log_tag: str = "",
 ) -> Dict[str, Any]:
     history_text = ""
     if history_mode in {"full", "compact"}:
@@ -784,6 +851,8 @@ def call_judge(
         messages.append({"role": "user", "content": f"【历史记录（摘要）】\n{history_text}"})
 
     resp = model.invoke(messages=messages, temperature=temperature, max_tokens=max_tokens)
+    if print_raw:
+        _print_raw(log_tag or "judge", resp, print_raw_max_chars)
     parsed = parse_json_response(resp) or {}
     return {
         "messages": copy.deepcopy(messages),
@@ -806,6 +875,9 @@ def call_decider(
     history_mode: HistoryMode,
     history_max_turns: int,
     history_max_chars: int,
+    print_raw: bool = False,
+    print_raw_max_chars: int = 0,
+    log_tag: str = "",
 ) -> Dict[str, Any]:
     history_text = ""
     if history_mode in {"full", "compact"}:
@@ -827,6 +899,8 @@ def call_decider(
         messages.append({"role": "user", "content": f"【历史记录（摘要）】\n{history_text}"})
 
     resp = model.invoke(messages=messages, temperature=temperature, max_tokens=max_tokens)
+    if print_raw:
+        _print_raw(log_tag or "decision", resp, print_raw_max_chars)
     parsed = parse_json_response(resp) or {}
     return {
         "messages": copy.deepcopy(messages),
@@ -863,6 +937,8 @@ def run_debate(
     sql_fix_max_tries: int,
     exec_results_path: Optional[Path],
     require_nonempty: bool,
+    print_raw: bool,
+    print_raw_max_chars: int,
 ) -> Dict[str, Any]:
     question_id = record.get("question_id") or record.get("sql_id") or "unknown"
     current_sql = read_sql_text(sql_dir, question_id)
@@ -921,6 +997,9 @@ def run_debate(
             history_max_chars=history_max_chars,
             expected_prefix="A(业务):",
             max_retries=1,
+            log_tag=f"{question_id} round={round_idx + 1} model=A verdict=first_pass",
+            print_raw=print_raw,
+            print_raw_max_chars=print_raw_max_chars,
         )
         parsed_a_1 = dict(judge_a.get("parsed") or {})
         parsed_a_1["_source"] = "A_first_pass"
@@ -959,6 +1038,9 @@ def run_debate(
             history_max_chars=history_max_chars,
             expected_prefix="B(SQL):",
             max_retries=1,
+            log_tag=f"{question_id} round={round_idx + 1} model=B verdict=first_pass",
+            print_raw=print_raw,
+            print_raw_max_chars=print_raw_max_chars,
         )
         parsed_b_1 = dict(judge_b.get("parsed") or {})
         parsed_b_1["_source"] = "B_first_pass"
@@ -1018,6 +1100,11 @@ def run_debate(
             history_max_chars=history_max_chars,
             expected_prefix="A(业务):",
             max_retries=1,
+            require_other_ref_terms=["评审员B", "B("],
+            require_critique_markers=True,
+            log_tag=f"{question_id} round={round_idx + 1} model=A verdict=second_pass",
+            print_raw=print_raw,
+            print_raw_max_chars=print_raw_max_chars,
         )
         parsed_a_2 = dict(judge_a_2.get("parsed") or {})
         parsed_a_2["_source"] = "A_second_pass"
@@ -1041,6 +1128,9 @@ def run_debate(
                 history_mode,
                 history_max_turns,
                 history_max_chars,
+                print_raw=print_raw,
+                print_raw_max_chars=print_raw_max_chars,
+                log_tag=f"{question_id} round={round_idx + 1} model=A verdict=second_pass_retry",
             )
             parsed_a_2_retry = dict(judge_a_2_retry.get("parsed") or {})
             parsed_a_2_retry["_source"] = "A_second_pass_retry"
@@ -1089,6 +1179,11 @@ def run_debate(
             history_max_chars=history_max_chars,
             expected_prefix="B(SQL):",
             max_retries=2,
+            require_other_ref_terms=["评审员A", "A("],
+            require_critique_markers=True,
+            log_tag=f"{question_id} round={round_idx + 1} model=B verdict=second_pass",
+            print_raw=print_raw,
+            print_raw_max_chars=print_raw_max_chars,
         )
         parsed_b_2 = dict(judge_b_2.get("parsed") or {})
         parsed_b_2["_source"] = "B_second_pass"
@@ -1112,6 +1207,9 @@ def run_debate(
                 history_mode,
                 history_max_turns,
                 history_max_chars,
+                print_raw=print_raw,
+                print_raw_max_chars=print_raw_max_chars,
+                log_tag=f"{question_id} round={round_idx + 1} model=B verdict=second_pass_retry",
             )
             parsed_b_2_retry = dict(judge_b_2_retry.get("parsed") or {})
             parsed_b_2_retry["_source"] = "B_second_pass_retry"
@@ -1157,6 +1255,9 @@ def run_debate(
             history_mode,
             history_max_turns,
             history_max_chars,
+            print_raw=print_raw,
+            print_raw_max_chars=print_raw_max_chars,
+            log_tag=f"{question_id} round={round_idx + 1} model=C verdict=decision",
         )
 
         # Hard rule: if any judge flags issues, we must regenerate.
@@ -1176,6 +1277,9 @@ def run_debate(
                 history_mode,
                 history_max_turns,
                 history_max_chars,
+                print_raw=print_raw,
+                print_raw_max_chars=print_raw_max_chars,
+                log_tag=f"{question_id} round={round_idx + 1} model=C verdict=decision_forced",
             )
 
             # Prefer forced decision if it produces SQL.
@@ -1202,6 +1306,9 @@ def run_debate(
                 history_mode,
                 history_max_turns,
                 history_max_chars,
+                print_raw=print_raw,
+                print_raw_max_chars=print_raw_max_chars,
+                log_tag=f"{question_id} round={round_idx + 1} model=C verdict=decision_retry",
             )
             if (decision_retry.get("fixed_sql") or "").strip():
                 decision = decision_retry
@@ -1259,6 +1366,9 @@ def run_debate(
             history_max_turns=history_max_turns,
             history_max_chars=history_max_chars,
             require_nonempty=require_nonempty,
+            print_raw=print_raw,
+            print_raw_max_chars=print_raw_max_chars,
+            log_tag=f"{question_id} round={round_idx + 1}",
         )
 
         exec_context_for_next_round = exec_ctx
@@ -1289,6 +1399,9 @@ def run_debate(
                 history_mode,
                 history_max_turns,
                 history_max_chars,
+                print_raw=print_raw,
+                print_raw_max_chars=print_raw_max_chars,
+                log_tag=f"{question_id} round={round_idx + 1} model=C verdict=decision_retry_empty",
             )
             if (decision_retry2.get("fixed_sql") or "").strip():
                 decision = decision_retry2
@@ -1315,6 +1428,9 @@ def run_debate(
                     history_max_turns=history_max_turns,
                     history_max_chars=history_max_chars,
                     require_nonempty=require_nonempty,
+                    print_raw=print_raw,
+                    print_raw_max_chars=print_raw_max_chars,
+                    log_tag=f"{question_id} round={round_idx + 1}",
                 )
                 exec_context_for_next_round = exec_ctx
                 current_sql = validated_sql
@@ -1370,6 +1486,8 @@ def main() -> None:
     parser.add_argument("--dialogue-log", default=str(BASE_DIR / "debate_dialogues.log"), help="Path to stream dialogue entries (JSONL); empty to disable")
     parser.add_argument("--exec-results", default=str(BASE_DIR / "competion_dataset" / "debate_exec_results.jsonl"), help="Path to append SQL exec results JSONL; empty to disable")
     parser.add_argument("--require-nonempty", action="store_true", default=True, help="Treat successful-but-empty result as a hard issue and force regeneration")
+    parser.add_argument("--print-raw", action="store_true", default=False, help="Print each model raw output to stdout (useful for debugging)")
+    parser.add_argument("--print-raw-max-chars", type=int, default=0, help="Max chars for printing raw outputs; 0 means no truncation")
     parser.add_argument("--openai_base_url", default="https://api.gptbest.vip/v1")
     parser.add_argument("--openai_api_key", default="sk-GMYNUCidV96DStXskUpPqgemoaDur0alDXZkeyiq5E3mXGZn")
     args = parser.parse_args()
@@ -1412,6 +1530,8 @@ def main() -> None:
                 sql_fix_max_tries=args.sql_fix_max_tries,
                 exec_results_path=Path(args.exec_results) if args.exec_results else None,
                 require_nonempty=args.require_nonempty,
+                print_raw=args.print_raw,
+                print_raw_max_chars=args.print_raw_max_chars,
             )
             writer.write(json.dumps(result, ensure_ascii=False) + "\n")
             _flush_writer(writer)
