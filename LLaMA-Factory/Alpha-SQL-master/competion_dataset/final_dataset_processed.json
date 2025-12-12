@@ -1,0 +1,12 @@
+[
+  {
+    "question_id": "sql_2",
+    "instruction": "请你接下来一步步思考，写出正确的SQL查询语句以满足用户的需求。",
+    "input": "你是一名MySQL专家，现在需要阅读并理解下面的【数据库schema】描述，以及可能用到的【参考信息】，并运用MySQL知识生成sql语句回答【用户问题】。\n【用户问题】\n提取1个抽样号码包，2025.7.17-2025.7.23期间付费且不包含721号码包内的用户全量\n输出:gplayerid。\n\n【数据库schema】\nCREATE TABLE `dim_extract_311381_conf` (\n  `vplayerid` TEXT\n);\nCREATE TABLE `dws_argothek_ce1_login_di` (\n  `dtstatdate` TEXT COMMENT '统计日期',\n  `vgameappid` TEXT COMMENT '游戏APPID',\n  `platid` BIGINT COMMENT '0 ios,1 android, 255 所有平台',\n  `vplayerid` TEXT COMMENT '玩家ID',\n  `ilevel` BIGINT COMMENT '等级',\n  `ionlinetime` BIGINT COMMENT '在线时长(秒)',\n  `ilogincount` BIGINT COMMENT '登录次数',\n  `FriendCount` BIGINT COMMENT '好友数量',\n  `clientversion` TEXT COMMENT '客户端版本',\n  `channel` BIGINT COMMENT '渠道',\n  `uuid` TEXT COMMENT '唯一标识',\n  `deviceid` TEXT COMMENT '设备ID',\n  `dtlogintime` TEXT COMMENT '当日最早登录时间'\n);\nCREATE TABLE `dws_argothek_ce1_cbt2_vplayerid_suserid_di` (\n  `dtstatdate` TEXT COMMENT '统计日期',\n  `vgameappid` TEXT COMMENT '无汇总',\n  `platid` BIGINT COMMENT '0 - Android,1,255',\n  `vplayerid` TEXT COMMENT 'gplayerid',\n  `suserid` TEXT COMMENT 'suserid',\n  `suserid_type` TEXT COMMENT 'suserid的类型',\n  `iregdate` TEXT COMMENT '注册日期',\n  `iregway` TEXT COMMENT '注册渠道-不区分platid',\n  `iloginway` TEXT COMMENT '活跃渠道',\n  `sourcename` TEXT COMMENT '开白渠道',\n  `itag` TEXT COMMENT '用户分层标签',\n  `ilevel` BIGINT COMMENT '最新等级',\n  `ionlinetime` TEXT COMMENT '在线时长秒',\n  `iroundtime` TEXT COMMENT '游戏时长秒',\n  `iroundcnt` TEXT COMMENT '对局次数',\n  `fps_avg` TEXT COMMENT '当日平均帧率-gplayerid维度',\n  `is_reg` TEXT COMMENT '是否当日新进',\n  `is_lowfps` TEXT COMMENT '是否低帧率-新进首日平均帧率不高于40且没有帧率数据的用户不计入',\n  `is_match` TEXT COMMENT '是否当日对局',\n  `vtemp1` TEXT COMMENT '预留',\n  `vtemp2` TEXT COMMENT '预留',\n  `vtemp3` TEXT COMMENT '预留',\n  `itemp1` BIGINT COMMENT '预留',\n  `itemp2` BIGINT COMMENT '预留',\n  `itemp3` BIGINT COMMENT '预留'\n);\n\n【参考信息】\n\n\n",
+    "output": "",
+    "category": "用户分群",
+    "category_reason": "该需求旨在从特定时间段内筛选出符合付费条件且排除特定号码包的用户群体，属于用户分群操作。",
+    "category_source": "LLM",
+    "llm_raw": "{\n  \"category\": \"用户分群\",\n  \"rationale\": \"该需求旨在从特定时间段内筛选出符合付费条件且排除特定号码包的用户群体，属于用户分群操作。\"\n}"
+  }
+]
