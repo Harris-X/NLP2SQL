@@ -123,18 +123,25 @@ def main() -> None:
     samples = load_source(INPUT_PATH)
     print(f"共 {len(samples)} 条样本，开始生成思维链并追加写入 {OUTPUT_PATH}")
 
+    # 记忆已处理过的样本，避免对完全重复的 instruction/input/output 再次调用模型
+    reuse_cache: Dict[tuple[str, str, str], str] = {}
     processed = 0
     for idx, item in enumerate(samples, 1):
-        prompt = build_prompt(item)
-        reasoning = call_api(prompt)
-        normalized = normalize_sql(item.get("output", ""))
-        combined_output = f"{reasoning}\n\n```sql\n{normalized}\n```"
+        inst = item.get("instruction", "")
+        inp = item.get("input", "")
+        out = item.get("output", "")
+        key = (inst, inp, out)
 
-        new_item = {
-            "instruction": item.get("instruction", ""),
-            "input": item.get("input", ""),
-            "output": combined_output,
-        }
+        if key in reuse_cache:
+            combined_output = reuse_cache[key]
+        else:
+            prompt = build_prompt(item)
+            reasoning = call_api(prompt)
+            normalized = normalize_sql(out)
+            combined_output = f"{reasoning}\n\n```sql\n{normalized}\n```"
+            reuse_cache[key] = combined_output
+
+        new_item = {"instruction": inst, "input": inp, "output": combined_output}
 
         append_json_array(OUTPUT_PATH, new_item)
         processed += 1
