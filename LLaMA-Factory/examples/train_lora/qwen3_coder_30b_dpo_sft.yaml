@@ -1,0 +1,35 @@
+### model
+model_name_or_path: /root/autodl-tmp/comp/LLaMA-Factory/Qwen3-Coder-30B-A3B-Instruct
+trust_remote_code: true
+template: qwen3_nothink
+# qwen3_nothink
+### method
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_rank: 32
+lora_target: v_proj,q_proj
+
+### dataset
+dataset: sft_text2sql
+cutoff_len: 65536
+max_samples: 1500  # 0 表示用完整数据集
+preprocessing_num_workers: 2
+
+### train
+output_dir: saves/qwen3-coder-30b/lora/dpo_32_sft
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+num_train_epochs: 5
+learning_rate: 1e-4
+lr_scheduler_type: cosine
+warmup_ratio: 0.05
+bf16: true
+logging_steps: 10
+save_steps: 500
+ddp_timeout: 180000
+resume_from_checkpoint: null
+ddp_find_unused_parameters: true
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
