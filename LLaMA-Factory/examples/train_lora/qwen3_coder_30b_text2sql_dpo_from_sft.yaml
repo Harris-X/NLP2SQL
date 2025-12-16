@@ -1,0 +1,48 @@
+### model
+model_name_or_path: /root/autodl-tmp/comp/LLaMA-Factory/Qwen3-Coder-30B-A3B-Instruct
+adapter_name_or_path: /root/autodl-tmp/comp/LLaMA-Factory/saves/qwen3-coder-30b/lora/dpo_32_sft
+trust_remote_code: true
+
+### method
+stage: dpo
+do_train: true
+finetuning_type: lora
+lora_rank: 32
+# 与 SFT 阶段保持一致，只在 q_proj / v_proj 上打 LoRA
+lora_target: v_proj,q_proj
+pref_beta: 0.1
+pref_loss: sigmoid  # choices: [sigmoid (dpo), orpo, simpo]
+
+### dataset
+# 使用你已经准备好的 DPO 偏好数据集 dpo_text2sql
+# 其在 data/dataset_info.json 中已配置好列映射
+# 这里的 template 选用与 SFT 相同的 qwen3_nothink
+# 这样 prompt 形式保持一致
+
+dataset: dpo_text2sql
+template: qwen3_nothink
+cutoff_len: 65536
+max_samples: 0          # 0 表示用完整数据集
+overwrite_cache: true
+preprocessing_num_workers: 8
+dataloader_num_workers: 4
+
+### output
+output_dir: saves/qwen3-coder-30b/lora/text2sql_dpo_from_sft
+logging_steps: 10
+save_steps: 500
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: false
+report_to: none  # choices: [none, wandb, tensorboard, swanlab, mlflow]
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+learning_rate: 5.0e-5
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
